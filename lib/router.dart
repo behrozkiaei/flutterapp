@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:paytell/presentations/auth/EnterPhone.dart';
+import 'package:paytell/presentations/auth/otpWidget.dart';
+import 'package:paytell/presentations/home/home.dart';
+
+Route<dynamic> generateRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case '/':
+      return MaterialPageRoute(builder: (_) => EnterPhone());
+    case '/home':
+      return MaterialPageRoute(builder: (_) => Home());
+    case '/otp':
+       final args = settings.arguments as OtpWidget;
+       if(args.phoneNumber is String){
+          return MaterialPageRoute(builder: (_) => OtpWidget(phoneNumber:args.phoneNumber));
+       }else{
+           return MaterialPageRoute(builder: (_) => Home()); 
+       }
+    default:
+      return MaterialPageRoute(
+          builder: (_) => Scaffold(
+                body: Center(
+                    child: Text('No route defined for ${settings.name}')),
+              ));
+  }
+}
