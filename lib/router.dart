@@ -8,13 +8,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case '/':
       return MaterialPageRoute(builder: (_) => EnterPhone());
     case '/home':
-      return MaterialPageRoute(builder: (_) => Home());
+      return MaterialPageRoute(builder: (_) => HomePage());
     case '/otp':
        final args = settings.arguments as OtpWidget;
        if(args.phoneNumber is String){
           return MaterialPageRoute(builder: (_) => OtpWidget(phoneNumber:args.phoneNumber));
        }else{
-           return MaterialPageRoute(builder: (_) => Home()); 
+           return MaterialPageRoute(builder: (_) => HomePage()); 
        }
     default:
       return MaterialPageRoute(

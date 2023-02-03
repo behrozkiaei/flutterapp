@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:paytell/presentations/auth/otpWidget.dart';
 import 'package:paytell/style/theme.dart' as Style;
+import 'package:shared_preferences/shared_preferences.dart';
 class EnterPhone extends StatefulWidget {
   const EnterPhone({super.key});
 
@@ -14,19 +15,38 @@ class EnterPhone extends StatefulWidget {
 }
 
 class _EnterPhoneState extends State<EnterPhone> {
- 
 
+  // final _storage = const FlutterSecureStorage();
   final _formKey = GlobalKey<FormState>();
-  late String _phoneNumber;
+  String _phoneNumber="09";
+   
+    @override
+    void initState() {
+      super.initState();
+      _getStoredValue();
+    }
 
+   _getStoredValue() async {
+      final prefs = await SharedPreferences.getInstance();
+      final String? value = prefs.getString("mobile");
+      setState(() { _phoneNumber = value ?? "09"; });  
+  }
+  
+  void _addPhoneInStorage(String mobile) async {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString("mobile", mobile);
+  }
+  
   @override
   Widget build(BuildContext context) {
+        double width = MediaQuery.of(context).size.width;
         return  Scaffold(
+            backgroundColor:Style.Colors.background,
             body: Container(
               height: 500,
               child: 
                 Padding(
-                  padding: EdgeInsets.all(10),
+                  padding:const  EdgeInsets.all(10),
                   child : Form(
                     key: _formKey,
                     child: 
@@ -34,54 +54,80 @@ class _EnterPhoneState extends State<EnterPhone> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment:  CrossAxisAlignment.center,
                       children: <Widget>[
-                        SizedBox(height: 100),
+                        const SizedBox(height: 100),
                         TextFormField(
                           textAlignVertical: TextAlignVertical.center,
+                          textAlign: TextAlign.center,
                           style:const TextStyle(
                             fontSize: 14.0,
-                            color: Style.Colors.titleColor,
+                            color: Style.Colors.primary,
                             fontWeight: FontWeight.bold
                           ),
-                          initialValue: '09',
+                          initialValue: _phoneNumber ,
                           inputFormatters: [
-                            // FilteringTextInputFormatter.allow(RegExp(r'^09\d{9}$')),
                             LengthLimitingTextInputFormatter(11)
                           ],
                           validator: (value) {
                             if (!RegExp(r'^09\d{9}$').hasMatch(value!)) {
-                              return 'Invalid phone number';
+                              return 'شماراه وارد شده صحیح نیست';
                             }
                             return null;
                           },
                           onSaved: (value) => _phoneNumber = value!,
                           decoration: InputDecoration(
                               fillColor: Colors.white,
-                              prefixIcon: Icon(EvaIcons.phone, color: Colors.black26),
+                              prefixIcon:const Icon(EvaIcons.phone, color:Style.Colors.primary),
                               enabledBorder: OutlineInputBorder(
-                                  borderSide: new BorderSide(color: Colors.black12),
-                                  borderRadius: BorderRadius.circular(30.0)
+                                  borderSide:  const BorderSide(color: Style.Colors.primary),
+                                  borderRadius: BorderRadius.circular(10.0)
                                   ),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide: new BorderSide(color: Style.Colors.mainColor),
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              contentPadding: EdgeInsets.only(
+                                  borderSide: const BorderSide(color: Style.Colors.primary),
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              contentPadding: const EdgeInsets.only(
                                   left: 10.0, right: 10.0),
                               labelText: "شماره تماس",
-                              hintStyle: TextStyle(
+                              hintStyle:const TextStyle(
                                   fontSize: 12.0,
                                   color: Style.Colors.grey,
-                                  fontWeight: FontWeight.w500),
-                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold),
+                              labelStyle:const TextStyle(
                                   fontSize: 12.0,
                                   color: Colors.grey,
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.bold),
                             ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         ElevatedButton(
-                          onPressed: () {
+                          style: ButtonStyle(
+                            backgroundColor:MaterialStateProperty.resolveWith((states) {
+                               return  Style.Colors.primary;
+                            }),
+                            foregroundColor:MaterialStateProperty.resolveWith((states) {
+                               return  Style.Colors.background;
+                            }),
+                            textStyle:MaterialStateProperty.resolveWith((states) {
+                               return Style.TextStyling.primaryTextStyle;
+                            }),
+                            elevation:MaterialStateProperty.resolveWith((states) {
+                              return 0;
+                            }),
+                            minimumSize:MaterialStateProperty.resolveWith((states) {
+                              return Size(width, 50);
+                            }), 
+                            maximumSize:MaterialStateProperty.resolveWith((states) {
+                              return Size(width, 50);
+                            }),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)
+                                )
+                              )
+                          ),
+                          onPressed:  () { 
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
+                              _addPhoneInStorage(_phoneNumber);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -90,9 +136,7 @@ class _EnterPhoneState extends State<EnterPhone> {
                               );
                             }
                           },
-                          child: Text('ارسال کد',
-                                 style: TextStyle(fontFamily: "IRANSansWeb"),
-                          ),
+                          child: Text('ارسال پیامک فعال‌سازی'),
                         )
                       ],
                     )
@@ -101,4 +145,6 @@ class _EnterPhoneState extends State<EnterPhone> {
             ,) 
           );
       }
+     
+      
     }
