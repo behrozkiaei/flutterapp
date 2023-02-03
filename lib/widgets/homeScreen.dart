@@ -17,8 +17,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      
       body: SlidingUpPanel(
+        minHeight:height/2 ,
+        // maxHeight:h ,
         body: const SendReceivePage(),
         panelBuilder: (controller) => HomePanelWidget(
           scrollController: controller,
