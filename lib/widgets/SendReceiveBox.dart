@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:paytell/style/theme.dart' as Style;
 import 'package:paytell/widgets/utils/mainPageIconButton.dart';
+import 'package:persian_tools/persian_tools.dart';
 class SendReceivePage extends StatelessWidget {
   const SendReceivePage({super.key});
   @override
@@ -28,7 +29,7 @@ class SendReceivePage extends StatelessWidget {
                                   Icon(EvaIcons.messageCircle, color: Style.Colors.background),
                             ]),
                              const SizedBox(height: 20,width: 30),
-                             const  Text("4,666,300 ریال", style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), ),
+                             Text('${addCommas(4666300)} ریال', style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), ),
                              const  Text("موجودی", style: const TextStyle(color: Style.Colors.background , fontSize: 10 )),
                              const SizedBox(height: 30,width: 15),
                              Row(

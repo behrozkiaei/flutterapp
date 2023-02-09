@@ -75,7 +75,7 @@ class _OtpWidgetState extends State<OtpWidget> {
         child: 
           Form(
           key: _formKey,
-          child:Padding(padding:EdgeInsets.all(15),
+          child:Padding(padding:const EdgeInsets.all(15),
                child: Column(
                 children: <Widget>[
                   const  SizedBox(height:100),
@@ -92,7 +92,7 @@ class _OtpWidgetState extends State<OtpWidget> {
                   const SizedBox(height:20), 
                   // ignore: avoid_unnecessary_containers
                   Container(
-                    child: Text("کد فعال‌سازی را وارد کنید" ,style : TextStyle(fontWeight: FontWeight.normal , fontSize: 10 )),
+                    child:const  Text("کد فعال‌سازی را وارد کنید" ,style : TextStyle(fontWeight: FontWeight.normal , fontSize: 10 )),
                     ),
                   const SizedBox(height:20), 
                   Directionality( // add this
@@ -107,7 +107,7 @@ class _OtpWidgetState extends State<OtpWidget> {
                         fieldStyle: FieldStyle.underline,
                         otpFieldStyle:OtpFieldStyle(borderColor: Style.Colors.primary) ,
                         outlineBorderRadius: 15,
-                        style: TextStyle(fontSize: 17 , color: Style.Colors.primary),
+                        style:const TextStyle(fontSize: 17 , color: Style.Colors.primary),
                         onChanged: (pin) {
                           print("Changed: " + pin);
                         },

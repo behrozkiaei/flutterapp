@@ -89,7 +89,7 @@ class _EnterPhoneState extends State<EnterPhone> {
                               labelText: "شماره تماس",
                               hintStyle:const TextStyle(
                                   fontSize: 12.0,
-                                  color: Style.Colors.grey,
+                                  color: Style.Colors.primary,
                                   fontWeight: FontWeight.bold),
                               labelStyle:const TextStyle(
                                   fontSize: 12.0,
@@ -136,7 +136,7 @@ class _EnterPhoneState extends State<EnterPhone> {
                               );
                             }
                           },
-                          child: Text('ارسال پیامک فعال‌سازی'),
+                          child: const Text('ارسال پیامک فعال‌سازی'),
                         )
                       ],
                     )

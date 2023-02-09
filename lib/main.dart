@@ -12,15 +12,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      localizationsDelegates: [
+      themeMode: ThemeMode.dark,
+      localizationsDelegates:const  [
           GlobalCupertinoLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-      supportedLocales: [
+      supportedLocales: const [
           Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales
         ],
-      locale: Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales,
+      locale:const Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales,
       theme:  ThemeData(fontFamily: "IRANSansWeb"),
       initialRoute: '/home',
       debugShowCheckedModeBanner  : false,

@@ -21,7 +21,7 @@ class HomePanelWidget extends StatelessWidget {
                     width: 80,
                     height: 80,
                     decoration:  BoxDecoration(
-                        color:Style.Colors.background ,
+                        // color:Style.Colors.background ,
                         borderRadius:BorderRadius.circular(10.0) , 
                         border:  Border.all(color: Style.Colors.primary)
                       ),
@@ -37,7 +37,7 @@ class HomePanelWidget extends StatelessWidget {
               width: 80,
               height: 80,
               decoration:  BoxDecoration(
-                  color:Style.Colors.background ,
+                  // color:Style.Colors.background ,
                   borderRadius:BorderRadius.circular(10.0) , 
                   border:  Border.all(color: Style.Colors.primary)
                 ),
@@ -53,7 +53,7 @@ class HomePanelWidget extends StatelessWidget {
               width: 80,
               height: 80,
               decoration:  BoxDecoration(
-                  color:Style.Colors.background ,
+                  // color:Style.Colors.background ,
                   borderRadius:BorderRadius.circular(10.0) , 
                   border:  Border.all(color: Style.Colors.primary)
                 ),

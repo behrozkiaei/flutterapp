@@ -7,6 +7,7 @@ import 'package:paytell/style/theme.dart' as Style;
 import 'package:paytell/widgets/contanctScreen.dart';
 import 'package:paytell/widgets/homeScreen.dart';
 import 'package:paytell/widgets/profile.dart';
+import 'package:paytell/widgets/scaner/scnner.dart';
 import 'package:paytell/widgets/tansactionScreen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,9 +17,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedItem = 0;
+  int selectedItem = 1;
   final List<Widget> pages  = [
      const HomeScreen(),
+     const ScannerPage(),
      const Transactions(),
      const Contacts(),
      const Profile(),
@@ -29,17 +31,20 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
+      // body: Text("hello"),
       body: pages[selectedItem],
       bottomNavigationBar: BottomNavigationBar(
         onTap:changeSelectedItem ,
+        currentIndex: selectedItem,
         elevation: 10,
-        showSelectedLabels: false,
+        showSelectedLabels: true,
         showUnselectedLabels: false,
         selectedItemColor: Style.Colors.primary,
         unselectedItemColor: Style.Colors.secondary,
         items:const [
           BottomNavigationBarItem(icon:Icon(EvaIcons.home ) , label:"اصلی"),
+          BottomNavigationBarItem(icon:Icon( CupertinoIcons.arrow_up_arrow_down_circle ) , label:"انتقال"),
           BottomNavigationBarItem(icon:Icon(EvaIcons.fileTextOutline ) , label:"تراکنش‌ها"),
           BottomNavigationBarItem(icon:Icon(EvaIcons.phone ) , label:"کاربران"),
           BottomNavigationBarItem(icon:Icon(EvaIcons.person ) , label:"پروفایل"),
