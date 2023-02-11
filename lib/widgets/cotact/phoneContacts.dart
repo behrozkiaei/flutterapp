@@ -3,8 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fast_contacts/fast_contacts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:paytell/style/theme.dart';
-import 'package:paytell/style/theme.dart' as Style;
+import 'package:paytel/style/theme.dart';
+import 'package:paytel/style/theme.dart' as Style;
 import 'package:permission_handler/permission_handler.dart';
 class MyContacts extends StatefulWidget {
   const MyContacts({super.key});

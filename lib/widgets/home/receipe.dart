@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import 'package:paytell/style/theme.dart' as Style;
-import 'package:paytell/widgets/utils/addCommaText.dart';
-import 'package:paytell/widgets/utils/toPersianDate.dart';
+import 'package:paytel/style/theme.dart' as Style;
+import 'package:paytel/widgets/utils/addCommaText.dart';
+import 'package:paytel/widgets/utils/toPersianDate.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 class Receipt extends StatelessWidget {
   const Receipt({super.key});

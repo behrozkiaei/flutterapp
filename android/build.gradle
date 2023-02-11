@@ -29,3 +29,11 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+signingConfigs {
+    release {
+        storeFile file("paytel.jks")
+        storePassword "5924a1212XYZ&!"
+        keyAlias "paytel"
+        keyPassword "5924a1212XYZ&!"
+    }
+}

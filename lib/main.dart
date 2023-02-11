@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:paytell/router.dart';
+import 'package:paytel/router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 

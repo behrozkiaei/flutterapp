@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:paytell/style/theme.dart' as Style;
+import 'package:paytel/style/theme.dart' as Style;
 class StyledElevatedButton extends StatelessWidget {
   final Color textColor;
   final Function? onPressed;

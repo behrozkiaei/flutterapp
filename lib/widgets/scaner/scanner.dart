@@ -3,10 +3,10 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:paytell/widgets/utils/enterAmountBottomSheet.dart';
-import 'package:paytell/widgets/utils/inputDecoration.dart';
+import 'package:paytel/widgets/utils/enterAmountBottomSheet.dart';
+import 'package:paytel/widgets/utils/inputDecoration.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:paytell/style/theme.dart' as Style;
+import 'package:paytel/style/theme.dart' as Style;
 import '../utils/elevateButton.style.dart';
 import "./enterCodeBottomSheet.dart" ;
 class ScannerPage extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:paytell/style/theme.dart' as Style;
-import 'package:paytell/widgets/utils/addCommaText.dart';
-import 'package:paytell/widgets/utils/toPersianDate.dart';
+import 'package:paytel/style/theme.dart' as Style;
+import 'package:paytel/widgets/utils/addCommaText.dart';
+import 'package:paytel/widgets/utils/toPersianDate.dart';
 import 'package:persian_tools/persian_tools.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:paytell/style/theme.dart' as Style;
+import 'package:paytel/style/theme.dart' as Style;
 class HomePanelWidget extends StatelessWidget {
   final ScrollController scrollController;
   const HomePanelWidget({super.key , required this.scrollController});

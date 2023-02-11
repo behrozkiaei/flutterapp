@@ -8,8 +8,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
-import 'package:paytell/presentations/auth/enterPhone.dart';
-import 'package:paytell/style/theme.dart' as Style;
+import 'package:paytel/presentations/auth/enterPhone.dart';
+import 'package:paytel/style/theme.dart' as Style;
 import 'package:shared_preferences/shared_preferences.dart';
 class OtpWidget extends StatefulWidget {
   final String? phoneNumber;

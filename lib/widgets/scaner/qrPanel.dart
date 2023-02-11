@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:paytell/widgets/utils/elevateButton.style.dart';
+import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import 'package:paytell/style/theme.dart' as Style;
+import 'package:paytel/style/theme.dart' as Style;
 
 
 class QrPanel extends StatelessWidget {
@@ -26,7 +26,7 @@ class QrPanel extends StatelessWidget {
       const  SizedBox(height: 10),
       Center(
                   child:  PrettyQr(
-                    image:const AssetImage('assets/icons/sim.png'),
+                    image:const AssetImage('assets/icons/logo/p-logo-primary-boxed.png'),
                     typeNumber: 3,
                     size: 200,
                     data: '123345665',

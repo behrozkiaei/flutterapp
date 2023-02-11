@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:paytell/widgets/utils/elevateButton.style.dart';
-import 'package:paytell/widgets/utils/inputDecoration.dart';
-import 'package:paytell/style/theme.dart' as Style;
+import 'package:paytel/widgets/utils/elevateButton.style.dart';
+import 'package:paytel/widgets/utils/inputDecoration.dart';
+import 'package:paytel/style/theme.dart' as Style;
 
 class ScannerBottomSheets {
   static void show(BuildContext context,Function(String result) callback) {

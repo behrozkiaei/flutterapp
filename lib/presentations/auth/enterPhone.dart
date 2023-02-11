@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:paytell/presentations/auth/otpWidget.dart';
-import 'package:paytell/style/theme.dart' as Style;
+import 'package:paytel/presentations/auth/otpWidget.dart';
+import 'package:paytel/style/theme.dart' as Style;
 import 'package:shared_preferences/shared_preferences.dart';
 class EnterPhone extends StatefulWidget {
   const EnterPhone({super.key});

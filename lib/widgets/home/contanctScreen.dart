@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:paytell/widgets/cotact/lastPaidUsersListView.dart';
-import 'package:paytell/widgets/cotact/phoneContacts.dart';
+import 'package:paytel/widgets/cotact/lastPaidUsersListView.dart';
+import 'package:paytel/widgets/cotact/phoneContacts.dart';
 
 class Contacts extends StatefulWidget {
   const Contacts({super.key});

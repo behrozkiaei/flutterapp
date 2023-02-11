@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:paytell/style/theme.dart' as Style;
+import 'package:paytel/style/theme.dart' as Style;
 class Profile extends StatefulWidget {
   const Profile({super.key});
   

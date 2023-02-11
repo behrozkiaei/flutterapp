@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:paytell/presentations/auth/EnterPhone.dart';
-import 'package:paytell/presentations/auth/otpWidget.dart';
-import 'package:paytell/presentations/home/home.dart';
+import 'package:paytel/presentations/auth/enterPhone.dart';
+import 'package:paytel/presentations/auth/otpWidget.dart';
+import 'package:paytel/presentations/home/home.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {

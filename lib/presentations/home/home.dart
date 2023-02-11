@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:paytell/style/theme.dart' as Style;
-import 'package:paytell/widgets/home/contanctScreen.dart';
-import 'package:paytell/widgets/home/homeScreen.dart';
-import 'package:paytell/widgets/home/profile.dart';
-import 'package:paytell/widgets/scaner/scanner.dart';
-import 'package:paytell/widgets/scaner/transferPage.dart';
-import 'package:paytell/widgets/home/tansactionScreen.dart';
+import 'package:paytel/style/theme.dart' as Style;
+import 'package:paytel/widgets/home/contanctScreen.dart';
+import 'package:paytel/widgets/home/homeScreen.dart';
+import 'package:paytel/widgets/home/profile.dart';
+import 'package:paytel/widgets/scaner/scanner.dart';
+import 'package:paytel/widgets/scaner/transferPage.dart';
+import 'package:paytel/widgets/home/tansactionScreen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

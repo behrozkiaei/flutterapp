@@ -4,8 +4,8 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:paytell/style/theme.dart' as Style;
-import 'package:paytell/widgets/utils/mainPageIconButton.dart';
+import 'package:paytel/style/theme.dart' as Style;
+import 'package:paytel/widgets/utils/mainPageIconButton.dart';
 import 'package:persian_tools/persian_tools.dart';
 class SendReceivePage extends StatelessWidget {
   const SendReceivePage({super.key});

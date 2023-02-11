@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:paytell/widgets/panels/transactions.dart';
-import 'package:paytell/widgets/home/receipe.dart';
+import 'package:paytel/widgets/panels/transactions.dart';
+import 'package:paytel/widgets/home/receipe.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Transactions extends StatefulWidget {
