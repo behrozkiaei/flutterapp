@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:paytell/style/theme.dart' as Style;
-import 'package:paytell/widgets/contanctScreen.dart';
-import 'package:paytell/widgets/homeScreen.dart';
-import 'package:paytell/widgets/profile.dart';
-import 'package:paytell/widgets/scaner/scnner.dart';
-import 'package:paytell/widgets/tansactionScreen.dart';
+import 'package:paytell/widgets/home/contanctScreen.dart';
+import 'package:paytell/widgets/home/homeScreen.dart';
+import 'package:paytell/widgets/home/profile.dart';
+import 'package:paytell/widgets/scaner/scanner.dart';
+import 'package:paytell/widgets/scaner/transferPage.dart';
+import 'package:paytell/widgets/home/tansactionScreen.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -20,19 +21,18 @@ class _HomePageState extends State<HomePage> {
   int selectedItem = 1;
   final List<Widget> pages  = [
      const HomeScreen(),
-     const ScannerPage(),
+     Transfer(),
      const Transactions(),
      const Contacts(),
      const Profile(),
   ];
   void changeSelectedItem(int item){
-    print(item);
     setState(() {selectedItem = item;});
   }
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      // body: Text("hello"),
+      resizeToAvoidBottomInset: false,
       body: pages[selectedItem],
       bottomNavigationBar: BottomNavigationBar(
         onTap:changeSelectedItem ,

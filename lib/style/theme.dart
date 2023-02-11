@@ -23,6 +23,7 @@ class Colors {
 
   static const Color  fail= Color.fromARGB(255, 180, 11, 11);
   static const Color success  = Color.fromARGB(255, 10, 147, 42);
+  static const Color white  = Color.fromARGB(255, 255, 255, 255);
 }
 
 class TextStyling {
@@ -31,6 +32,12 @@ class TextStyling {
 
   static const  TextStyle primaryTextStyle =   TextStyle(
                               color: Colors.primary,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "IRANSansWeb"
+                            );
+  static const  TextStyle secondaryTextStyle =   TextStyle(
+                              color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                               fontFamily: "IRANSansWeb"

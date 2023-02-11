@@ -109,7 +109,7 @@ class _OtpWidgetState extends State<OtpWidget> {
                         outlineBorderRadius: 15,
                         style:const TextStyle(fontSize: 17 , color: Style.Colors.primary),
                         onChanged: (pin) {
-                          print("Changed: " + pin);
+                          //print("Changed: " + pin);
                         },
                         onCompleted: (pin) {
                            if(_start == 0){
@@ -180,7 +180,7 @@ class _OtpWidgetState extends State<OtpWidget> {
                       },
                       child: const Text("ویرایش شماره تلفن" ,style : TextStyle(color: Style.Colors.primary)),
                     ),
-                    SizedBox(height:20),
+                    const SizedBox(height:20),
                     Text("$_start"),
                   ],
                 )

@@ -103,9 +103,6 @@ class _EnterPhoneState extends State<EnterPhone> {
                             backgroundColor:MaterialStateProperty.resolveWith((states) {
                                return  Style.Colors.primary;
                             }),
-                            foregroundColor:MaterialStateProperty.resolveWith((states) {
-                               return  Style.Colors.background;
-                            }),
                             textStyle:MaterialStateProperty.resolveWith((states) {
                                return Style.TextStyling.primaryTextStyle;
                             }),

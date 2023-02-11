@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:paytell/widgets/panels/transactions.dart';
-import 'package:paytell/widgets/receipe.dart';
+import 'package:paytell/widgets/home/receipe.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Transactions extends StatefulWidget {
@@ -14,12 +14,11 @@ class Transactions extends StatefulWidget {
 
 class _TransactionsState extends State<Transactions> {
   final panelController =  PanelController();
-   @override
+  @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SlidingUpPanel(
-        
         controller: panelController,
         minHeight:height*0.2 ,
         maxHeight:height*0.9 ,

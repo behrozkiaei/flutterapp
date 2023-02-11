@@ -107,10 +107,7 @@ class _ProfileState extends State<Profile> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
                         overlayColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
-                        // shape: MaterialStateProperty.resolveWith((states) => const RoundedRectangleBorder(
-                        //   side: BorderSide(color: Colors.grey, width: 1),
-                        //   borderRadius: BorderRadius.all(Radius.circular(4)),
-                        // )),
+                       
                       ),
                     child: const Text("Button 2"),  
                     ),

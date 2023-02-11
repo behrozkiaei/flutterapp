@@ -1,0 +1,76 @@
+import 'package:flutter/material.dart';
+import 'package:paytell/widgets/utils/elevateButton.style.dart';
+import 'package:paytell/widgets/utils/inputDecoration.dart';
+import 'package:paytell/style/theme.dart' as Style;
+
+class ScannerBottomSheets {
+  static void show(BuildContext context,Function(String result) callback) {
+   String? Code;
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 600,
+          decoration:const  BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Padding(padding: const EdgeInsets.all(10),
+           child :Column(
+            children: <Widget>[
+              
+              const SizedBox(height: 20,),
+              const Text("کد کاربر را وارد کنید"),
+              const SizedBox(height: 10,),
+
+              InputDecorationStyle(
+                type: "code",
+                icon: Icons.keyboard_backspace_outlined,
+                label: "کد کاربر",
+                onSave : (value){},
+                validate: (value){
+                  if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
+                              return 'شماراه وارد شده صحیح نیست';
+                            }
+                            return null;
+                },
+                initialValue: "",
+                autofocus: true,
+                onChange: (value){
+                  print(value);
+                  Code = value;
+                },
+              ),
+              Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: 
+                    LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) {
+                        final parentWidth = constraints.maxWidth;
+                        return StyledElevatedButton(
+                            width:parentWidth ,
+                            icon : Icons.check_box ,
+                            text :"تایید",
+                            textColor: Style.Colors.white,
+                            onPressed: () async {
+                                if(Code != null ){
+                                  Navigator.pop(context, Code);
+                                }else{
+                                  Navigator.pop(context, null);
+                                }
+                              }
+                            );
+                          }
+                        )
+                       )
+                  ],
+            ),
+          )
+        );
+      },
+    ).then((value) => callback(value));
+  }
+}
