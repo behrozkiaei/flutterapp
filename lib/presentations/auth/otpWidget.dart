@@ -12,9 +12,9 @@ import 'package:paytel/presentations/auth/enterPhone.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:shared_preferences/shared_preferences.dart';
 class OtpWidget extends StatefulWidget {
-  final String? phoneNumber;
+  const OtpWidget({super.key});
 
-  OtpWidget({Key? key,  this.phoneNumber}) ;
+
 
   @override
   _OtpWidgetState createState() => _OtpWidgetState();
@@ -59,6 +59,7 @@ class _OtpWidgetState extends State<OtpWidget> {
   _getStoredValue() async {
       final prefs = await SharedPreferences.getInstance();
       final String value = prefs.getString("mobile") ?? "";
+      print(value);
       setState(() { storedValue = value ; });     
   }
   var spinkit = const SpinKitRotatingCircle(
@@ -81,11 +82,11 @@ class _OtpWidgetState extends State<OtpWidget> {
                   const  SizedBox(height:100),
                   RichText(
                     text: TextSpan(
-                      style:const TextStyle(fontSize: 11 , fontFamily: "IRANSansWeb"),
+                      style:const TextStyle(fontSize: 11 , fontFamily: "IRANSansWeb",color: Style.Colors.gray1),
                       children: <TextSpan>[
-                       const TextSpan(text: 'یک پیامک به شماره '),
+                       const TextSpan(text: ' یک پیامک به شماره '),
                         TextSpan(text: storedValue,style:const  TextStyle(fontWeight: FontWeight.bold , color: Style.Colors.primary)),
-                        const TextSpan(text:  "ارسال شده است"),
+                        const TextSpan(text:  " ارسال شده است "  ),
                       ],
                     ),
                   ),

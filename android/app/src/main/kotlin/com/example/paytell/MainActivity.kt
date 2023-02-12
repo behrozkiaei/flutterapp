@@ -1,6 +1,6 @@
-package com.example.paytell
+package com.example.paytel
+  import io.flutter.embedding.android.FlutterFragmentActivity
 
-import io.flutter.embedding.android.FlutterActivity
-
-class MainActivity: FlutterActivity() {
-}
+  class MainActivity: FlutterFragmentActivity() {
+      
+  }

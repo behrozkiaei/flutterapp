@@ -7,15 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:persian_tools/persian_tools.dart';
 class InputDecorationStyle extends StatefulWidget {
-
-final String label;
-final Function? onSave;
-final Function? validate;
-final String initialValue;
-final bool? autofocus;
-final Function onChange;
-final String type ;
-final IconData icon;
 const InputDecorationStyle({
   super.key, 
   required this.label,
@@ -25,18 +16,34 @@ const InputDecorationStyle({
   this.autofocus = true,
   required  this.onChange,
   this.type = "", 
-  required this.icon
+  required this.icon,
+  this.textInputType = TextInputType.number
 });
-  
+
+final bool? autofocus;
+final IconData icon;
+final String initialValue;
+final String label;
+final Function onChange;
+final Function? onSave;
+final TextInputType textInputType;
+final String type ;
+final Function? validate;
+
   @override
   _InputDecorationStyle createState() => _InputDecorationStyle();
 }
 
 
 class _InputDecorationStyle extends State<InputDecorationStyle> {
-    TextEditingController? statusController = TextEditingController();
     Array<dynamic>? formatter  ;
+    TextEditingController? statusController = TextEditingController();
 
+  @override
+  void dispose() {
+    statusController?.dispose();
+    super.dispose();
+  }
 
  @override
   void initState() {
@@ -46,20 +53,16 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
   }
 
   @override
-  void dispose() {
-    statusController?.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return TextFormField(
                           controller: statusController,
-                          keyboardType: TextInputType.number,
+                          keyboardType: widget.textInputType,
                           autofocus :widget.autofocus!,
+                         
                           onChanged:(value) {
                             widget.onChange(value);
                           },
+                          initialValue: widget.type == "sheba "? "IR": null ,
                           textAlignVertical: TextAlignVertical.center,
                           textAlign: TextAlign.center,
                           style:const TextStyle(
@@ -67,22 +70,29 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
                             color: Style.Colors.primary,
                             fontWeight: FontWeight.bold
                           ),
-                          // initialValue: widget.initialValue ,
                           inputFormatters:widget.type == "money" ? [
                             LengthLimitingTextInputFormatter(11),
                               ThousandsSeparatorInputFormatter(",") 
                           ]:widget.type == "code" ?[
                             LengthLimitingTextInputFormatter(11),
                               ThousandsSeparatorInputFormatter("-") 
+                          ]:widget.type == "nationalCode" ?[
+                            LengthLimitingTextInputFormatter(10)
+                          ]:widget.type == "card" ?[
+                            LengthLimitingTextInputFormatter(19),
+                             MaskedTextInputFormatter(
+                              mask: 'xxxx-xxxx-xxxx-xxxx',
+                              separator: '-',
+                            ),
                           ]:[
-                            LengthLimitingTextInputFormatter(11),
+                            LengthLimitingTextInputFormatter(20),
                           ],
                           validator: (value) {
-                            widget.validate!();
-                            return null;
+                            widget.validate!(value);
                           },
                           onSaved: (value) => widget.onSave!(value!),
                           decoration: InputDecoration(
+                              suffixIcon: widget.type == "sheba" ?  Image.asset('assets/icons/IR.png',scale: 2,):null,
                               fillColor: Colors.white,
                               prefixIcon: Icon(widget.icon, color:Style.Colors.primary),
                               enabledBorder: OutlineInputBorder(
@@ -109,8 +119,9 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
 }
 
 class ThousandsSeparatorInputFormatter extends TextInputFormatter {
-   final String separator ; // Change this to '.' for other locales
    ThousandsSeparatorInputFormatter(this.separator);
+
+   final String separator ; // Change this to '.' for other locales
 
   @override
   TextEditingValue formatEditUpdate(
@@ -151,6 +162,35 @@ class ThousandsSeparatorInputFormatter extends TextInputFormatter {
     }
 
     // If the new value and old value are the same, just return as-is
+    return newValue;
+  }
+}
+
+
+class MaskedTextInputFormatter extends TextInputFormatter {
+  final String mask;
+  final String separator;
+
+  MaskedTextInputFormatter({
+    required this.mask,
+    required this.separator,
+  }) { assert(mask != null); assert (separator != null); }
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    if(newValue.text.length! > 0) {
+      if(newValue.text.length > oldValue.text.length) {
+        if(newValue.text.length > mask.length) return oldValue;
+        if(newValue.text.length < mask.length && mask[newValue.text.length - 1] == separator) {
+          return TextEditingValue(
+            text: '${oldValue.text}$separator${newValue.text.substring(newValue.text.length-1)}',
+            selection: TextSelection.collapsed(
+              offset: newValue.selection.end + 1,
+            ),
+          );
+        }
+      }
+    }
     return newValue;
   }
 }

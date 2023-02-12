@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:paytel/presentations/auth/otpWidget.dart';
 import 'package:paytel/style/theme.dart' as Style;
+import 'package:persian_tools/persian_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class EnterPhone extends StatefulWidget {
   const EnterPhone({super.key});
@@ -41,9 +42,8 @@ class _EnterPhoneState extends State<EnterPhone> {
   Widget build(BuildContext context) {
         double width = MediaQuery.of(context).size.width;
         return  Scaffold(
-            backgroundColor:Style.Colors.background,
             body: Container(
-              height: 500,
+              height: double.infinity,
               child: 
                 Padding(
                   padding:const  EdgeInsets.all(10),
@@ -51,11 +51,19 @@ class _EnterPhoneState extends State<EnterPhone> {
                     key: _formKey,
                     child: 
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment:  CrossAxisAlignment.center,
                       children: <Widget>[
+                          const SizedBox(height: 100),
+                         SizedBox(
+                            height: 150,
+                            width: double.infinity,
+                            child:   Image.asset("assets/icons/logo/p-logo-primary.png",scale: 1,),
+
+                          ),
                         const SizedBox(height: 100),
                         TextFormField(
+                          keyboardType: TextInputType.number,
                           textAlignVertical: TextAlignVertical.center,
                           textAlign: TextAlign.center,
                           style:const TextStyle(
@@ -73,7 +81,7 @@ class _EnterPhoneState extends State<EnterPhone> {
                             }
                             return null;
                           },
-                          onSaved: (value) => _phoneNumber = value!,
+                          onSaved: (value) => _phoneNumber = convertArToEn(value!) ,
                           decoration: InputDecoration(
                               fillColor: Colors.white,
                               prefixIcon:const Icon(EvaIcons.phone, color:Style.Colors.primary),
@@ -97,7 +105,7 @@ class _EnterPhoneState extends State<EnterPhone> {
                                   fontWeight: FontWeight.bold),
                             ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:MaterialStateProperty.resolveWith((states) {
@@ -125,12 +133,11 @@ class _EnterPhoneState extends State<EnterPhone> {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
                               _addPhoneInStorage(_phoneNumber);
-                              Navigator.push(
+                              Navigator.pushReplacementNamed(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => OtpWidget(phoneNumber: _phoneNumber ),
-                                ),
-                              );
+                                "/otp",
+                                 arguments :  _phoneNumber ,
+                                );
                             }
                           },
                           child: const Text('ارسال پیامک فعال‌سازی'),
@@ -145,3 +152,8 @@ class _EnterPhoneState extends State<EnterPhone> {
      
       
     }
+class ScreenArguments {
+  final String mobile;
+
+  ScreenArguments(this.mobile);
+}

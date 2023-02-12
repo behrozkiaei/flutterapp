@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedItem = 1;
+  int selectedItem = 4;
   final List<Widget> pages  = [
      const HomeScreen(),
      Transfer(),
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Style.Colors.secondary,
         items:const [
           BottomNavigationBarItem(icon:Icon(EvaIcons.home ) , label:"اصلی"),
-          BottomNavigationBarItem(icon:Icon( CupertinoIcons.arrow_up_arrow_down_circle ) , label:"انتقال"),
+          BottomNavigationBarItem(icon:Icon(CupertinoIcons.arrow_up_arrow_down_circle ) , label:"انتقال"),
           BottomNavigationBarItem(icon:Icon(EvaIcons.fileTextOutline ) , label:"تراکنش‌ها"),
           BottomNavigationBarItem(icon:Icon(EvaIcons.phone ) , label:"کاربران"),
           BottomNavigationBarItem(icon:Icon(EvaIcons.person ) , label:"پروفایل"),
