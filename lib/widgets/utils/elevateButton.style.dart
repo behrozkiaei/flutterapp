@@ -84,6 +84,7 @@ class StyledElevatedButton extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10.0)
                             )
                           ),
+                          // fixedSize: MaterialStateProperty.resolveWith((states) =>const  Size(50, 40))
                       );
  }
 }

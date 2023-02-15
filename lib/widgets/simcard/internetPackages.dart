@@ -24,58 +24,84 @@ class _IntertetPackagesState extends State<IntertetPackages> {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SafeArea(child: 
-      Column(
-        children: [
-           ListView(
-              scrollDirection: Axis.horizontal,
-              physics:  const BouncingScrollPhysics(),
-              children: List.generate(20, (index) {
-              return Padding(
-              padding:const  EdgeInsets.all(5),
-              child: Container(
-                            margin:const EdgeInsets.all(4),
-                            height: 80,
-                            width: 80,
-                            child: ElevatedButton(
-                                style:  StyledElevatedButton.buttonTinyStyle(false),
-                                child: Text("50000", style: ButtonStyleCustom.textStyle(false)),
-                                onPressed: () { _changeState(2);},
-                          ),
+      body: SafeArea(
+        child:
+        SizedBox(height: double.infinity,
+        child: 
+         Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children:  [
+                  const SizedBox(height:30), 
+                   SizedBox( 
+                    width: width,
+                    height: 30,
+                    child :ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: List.generate(20, (index) {
+                        return  Container(
+                                        margin:const EdgeInsets.symmetric(horizontal: 4),
+                                        height: 30,
+                                        width: 70,
+                                        child: ElevatedButton(
+                                            style:  StyledElevatedButton.buttonTinyStyle(false),
+                                            child: Text("50000", style: ButtonStyleCustom.textStyle(false)),
+                                            onPressed: () { _changeState(2);},
+                                ),
+                              );
+                        }),
                       ),
-                  );
-            }),
-          ),
-           const SizedBox(height: 20,),
-            ListView(
-              scrollDirection: Axis.vertical,
-              physics:  const BouncingScrollPhysics(),
-              children: List.generate(20, (index) {
-               return Padding(padding: EdgeInsets.all(5),
-                 child: 
-                      Row(
-                          mainAxisAlignment:  MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
-                              SizedBox(width: 60,height: 60,child: 
-                                  CircleAvatar(
-                                      backgroundColor: Style.Colors.primary,
-                                      foregroundColor: Style.Colors.primary, 
-                                      radius: 50.0,
-                                      backgroundImage:  AssetImage('assets/icons/hamrah.png'),
-                                      ),
-                              ),
-                              SizedBox(width: 10),
-                              Text("همراه اول"),
-                          ],
-                      )
-               );
-            }),
-          ),
-        ],
-      )
-      ),
-    );
-  }
+                    ),
+                   const SizedBox(height: 10,),
+                    Expanded(
+                      child: 
+                      ListView(
+                        scrollDirection: Axis.vertical,
+                        physics:  const BouncingScrollPhysics(),
+                        children: List.generate(20, (index) {
+                        return Padding(padding:const  EdgeInsets.symmetric(vertical: 5),
+                          
+                          child: Row(
+                            mainAxisAlignment:  MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children:  [
+                              Container(
+                                  width: 50,
+                                  height: 60,
+                                  decoration: const BoxDecoration( shape: BoxShape.circle,    
+                                      color: Style.Colors.gray2                                      
+                                    ),
+                                  child:Image.asset("assets/icons/internet.png",scale:10,), 
+                                ),
+                              const SizedBox(width: 10),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children:const [
+                                  Text("یکروزه 1.5 گیگابایت"),
+                                  Text("مبلغ + مالیات", style: TextStyle(fontSize: 14.0,color: Style.Colors.gray1)),
+
+                              ],),
+                              Expanded(
+                                child:Container(
+                                  margin: EdgeInsets.only(left: 10),
+                                    alignment: Alignment.centerLeft,
+                                    child: 
+                                      const Icon(Icons.arrow_forward),
+                                    ),
+                                  ), 
+                            ],
+                          ),
+                        );
+                      }),
+                   ),
+                ),
+              ],
+            )
+            ,)
+            ),
+          );
+      }
 }

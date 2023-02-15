@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
                 bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'IRANSansWeb'),
               ),
             ),
-      initialRoute: '/internet-packages',
+      initialRoute: '/internet-packages', 
       debugShowCheckedModeBanner  : false,
       onGenerateRoute: generateRoute,
     );

@@ -45,22 +45,21 @@ class HomePanelWidget extends StatelessWidget {
                           Navigator.pushNamed(context, "/sim-enter-phone");
                 },
                 child:
-              Container(
-              width: 80,
-              height: 80,
-              decoration:  BoxDecoration(
-                  // color:Style.Colors.background ,
-                  borderRadius:BorderRadius.circular(10.0) , 
-                  border:  Border.all(color: Style.Colors.primary)
-                ),
-                child:Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                        Image.asset("assets/icons/internet.png",scale:10,),
-                        const Text("خرید اینترنت" ,style:Style.TextStyling.primaryTextStyle)
-                    ],) 
-              ),
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration:  BoxDecoration(
+                      borderRadius:BorderRadius.circular(10.0) , 
+                      border:  Border.all(color: Style.Colors.primary)
+                    ),
+                    child:Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                            Image.asset("assets/icons/internet.png",scale:10,),
+                            const Text("خرید اینترنت" ,style:Style.TextStyling.primaryTextStyle)
+                        ],) 
+                  ),
               ),
               Container(
               width: 80,
