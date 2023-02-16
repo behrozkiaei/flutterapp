@@ -10,18 +10,18 @@ import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
 import 'package:persian_tools/persian_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-class EnterPhoneSim extends StatefulWidget {
-  const EnterPhoneSim({super.key});
+class EnterBillId extends StatefulWidget {
+  const EnterBillId({super.key});
 
   @override
-  State<EnterPhoneSim> createState() => _EnterPhoneSimState();
+  State<EnterBillId> createState() => _EnterBillIdState();
 }
 
-class _EnterPhoneSimState extends State<EnterPhoneSim> {
+class _EnterBillIdState extends State<EnterBillId> {
 
   // final _storage = const FlutterSecureStorage();
   final _formKey = GlobalKey<FormState>();
-  String? _phoneNumber;
+  String? _billid;
   String? mode ; //   "internet , charge , bill"
     @override
     void initState() {
@@ -30,34 +30,34 @@ class _EnterPhoneSimState extends State<EnterPhoneSim> {
     }
 
     void _getMode() async {
-      final prefs = await SharedPreferences.getInstance();
-      final _mode =  prefs.getString("mode");
-      setState(() {
-        mode : _mode;
-      });
+      // final prefs = await SharedPreferences.getInstance();
+      // // final _mode =  prefs.getString("mode");
+      // setState(() {
+      //   // mode : _mode;
+      // });
   }
 
-  void _addPhoneInStorage(String mobile) async {
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString("mobile", mobile);
-  }
+  // void _addPhoneInStorage(String mobile) async {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     // prefs.setString("mobile", mobile);
+  // }
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-             appBar: AppBar(
-              // backgroundColor: Style.Colors.white,
+          appBar: AppBar(
               elevation: 0,
+              backgroundColor: Style.Colors.white,
                leading:  IconButton(
                 icon: const Icon(Icons.arrow_back , color: Style.Colors.primary),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
-            body:SafeArea(child:  SizedBox(
+            body:SafeArea(child:  Container(
               height: double.infinity,
               child: 
                 Padding(
-                  padding:const  EdgeInsets.all(10),
+                  padding:const  EdgeInsets.symmetric(horizontal: 10),
                   child : Form(
                     key: _formKey,
                     child: 
@@ -66,24 +66,25 @@ class _EnterPhoneSimState extends State<EnterPhoneSim> {
                       crossAxisAlignment:  CrossAxisAlignment.start,
                       children: <Widget>[
                         const SizedBox(height: 10),
-                        const Text("شماره سیم کارت  را وارد کنید", style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 15),
+                        const Text("شناسه قبض خود را وارد کنید", style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 10),
                         InputDecorationStyle(
-                          label: "شماره تلفن",
-                          icon:  CupertinoIcons.person,
+                          textInputType :TextInputType.number,
+                          label: "شناسه قبض",
+                          icon:  CupertinoIcons.doc,
                           onChange: (value){
 
                           },
                           onSave: (value){
                             (value) { 
-                              _phoneNumber = convertArToEn(value!);
-                              _addPhoneInStorage(value);
+                              _billid = convertArToEn(value!);
+                              // _addPhoneInStorage(value);
                             };
                           },
-                          type: "phone",
-                          textInputType : TextInputType.number,
+                          // type: "number",
                          
                         ),
+                      
                         const SizedBox(height: 15),
                         Expanded(child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -96,7 +97,7 @@ class _EnterPhoneSimState extends State<EnterPhoneSim> {
                             onPressed:  () async  { 
                               if (_formKey.currentState!.validate()) {
                                  ChooseOperatorBottomSheet.show(context,(value){
-                                      if(value != null ){
+                                      if(value !=null ){
                                                 Navigator.pushNamed(context, "/charge-amount");
                                       }
                                     });

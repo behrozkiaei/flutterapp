@@ -19,83 +19,85 @@ class SendReceivePage extends StatelessWidget {
     return   Container(
       height: 100,
       decoration: const BoxDecoration(color:Style.Colors.primary) ,
-      child: SafeArea(
-        child:Padding(
-          padding: const EdgeInsets.all( 10),
-          child: Column(
-                  children:  [
-                            Row(
-                              mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                              children: 
-                              const [
-                                  Icon(EvaIcons.home , color: Style.Colors.background,),
-                                  Text("خانه",style :TextStyle(color: Style.Colors.background , fontFamily: "IRANSansWeb")),
-                                  Icon(EvaIcons.messageCircle, color: Style.Colors.background),
-                            ]),
-                             const SizedBox(height: 20,width: 30),
-                             Text('${addCommas(4666300)} ریال', style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), ),
-                             const  Text("موجودی", style: const TextStyle(color: Style.Colors.background , fontSize: 10 )),
-                             const SizedBox(height: 30,width: 15),
-                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children:  [
-                              InkWell(
-                                onTap: (){
-
-                                        EnterAmountBottomSheet.show(context, (result) => null, "");
-                                      
+      child: Scaffold(
+        body: SafeArea(
+          child:Padding(
+            padding: const EdgeInsets.all( 10),
+            child: Column(
+                    children:  [
+                              Row(
+                                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                children: 
+                                const [
+                                    Icon(EvaIcons.home , color: Style.Colors.background,),
+                                    Text("خانه",style :TextStyle(color: Style.Colors.background , fontFamily: "IRANSansWeb")),
+                                    Icon(EvaIcons.messageCircle, color: Style.Colors.background),
+                              ]),
+                               const SizedBox(height: 20,width: 30),
+                               Text('${addCommas(4666300)} ریال', style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), ),
+                               const  Text("موجودی", style: const TextStyle(color: Style.Colors.background , fontSize: 10 )),
+                               const SizedBox(height: 30,width: 15),
+                               Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children:  [
+                                InkWell(
+                                  onTap: (){
+      
+                                          EnterAmountBottomSheet.show(context, (result) => null, "");
+                                        
+                                    
+                                    },
+                                  child:
+                                  const MainPageIcons(
+                                        iconSize:  40, 
+                                        iconColor:Style.Colors.primary,
+                                        icon: CupertinoIcons.add, 
+                                        iconBackgroundColor:Style.Colors.background,
+                                        text:"افزایش موجودی", 
+                                        textSize:10, 
+                                        textColor: Style.Colors.background
+                                      ),
+                                ),
+                                   
+                                  InkWell(
+                                  onTap: (){
+                                          EnterAmountBottomSheet.show(context, (result) => null, "");
                                   
-                                  },
-                                child:
-                                const MainPageIcons(
+                                      
+                                    },
+                                    
+                                  child:const  MainPageIcons(
                                       iconSize:  40, 
                                       iconColor:Style.Colors.primary,
-                                      icon: CupertinoIcons.add, 
+                                      icon: CupertinoIcons.arrow_up, 
                                       iconBackgroundColor:Style.Colors.background,
-                                      text:"افزایش موجودی", 
+                                      text:"ارسال", 
                                       textSize:10, 
                                       textColor: Style.Colors.background
                                     ),
-                              ),
-                                 
-                                InkWell(
-                                onTap: (){
-                                        EnterAmountBottomSheet.show(context, (result) => null, "");
-                                
+                                    ),
+                                  InkWell(
+                                  onTap: (){
+                                        //  Navigator.pushNamed(context, "/");
+                                    },
                                     
-                                  },
-                                  
-                                child:const  MainPageIcons(
-                                    iconSize:  40, 
-                                    iconColor:Style.Colors.primary,
-                                    icon: CupertinoIcons.arrow_up, 
-                                    iconBackgroundColor:Style.Colors.background,
-                                    text:"ارسال", 
-                                    textSize:10, 
-                                    textColor: Style.Colors.background
+                                  child:const   MainPageIcons(
+                                      iconSize:  40, 
+                                      iconColor:Style.Colors.primary,
+                                      icon: CupertinoIcons.money_dollar, 
+                                      iconBackgroundColor:Style.Colors.background,
+                                      text:"دریافت", 
+                                      textSize:10, 
+                                      textColor: Style.Colors.background
+                                    ),
                                   ),
-                                  ),
-                                InkWell(
-                                onTap: (){
-                                      //  Navigator.pushNamed(context, "/");
-                                  },
-                                  
-                                child:const   MainPageIcons(
-                                    iconSize:  40, 
-                                    iconColor:Style.Colors.primary,
-                                    icon: CupertinoIcons.money_dollar, 
-                                    iconBackgroundColor:Style.Colors.background,
-                                    text:"دریافت", 
-                                    textSize:10, 
-                                    textColor: Style.Colors.background
-                                  ),
-                                ),
-                              ],
-                             )
-                      ]
-                )
+                                ],
+                               )
+                        ]
+                  )
+                ),
               ),
-            ),
+      ),
           );
   }
 }

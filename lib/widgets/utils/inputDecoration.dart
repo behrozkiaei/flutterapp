@@ -83,7 +83,7 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
                             LengthLimitingTextInputFormatter(11),
                               ThousandsSeparatorInputFormatter(",") 
                           ]:widget.type == "code" ?[
-                            LengthLimitingTextInputFormatter(11),
+                            LengthLimitingTextInputFormatter(11), // for coding with separator
                               ThousandsSeparatorInputFormatter("-") 
                           ]:widget.type == "nationalCode" ?[
                             LengthLimitingTextInputFormatter(10)

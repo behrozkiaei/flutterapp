@@ -7,7 +7,9 @@ import 'package:paytel/presentations/auth/set-pass.dart';
 import 'package:paytel/presentations/auth/splash.dart';
 import 'package:paytel/presentations/home/home.dart';
 import 'package:paytel/widgets/Auth/biometricWidget.dart';
+import 'package:paytel/widgets/bill/enterBillid.dart';
 import 'package:paytel/widgets/profile/regiserStepper.dart';
+import 'package:paytel/widgets/profile/themConfig.dart';
 import 'package:paytel/widgets/simcard/chooseChargeAmount.dart';
 import 'package:paytel/widgets/simcard/enterPhone.dart';
 import 'package:paytel/widgets/simcard/internetPackages.dart';
@@ -32,10 +34,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         return MaterialPageRoute(builder: (_) => const SetPass());  
       case '/sim-enter-phone':
         return MaterialPageRoute(builder: (_) =>const  EnterPhoneSim()); 
+      case '/bill-enter-id':
+        return MaterialPageRoute(builder: (_) =>const  EnterBillId()); 
       case '/charge-amount':
         return MaterialPageRoute(builder: (_) =>const  ChooseAmountCharge()); 
       case '/internet-packages':
               return MaterialPageRoute(builder: (_) =>const  IntertetPackages());
+      case '/theme':
+          return MaterialPageRoute(builder: (_) =>const  ThemeConfig());
           default:
       return MaterialPageRoute(
           builder: (_) => Scaffold(

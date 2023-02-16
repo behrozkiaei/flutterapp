@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.light,
               primaryColor: Colors.deepPurple[600],
               buttonTheme:ButtonThemeData(buttonColor : Colors.deepPurple[600]) ,
-  
+                    scaffoldBackgroundColor: Colors.white,
                     primarySwatch: Colors.deepPurple,
                     colorScheme:  ColorScheme.light(
                       primary: Colors.deepPurple.shade400,
@@ -39,7 +39,12 @@ class MyApp extends StatelessWidget {
                 bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'IRANSansWeb'),
               ),
             ),
-      initialRoute: '/internet-packages', 
+             darkTheme: ThemeData(
+               brightness: Brightness.dark,
+               /* dark theme settings */
+               primaryColor: Colors.deepPurple[800],
+            ),
+      initialRoute: '/home', 
       debugShowCheckedModeBanner  : false,
       onGenerateRoute: generateRoute,
     );

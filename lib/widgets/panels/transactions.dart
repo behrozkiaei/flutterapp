@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:paytel/style/theme.dart' as Style;
@@ -9,14 +10,27 @@ import 'package:shamsi_date/shamsi_date.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class TransactionsPanel extends StatelessWidget {
-  final ScrollController scrollController;
-  final PanelController panelController;
   const TransactionsPanel({super.key , required this.scrollController , required this.panelController});
+
+  final PanelController panelController;
+  final ScrollController scrollController;
+
+  Widget draggableButton() => GestureDetector(
+          onTap: togglePanel,
+          child : Center(
+                      child:SizedBox(width:30 , height : 5 ,
+                      child:Container(decoration:const BoxDecoration(color:Style.Colors.primary,borderRadius:  BorderRadius.all(Radius.circular(10))) )  ,)
+                      ),
+      ); 
+
+     void togglePanel()=> panelController.isPanelOpen ? panelController.close() : panelController.open();
+
   @override
   Widget build(BuildContext context) {
     
     final double height = MediaQuery.of(context).size.height;
-    return Column(
+    return Scaffold(
+      body: Column(
       children: [
       // const Padding(padding:EdgeInsets.symmetric(horizontal : 20)),
       const  SizedBox(height: 10),
@@ -143,17 +157,10 @@ class TransactionsPanel extends StatelessWidget {
               ],
              ) ,
       )
-    
-    ]);
+    ]
+    )
+    );
   }
-  Widget draggableButton() => GestureDetector(
-          onTap: togglePanel,
-          child : Center(
-                      child:SizedBox(width:30 , height : 5 ,
-                      child:Container(decoration:const BoxDecoration(color:Style.Colors.primary,borderRadius:  BorderRadius.all(Radius.circular(10))) )  ,)
-                      ),
-      ); 
-     void togglePanel()=> panelController.isPanelOpen ? panelController.close() : panelController.open();
 }
 
 

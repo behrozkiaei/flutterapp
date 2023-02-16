@@ -4,14 +4,22 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:paytel/style/theme.dart' as Style;
+import 'package:paytel/widgets/bill/chooseBilBootomSheet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/enums.dart';
 class HomePanelWidget extends StatelessWidget {
   final ScrollController scrollController;
   const HomePanelWidget({super.key , required this.scrollController});
+ void _setMode(String mode) async {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString("type", mode ); 
 
+  }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
+    return Scaffold(
+      body: Column(
         mainAxisAlignment:  MainAxisAlignment.start,
         children:  [
          const SizedBox(height: 20),
@@ -20,6 +28,7 @@ class HomePanelWidget extends StatelessWidget {
             children:  [
               InkWell(
                 onTap: () {
+                          _setMode(Mode.charge .toString());
                           Navigator.pushNamed(context, "/sim-enter-phone");
                 },
                 child: 
@@ -42,6 +51,7 @@ class HomePanelWidget extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
+                          _setMode(Mode.internet .toString());
                           Navigator.pushNamed(context, "/sim-enter-phone");
                 },
                 child:
@@ -61,22 +71,35 @@ class HomePanelWidget extends StatelessWidget {
                         ],) 
                   ),
               ),
+              InkWell(
+              onTap: () {                         
+                 _setMode(Mode.bill.toString());
+                ChooseBillType.show(context,(value){
+                          if(value !=null && value == BillType.mobile.toString()){
+                            Navigator.pushNamed(context, "/sim-enter-phone");
+                          }
+                            if(value !=null && value == BillType.service.toString()){
+                              Navigator.pushNamed(context, "/bill-enter-id");
+                          }
+                });
+              },
+              child:
               Container(
-              width: 80,
-              height: 80,
-              decoration:  BoxDecoration(
-                  // color:Style.Colors.background ,
-                  borderRadius:BorderRadius.circular(10.0) , 
-                  border:  Border.all(color: Style.Colors.primary)
-                ),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                        Image.asset("assets/icons/bill.png",scale: 10,),
-                        const Text("پرداخت قبوض" ,style:Style.TextStyling.primaryTextStyle)
-                    ],) 
+                width: 80,
+                height: 80,
+                decoration:  BoxDecoration(
+                    borderRadius:BorderRadius.circular(10.0) , 
+                    border:  Border.all(color: Style.Colors.primary)
+                  ),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                          Image.asset("assets/icons/bill.png",scale: 10,),
+                          const Text("پرداخت قبوض" ,style:Style.TextStyling.primaryTextStyle)
+                      ],) 
               ),
+              )
             ]
             )
         ]

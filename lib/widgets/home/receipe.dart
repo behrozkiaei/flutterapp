@@ -11,7 +11,7 @@ class Receipt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SafeArea (child: Container(
       child:Padding(padding:const EdgeInsets.all(10),
           child: Column(children: [
               const SizedBox(height: 10,),
@@ -122,6 +122,7 @@ class Receipt extends StatelessWidget {
                 ,
           ]),
         ),
+     )
     );
   }
 }

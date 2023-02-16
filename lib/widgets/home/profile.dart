@@ -180,7 +180,9 @@ class _ProfileState extends State<Profile> {
               height:70,
               width: double.infinity,
               child: 
-              InkWell(child: 
+              InkWell(
+                  onTap: () => {  Navigator.pushNamed(context,"/theme")},
+                child: 
               Row(
                   children: [
                    const SizedBox(

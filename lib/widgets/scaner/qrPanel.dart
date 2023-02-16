@@ -16,50 +16,52 @@ class QrPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    return Column(
-      children: [
-      // const Padding(padding:EdgeInsets.symmetric(horizontal : 20)),
-      const  SizedBox(height: 10),
-      draggableButton(),
-      const  SizedBox(height: 15),
-      const  Text("کد QR برای انتقال به کیف پول شما"),
-      const  SizedBox(height: 10),
-      Center(
-                  child:  PrettyQr(
-                    image:const AssetImage('assets/icons/logo/p-logo-primary-boxed.png'),
-                    typeNumber: 3,
-                    size: 200,
-                    data: '123345665',
-                    errorCorrectLevel: QrErrorCorrectLevel.M,
-                    roundEdges: true,
-                  ),
-        ),
+    return Scaffold(
+      body: Column(
+        children: [
+        // const Padding(padding:EdgeInsets.symmetric(horizontal : 20)),
+        const  SizedBox(height: 10),
+        draggableButton(),
         const  SizedBox(height: 15),
-        const  Text("کد انتقال شما : 12873987587"),
-        InkWell(
-          child: 
-              Container(
-                  margin: const EdgeInsets.all(10),
-                  child:
-                    StyledElevatedButton(
-                        width: 130,
-                        height: 40,
-                        text: "کپی کد انتقال",
-                        icon: Icons.copy,
-                        textSize: 12,
-                        textColor: Style.Colors.white,
-                        onPressed: () async {
-                            await Clipboard.setData(const ClipboardData(text: "your text")).
-                              then((_){ ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content:   Text('کد شما کپی شد !' ),backgroundColor: Style.Colors.success,));
-                            });
-                          },
-                        )
-                )
-             )
-         
-         ]
-        );
+        const  Text("کد QR برای انتقال به کیف پول شما"),
+        const  SizedBox(height: 10),
+        Center(
+                    child:  PrettyQr(
+                      image:const AssetImage('assets/icons/logo/p-logo-primary-boxed.png'),
+                      typeNumber: 3,
+                      size: 200,
+                      data: '123345665',
+                      errorCorrectLevel: QrErrorCorrectLevel.M,
+                      roundEdges: true,
+                    ),
+          ),
+          const  SizedBox(height: 15),
+          const  Text("کد انتقال شما : 12873987587"),
+          InkWell(
+            child: 
+                Container(
+                    margin: const EdgeInsets.all(10),
+                    child:
+                      StyledElevatedButton(
+                          width: 130,
+                          height: 40,
+                          text: "کپی کد انتقال",
+                          icon: Icons.copy,
+                          textSize: 12,
+                          textColor: Style.Colors.white,
+                          onPressed: () async {
+                              await Clipboard.setData(const ClipboardData(text: "your text")).
+                                then((_){ ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content:   Text('کد شما کپی شد !' ),backgroundColor: Style.Colors.success,));
+                              });
+                            },
+                          )
+                  )
+               )
+           
+           ]
+          ),
+    );
     
   }
 

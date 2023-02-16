@@ -38,10 +38,17 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:SafeArea(child: 
-      
-      Container(
-          padding:const  EdgeInsets.all(16.0),
+        appBar: AppBar(
+          // backgroundColor: Style.Colors.white,
+          elevation: 0,
+            leading:  IconButton(
+            icon: const Icon(Icons.arrow_back , color: Style.Colors.primary),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
+      body:SafeArea(
+        child:Container(
+          padding:const  EdgeInsets.only(bottom: 16,right: 16,left: 16),
           child: Column(
             children: <Widget>[
 

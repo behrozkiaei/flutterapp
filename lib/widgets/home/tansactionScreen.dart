@@ -21,7 +21,7 @@ class _TransactionsState extends State<Transactions> {
       body: SlidingUpPanel(
         controller: panelController,
         minHeight:height*0.2 ,
-        maxHeight:height*0.9 ,
+        maxHeight:height*0.7 ,
         parallaxEnabled: true,
         parallaxOffset:1.3,
         borderRadius:const BorderRadius.vertical(top:Radius.circular(10)),
