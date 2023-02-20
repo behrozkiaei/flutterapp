@@ -3,10 +3,11 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:paytel/blocs/auth/me/me.bloc.dart';
+import 'package:paytel/blocs/auth/me/me.state.dart';
 import 'package:paytel/style/theme.dart' as Style;
-import 'package:paytel/widgets/scaner/enterCodeBottomSheet.dart';
 import 'package:paytel/widgets/utils/enterAmountBottomSheet.dart';
 import 'package:paytel/widgets/utils/mainPageIconButton.dart';
 import 'package:persian_tools/persian_tools.dart';
@@ -20,7 +21,9 @@ class SendReceivePage extends StatelessWidget {
       height: 100,
       decoration: const BoxDecoration(color:Style.Colors.primary) ,
       child: Scaffold(
+        backgroundColor: Style.Colors.primary,
         body: SafeArea(
+          
           child:Padding(
             padding: const EdgeInsets.all( 10),
             child: Column(
@@ -34,7 +37,17 @@ class SendReceivePage extends StatelessWidget {
                                     Icon(EvaIcons.messageCircle, color: Style.Colors.background),
                               ]),
                                const SizedBox(height: 20,width: 30),
-                               Text('${addCommas(4666300)} ریال', style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), ),
+                              BlocBuilder<MeBloc, MeState>(
+                                builder: (context, state) {
+                               if(state is MeSuccess){
+                                return Text('${addCommas(state.me!.wallet!.amount.toString())} ریال', style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), ); 
+                               }else{
+                                 return const SpinKitThreeBounce(
+                                             color: Style.Colors.primary,
+                                              size: 12.0,
+                                          ); 
+                               }
+                               }),
                                const  Text("موجودی", style: const TextStyle(color: Style.Colors.background , fontSize: 10 )),
                                const SizedBox(height: 30,width: 15),
                                Row(
@@ -42,11 +55,8 @@ class SendReceivePage extends StatelessWidget {
                                 children:  [
                                 InkWell(
                                   onTap: (){
-      
-                                          EnterAmountBottomSheet.show(context, (result) => null, "");
-                                        
-                                    
-                                    },
+                                          EnterAmountBottomSheet.show(context);
+                                  },
                                   child:
                                   const MainPageIcons(
                                         iconSize:  40, 
@@ -60,13 +70,12 @@ class SendReceivePage extends StatelessWidget {
                                 ),
                                    
                                   InkWell(
-                                  onTap: (){
-                                          EnterAmountBottomSheet.show(context, (result) => null, "");
-                                  
-                                      
-                                    },
+                                    highlightColor: Style.Colors.accent,
+                                    onTap: (){
+                                            EnterAmountBottomSheet.show(context);
+                                      },
                                     
-                                  child:const  MainPageIcons(
+                                    child:const  MainPageIcons(
                                       iconSize:  40, 
                                       iconColor:Style.Colors.primary,
                                       icon: CupertinoIcons.arrow_up, 
@@ -80,7 +89,6 @@ class SendReceivePage extends StatelessWidget {
                                   onTap: (){
                                         //  Navigator.pushNamed(context, "/");
                                     },
-                                    
                                   child:const   MainPageIcons(
                                       iconSize:  40, 
                                       iconColor:Style.Colors.primary,

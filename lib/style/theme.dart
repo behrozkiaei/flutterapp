@@ -21,7 +21,7 @@ class Colors {
   static const Color accentDark = Color.fromARGB(255, 84, 0, 252);
   static const Color background = Color.fromARGB(255, 255, 255, 255);
 
-  static const Color  fail= Color.fromARGB(255, 180, 11, 11);
+  static const Color fail= Color.fromARGB(255, 244, 33, 33);
   static const Color success  = Color.fromARGB(255, 10, 147, 42);
   static const Color white  = Color.fromARGB(255, 255, 255, 255);
 }

@@ -1,14 +1,24 @@
 import 'dart:developer';
 import 'dart:io' show Platform;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
-import 'package:paytel/widgets/utils/enterAmountBottomSheet.dart';
-import 'package:paytel/widgets/utils/inputDecoration.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paytel/blocs/auth/me/me.bloc.dart';
+import 'package:paytel/blocs/auth/me/me.event.dart';
+import 'package:paytel/blocs/transaction/get-user-info-by-code/get-user-by-code.bloc.dart';
+import 'package:paytel/blocs/transaction/get-user-info-by-code/get-user-by-code.event.dart';
+import 'package:paytel/blocs/transaction/get-user-info-by-code/get-user-by-code.state.dart';
+import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
+import 'package:paytel/blocs/transaction/my-transaction/my-transactions.event.dart';
+import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.bloc.dart';
+import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.event.dart';
+import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.state.dart';
 import 'package:paytel/style/theme.dart' as Style;
-import '../utils/elevateButton.style.dart';
+import 'package:paytel/widgets/utils/enterAmountBottomSheet.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+
 import "./enterCodeBottomSheet.dart" ;
+import '../utils/elevateButton.style.dart';
 class ScannerPage extends StatefulWidget {
   const ScannerPage({super.key});
 
@@ -18,20 +28,19 @@ class ScannerPage extends StatefulWidget {
 
 class _ScannerPageState extends State<ScannerPage> {
   QRViewController? controller;
+  bool isLoading=false;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   String? selectedString;
-
+  String? walletCode;
   @override
   void dispose() {
-    print("disposeeeeeed");
     controller?.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller?.resumeCamera();
   }
@@ -90,7 +99,55 @@ class _ScannerPageState extends State<ScannerPage> {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return   
+    MultiBlocListener(
+      listeners: [
+      BlocListener<UserByCodeBloc, UserByCodeState>(
+            listener: (context, state) {
+              if (state is UserByCodeFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("کد کاربر یافت نشد",style :TextStyle(color: Style.Colors.gray2)),
+                    backgroundColor: Style.Colors.fail,
+
+                  ),
+                );
+                  setState(() {
+                    isLoading =false;
+                  });
+              }
+              if(state is UserByCodeSuccess){
+                 setState(() {
+                    isLoading =false;
+                  });
+                  EnterAmountBottomSheet.show(context);
+              }
+               if(state is UserByCodeLoading){
+                  setState(() {
+                    isLoading =true;
+                  });
+              }
+        }
+      ),
+      BlocListener<Wallet2WalletBloc, Wallet2WalletState>(
+            listener: (context, state) {
+              if (state is Wallet2WalletFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("مشکل در انتقال رخ داده است",style :TextStyle(color: Style.Colors.gray2)),
+                    backgroundColor: Style.Colors.fail,
+
+                  ),
+                );
+              }
+              if(state is Wallet2WalletSuccess){
+                  BlocProvider.of<MeBloc>(context).add(StartFetchMe());
+                  BlocProvider.of<MyTransactionsBloc>(context).add(const MyTransactionsButtonPressed(page:0));
+              }
+        }
+      ),
+    ],
+      child: Scaffold(
       resizeToAvoidBottomInset: true,
       body: Stack(
         children: <Widget>[
@@ -126,19 +183,31 @@ class _ScannerPageState extends State<ScannerPage> {
                                 child:
                               StyledElevatedButton(
                                 width: 130,
+                                isLoading: isLoading,
                                 height: 40,
                                 text: "پرداخت با کد",
                                 icon: Icons.keyboard,
                                 textSize: 10,
                                 textColor: Style.Colors.white,
                                 onPressed: () async {
-                                    await controller?.pauseCamera();
-                                    // ignore: use_build_context_synchronously
-                                    ScannerBottomSheets.show(context,(value){
-                                      if(value !=null ){
-                                        EnterAmountBottomSheet.show(context, (result) => null, value);
+                                    await controller?.stopCamera();
+                                   // ignore: use_build_context_synchronously
+                                   final value =  await ScannerBottomSheets.show(context);
+                                   print(3);
+                                   print(value);
+                                    if (value != null) {
+                                      print(2);
+                                      if(value.length == 8 ){
+                                        final String code = value.replaceAll("-", "");
+                                        setState(() {
+                                          walletCode =code;
+                                        });
+                                        // ignore: use_build_context_synchronously
+                                        BlocProvider.of<UserByCodeBloc>(context).add(UserByCodeButtonPressed(code: walletCode!));
                                       }
-                                    });
+                                    } else {
+                                    }
+                                  
                                   },
                                 )
                       )
@@ -150,6 +219,7 @@ class _ScannerPageState extends State<ScannerPage> {
             ),
           )
         ],
+      ),
       ),
     );
   }

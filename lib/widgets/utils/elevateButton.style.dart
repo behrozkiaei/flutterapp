@@ -35,7 +35,9 @@ class StyledElevatedButton extends StatelessWidget {
     return ElevatedButton(
       
       onPressed: ()=>{
-        onPressed!()
+        if(!disabled){
+          onPressed!()
+        }
       },
       style: buttonStyle ?? ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(

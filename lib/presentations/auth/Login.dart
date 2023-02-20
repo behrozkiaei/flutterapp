@@ -2,10 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:paytel/blocs/auth/me/me.bloc.dart';
+import 'package:paytel/blocs/auth/me/me.event.dart';
+import 'package:paytel/blocs/auth/me/me.state.dart';
+import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
+import 'package:paytel/blocs/transaction/my-transaction/my-transactions.event.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class AppLogin extends StatefulWidget {
   const AppLogin({super.key});
 
@@ -19,9 +26,13 @@ class _AppLoginState extends State<AppLogin> {
   String _inputText = '';
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
+  void _submitForm() async{
+    if (_formKey.currentState!.validate())  {
       _formKey.currentState!.save();
+      final prefs = await SharedPreferences.getInstance();
+      if(prefs.getString("pass") == _inputText ){
+        gotoMainPage();
+      }
     }
   }
  void _openFingerPrint(){
@@ -45,7 +56,6 @@ class _AppLoginState extends State<AppLogin> {
         _isAuthenticating = false;
       });
     } on PlatformException catch (e) {
-      print(e);
       setState(() {
         _isAuthenticating = false;
         _authorized = 'Error - ${e.message}';
@@ -57,13 +67,31 @@ class _AppLoginState extends State<AppLogin> {
     }
 
     if(authenticated){
-        Navigator.pushNamed(context, "/home");
-
+      gotoMainPage();
     }
   }
+    void gotoMainPage(){
+      BlocProvider.of<MeBloc>(context).add(StartFetchMe());
+   
+    }
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return BlocListener<MeBloc, MeState>(
+          listener: (context, state) {
+          if (state is MeFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("مشکل در دریافت اطلاعات رخ داده است",style :TextStyle(color: Style.Colors.gray2)),
+                  backgroundColor: Style.Colors.fail,
+
+                ),
+              );
+            }
+            if(state is MeSuccess){
+              Navigator.pushNamed(context, "/home");
+            }
+      },
+      child: Scaffold(
             body: Container(
               height: double.infinity,
               child: 
@@ -105,18 +133,27 @@ class _AppLoginState extends State<AppLogin> {
                           }
                         ),
                         const SizedBox(height: 10),
-                       StyledElevatedButton(
-                            width:double.maxFinite ,
-                            icon : Icons.check_box  ,
-                            text : _inputText.isNotEmpty ? "ورود با رمز عبور" :"ورود با اثر انگشت" ,
-                            textColor: Style.Colors.white,
-                            onPressed: _inputText.isNotEmpty ? _submitForm : _openFingerPrint  
-                        )
+                        BlocBuilder<MeBloc, MeState>(
+                            builder: (context, state) {
+                            return
+                            StyledElevatedButton(
+                                  isLoading: state is MeLoading? true :false,
+                                  disabled: state is MeLoading? true :false,
+                                  width:double.maxFinite ,
+                                  icon : Icons.check_box  ,
+                                  text : _inputText.isNotEmpty ? "ورود با رمز عبور" :"ورود با اثر انگشت" ,
+                                  textColor: Style.Colors.white,
+                                  onPressed: _inputText.isNotEmpty ? _submitForm : _openFingerPrint  
+                              );
+                        }),
                       ],
                     )
                   )
                 )
-            ,) 
+            ,),
+      ), 
           );
   }
+
+  
 }

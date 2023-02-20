@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import 'package:paytel/style/theme.dart' as Style;
 class MainPageIcons extends StatelessWidget {
   final double  iconSize  ;
   final IconData  icon ;
@@ -25,11 +27,15 @@ class MainPageIcons extends StatelessWidget {
     return  Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
+                                    InkWell(
+                                    onTap :(){},
+                                    highlightColor:Style.Colors.gray1,
+                                    child :Container(
                                       width: iconSize,
                                       height: iconSize,
                                       decoration:  BoxDecoration(shape: BoxShape.circle , color: iconBackgroundColor),
                                       child:  Icon(icon,color: iconColor , size:iconSize ,),
+                                    ),
                                     ),
                                     const SizedBox( height:10),
                                      Text(text ,style: TextStyle(color: textColor ,fontSize: textSize, fontFamily: "IRANSansWeb"))

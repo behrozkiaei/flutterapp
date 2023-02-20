@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paytel/blocs/transaction/get-user-info-by-code/get-user-by-code.bloc.dart';
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
 import 'package:paytel/style/theme.dart' as Style;
 
 class ScannerBottomSheets {
-  static void show(BuildContext context,Function(String result) callback) {
+  static  dynamic show(BuildContext context) async {
    String? Code;
-    showModalBottomSheet(
+  return await showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) {
-        return Container(
+      isDismissible: true,
+      builder: (_) {
+        return BlocProvider.value(
+         value: BlocProvider.of<UserByCodeBloc>(context),
+         child:  Container(
           height: 600,
           decoration:const  BoxDecoration(
             color: Colors.white,
@@ -31,12 +36,6 @@ class ScannerBottomSheets {
                 icon: Icons.keyboard_backspace_outlined,
                 label: "کد کاربر",
                 onSave : (value){},
-                validate: (value){
-                  if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
-                              return 'شماراه وارد شده صحیح نیست';
-                            }
-                            return null;
-                },
                 initialValue: "",
                 autofocus: true,
                 onChange: (value){
@@ -68,9 +67,14 @@ class ScannerBottomSheets {
                        )
                   ],
             ),
-          )
+          ),
+          ),
         );
       },
-    ).then((value) => callback(value));
+    );
+    // then((value) {
+    //   print(1);
+    //   callback(value ? value: "-");
+    // });
   }
 }

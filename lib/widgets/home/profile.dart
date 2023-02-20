@@ -4,18 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:paytel/blocs/user/update-avtar/update-avatar.bloc.dart';
+import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/widgets/profile/regiserStepper.dart';
 import 'package:paytel/style/theme.dart' as Style;
 class Profile extends StatefulWidget {
-  const Profile({super.key});
-  
+  Profile({super.key});
+
   @override
   State<Profile> createState() => _ProfileState();
 }
 class _ProfileState extends State<Profile> {
   File? file;
+  final userRepository = UserRepository();
   final ImagePicker _picker = ImagePicker();
 
   Future<void> pickImage() async{
@@ -46,8 +50,13 @@ class _ProfileState extends State<Profile> {
   }
   @override
   Widget build(BuildContext context) {
-    return 
-    SafeArea(child: Container(
+    return MultiBlocProvider(
+      providers: [
+          BlocProvider<UpdateAvatar>(create: (BuildContext context) => UpdateAvatar(userRepository: userRepository),),
+     ], 
+      child: Scaffold(
+      
+      body: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -215,6 +224,7 @@ class _ProfileState extends State<Profile> {
               
          ],
         ),
+      )
       )
     );
   }

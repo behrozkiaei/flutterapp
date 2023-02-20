@@ -67,6 +67,11 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
                                 return 'شماره وارد شده صحیح نیست';
                               }
                             }
+                            if(widget.type == "money"){
+                              if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
+                                return 'مبلغ وارد شده صحیح نیست';
+                              }
+                            }
                           },
                           onChanged:(value) {
                              widget.onChange(value);
@@ -83,8 +88,8 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
                             LengthLimitingTextInputFormatter(11),
                               ThousandsSeparatorInputFormatter(",") 
                           ]:widget.type == "code" ?[
-                            LengthLimitingTextInputFormatter(11), // for coding with separator
-                              ThousandsSeparatorInputFormatter("-") 
+                              ThousandsSeparatorInputFormatter("-") ,
+                              LengthLimitingTextInputFormatter(8)// for coding with separator
                           ]:widget.type == "nationalCode" ?[
                             LengthLimitingTextInputFormatter(10)
                           ]:widget.type == "card" ?[

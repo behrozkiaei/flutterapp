@@ -1,7 +1,13 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:paytel/blocs/user/update-bank-data/update-user.bloc.dart';
+import 'package:paytel/blocs/user/update-identity-image/update-identity.bloc.dart';
+import 'package:paytel/blocs/user/update-national-card/update-avatar.bloc.dart';
+import 'package:paytel/blocs/user/update-user/update-user.bloc.dart';
+import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
 
@@ -18,11 +24,20 @@ class _RegisterStepperState extends State<RegisterStepper> {
   File? shenasname;
   File? cartmelli;
   final ImagePicker _picker = ImagePicker();
+  final userRepository = UserRepository();
+
   //  final StepperController _controller = StepperController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  MultiBlocProvider(
+      providers: [
+          BlocProvider<UpdateNationalCard>(create: (BuildContext context) => UpdateNationalCard(userRepository: userRepository),),
+          BlocProvider<UpdateBankr>(create: (BuildContext context) => UpdateBankr(userRepository: userRepository),),
+          BlocProvider<UpdateUser>(create: (BuildContext context) => UpdateUser(userRepository: userRepository),),
+          BlocProvider<UpdateIdentityImage>(create: (BuildContext context) => UpdateIdentityImage(userRepository: userRepository),),
+     ], 
+      child:Scaffold(
 
       body: SafeArea(child: 
       
@@ -234,6 +249,7 @@ class _RegisterStepperState extends State<RegisterStepper> {
             ),
       
     ),
+      )
       )
     );
     

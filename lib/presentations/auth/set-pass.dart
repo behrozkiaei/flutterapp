@@ -3,6 +3,7 @@ import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SetPass extends StatefulWidget {
   const SetPass({super.key});
@@ -14,14 +15,28 @@ class SetPass extends StatefulWidget {
 class _SetPassState extends State<SetPass> {
 
     final _formKey = GlobalKey<FormState>();
-String pass = '';
-String repass = '';
+    String pass = '';
+    String repass = '';
 
-  void _submitForm() {
+     void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      if(pass == repass && pass.length> 5){
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString(pass, pass);
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacementNamed(context, "/app-login");
+      }
+      if(pass != repass ){
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("رمز با یکدیگر یکسان نیست",style :TextStyle(color: Style.Colors.gray2)),
+                  backgroundColor: Style.Colors.fail,
 
+                )
+          );
+      }
     }
   }
 
@@ -57,7 +72,6 @@ String repass = '';
                               setState(() {
                                 pass= value;
                               });
-
                             }
                           },
                           onSave: (value){},
@@ -74,7 +88,11 @@ String repass = '';
                           textInputType : TextInputType.text,
                           icon:  Icons.security,
                           onChange: (value){
-                            
+                            if(value!= null){
+                              setState(() {
+                                repass= value;
+                              });
+                            }
                           },
                           onSave: (value){
                           if(value!= null){
@@ -95,6 +113,7 @@ String repass = '';
                         ),
                         const SizedBox(height: 10),
                        StyledElevatedButton(
+                            disabled: (pass.length <6 || pass !=repass) ? true :false,
                             width:double.maxFinite ,
                             icon : Icons.check_box ,
                             text :"تایید",

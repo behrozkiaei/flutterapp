@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
+import 'package:paytel/blocs/transaction/my-transaction/my-transactions.event.dart';
 import 'package:paytel/widgets/panels/transactions.dart';
 import 'package:paytel/widgets/home/receipe.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -12,8 +15,16 @@ class Transactions extends StatefulWidget {
   State<Transactions> createState() => _TransactionsState();
 }
 
+
 class _TransactionsState extends State<Transactions> {
   final panelController =  PanelController();
+
+   @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<MyTransactionsBloc>(context).add(const MyTransactionsButtonPressed( page: 0));
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
