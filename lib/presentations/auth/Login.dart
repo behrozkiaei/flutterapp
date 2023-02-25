@@ -30,7 +30,9 @@ class _AppLoginState extends State<AppLogin> {
     if (_formKey.currentState!.validate())  {
       _formKey.currentState!.save();
       final prefs = await SharedPreferences.getInstance();
+      print(prefs.getString("pass"));
       if(prefs.getString("pass") == _inputText ){
+
         gotoMainPage();
       }
     }

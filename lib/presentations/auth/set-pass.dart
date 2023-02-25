@@ -23,12 +23,16 @@ class _SetPassState extends State<SetPass> {
       _formKey.currentState!.save();
       if(pass == repass && pass.length> 5){
           final prefs = await SharedPreferences.getInstance();
-          prefs.setString(pass, pass);
-          // ignore: use_build_context_synchronously
+          prefs.setString("pass", pass);
+            if (!mounted) {
+            return;
+             }
           Navigator.pushReplacementNamed(context, "/app-login");
       }
       if(pass != repass ){
-          // ignore: use_build_context_synchronously
+            if (!mounted) {
+            return;
+             }
           ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("رمز با یکدیگر یکسان نیست",style :TextStyle(color: Style.Colors.gray2)),

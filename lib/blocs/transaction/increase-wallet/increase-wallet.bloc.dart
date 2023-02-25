@@ -20,6 +20,8 @@ class IncreaseWalletBloc extends Bloc<IncreaseWalletEvent, IncreaseWalletState> 
               emit(IncreaseWalletFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {
+          print(e.toString());
+          print(55);
           emit(IncreaseWalletFailure( error: e.toString()));
         }
       });

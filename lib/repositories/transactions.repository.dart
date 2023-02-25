@@ -48,8 +48,6 @@ static BaseOptions options = BaseOptions(
   Future<Response> wallet2WalletTransfer(
     String amount , String walletCode ) async {
        final token = await getToken();
-       print(8);
-       print(token);
       _dio.options.headers["Authorization"] = "Bearer $token";
       Response response = await _dio.post('/wallet/user-transfer', data:{ 
         "amount" :amount,
@@ -61,11 +59,55 @@ static BaseOptions options = BaseOptions(
 
    Future<Response> getMyTransactions( int page ) async {
       var from = page * 10 ;
-            final prefs = await SharedPreferences.getInstance();
+      final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
       _dio.options.headers["Authorization"] = "Bearer $token";
       Response response = await _dio.get('/transaction/get-all-orders/?from=$from&take=10');
       return response;
   }
-
+  Future<Response> getInternetPackages(  ) async {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      _dio.options.headers["Authorization"] = "Bearer $token";
+      Response response = await _dio.get('/Services/getInternetPackages');
+      return response;
+  }
+  Future<Response> buyInternet( {
+    required String productId ,
+    required String mobile ,
+    required String simType ,
+    required bool fromWallet ,
+    required String internetPayloadOperator ,
+   }) async {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      _dio.options.headers["Authorization"] = "Bearer $token";
+      Response response = await _dio.post('/transaction/buyInternet',data:{
+        "product_id": productId,
+        "mobile": mobile,
+        "sim_type":  simType,
+        "fromWallet":  fromWallet ,
+        "operator": internetPayloadOperator,
+      });
+      return response;
+  }
+   Future<Response> buyCharge( {
+    required bool fromWallet ,
+    required String chargePayloadOperator ,
+    required String amount ,
+    required String mobile ,
+    required String chargeType,
+   } ) async {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      _dio.options.headers["Authorization"] = "Bearer $token";
+      Response response = await _dio.post('/transaction/buyCharge',data: {
+      "fromWallet":fromWallet ,
+      "operator":chargePayloadOperator  ,
+      "amount":amount ,
+      "mobile":mobile  ,
+      "chargeType": chargeType ,
+      });
+      return response;
+  }
 }

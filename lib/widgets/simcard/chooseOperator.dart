@@ -32,8 +32,8 @@ class ChooseOperatorBottomSheet {
 
             InkWell(
               onTap: (){
-                _registerOperator("hamrah");
-                Navigator.pop(context, "hamrah");
+                _registerOperator("MCI");
+                Navigator.pop(context, "MCI");
               },
               child :
               Row(
@@ -46,7 +46,7 @@ class ChooseOperatorBottomSheet {
                                 backgroundColor: Style.Colors.primary,
                                 foregroundColor: Style.Colors.primary, 
                                 radius: 50.0,
-                                backgroundImage:  AssetImage('assets/icons/hamrah.png'),
+                                backgroundImage:  AssetImage('assets/icons/MCI.png'),
                                 ),
                         ), SizedBox(width: 10),
                         Text("همراه اول"),
@@ -56,8 +56,8 @@ class ChooseOperatorBottomSheet {
 
               InkWell(
               onTap: (){
-                _registerOperator("irancel");
-                Navigator.pop(context, "irancel");
+                _registerOperator("MTN");
+                Navigator.pop(context, "MTN");
               },
               child :
               Row(
@@ -70,7 +70,7 @@ class ChooseOperatorBottomSheet {
                                 backgroundColor: Style.Colors.primary,
                                 foregroundColor: Style.Colors.primary, 
                                 radius: 50.0,
-                                backgroundImage:  AssetImage('assets/icons/irancel.png'),
+                                backgroundImage:  AssetImage('assets/icons/MTN.png'),
                                 ),
                         ),SizedBox(width: 10),
                         Text("ایرانسل"),
@@ -81,8 +81,8 @@ class ChooseOperatorBottomSheet {
             const SizedBox(height: 10),
               InkWell(
               onTap: (){
-                _registerOperator("rightel");
-                Navigator.pop(context, "rightel");
+                _registerOperator("RTL");
+                Navigator.pop(context, "RTL");
               },
               child :
               Row(
@@ -95,7 +95,7 @@ class ChooseOperatorBottomSheet {
                                 backgroundColor: Style.Colors.primary,
                                 foregroundColor: Style.Colors.primary, 
                                 radius: 50.0,
-                                backgroundImage:  AssetImage('assets/icons/rightel.png'),
+                                backgroundImage:  AssetImage('assets/icons/RTL.png'),
                                 ),
                         ),SizedBox(width: 10), 
                         Text("رایتل"),

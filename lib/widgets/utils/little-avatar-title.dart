@@ -26,29 +26,18 @@ class AvatarTitle extends StatelessWidget {
                         ),
                       ),
                         child:
+                        avatar != null ? 
                         CircleAvatar(
                             radius: 50.0,
-                            backgroundImage:NetworkImage('$baseUrl/$avatar'),
- 
-                  // ),
-                      //   CachedNetworkImage(
-                      //       imageUrl: '$baseUrl$avatar',
-                      //       imageBuilder: (context, imageProvider) => Container(
-                      //       width: 80.0,
-                      //         height: 80.0,
-                      //         decoration: BoxDecoration(
-                      //           shape: BoxShape.circle,
-                      //           image: DecorationImage(
-                      //             image: imageProvider, fit: BoxFit.cover),
-                      //         ),
-                      //       ),
-                      //        progressIndicatorBuilder: (context, url, downloadProgress) => 
-                      //         CircularProgressIndicator(value: downloadProgress.progress,color: Style.Colors.gray2,strokeWidth :1.0),
-                      //       errorWidget: (context, url, error) =>const Icon(Icons.error),
-                      // ),
+                            backgroundImage:NetworkImage('$baseUrl/$avatar')) : 
+                            const  CircleAvatar(
+                    backgroundColor: Style.Colors.primary,
+                    foregroundColor: Style.Colors.primary,
+                    radius: 50.0,
+                    backgroundImage:  AssetImage('assets/icons/user.png')   
                     ),
-            ),
-                     Text(title)
+                   ),
+                    Text(title ?? "نامشخص")
                 ],
         
     );

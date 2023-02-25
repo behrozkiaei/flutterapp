@@ -1,3 +1,3 @@
 enum Mode {charge, internet , bill}
 enum BillType {mobile,service}
-enum Operator {hamrah,irancel,rightel}
+enum Operator {MCI,MTN,RTL}

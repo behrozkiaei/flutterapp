@@ -99,6 +99,9 @@ class _EnterPhoneState extends State<EnterPhone> {
                                 label: "شماره تلفن",
                                 icon:  CupertinoIcons.phone,
                                 onChange: (value){
+                                  if(value != null){
+                                   _phoneNumber = convertArToEn(value!) ; 
+                                  }
                                 },
                                 onSave: (value){
                                   (value) { 

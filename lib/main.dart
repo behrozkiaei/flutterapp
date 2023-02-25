@@ -12,15 +12,12 @@ import 'package:skeletons/skeletons.dart';
 
 void main()   {
   WidgetsFlutterBinding.ensureInitialized();
-
-
   runApp(  MyApp(),
     );
 }
-
 class MyApp extends StatelessWidget {
-   MyApp({super.key});
-    final userRepository = UserRepository();
+  MyApp({super.key});
+  final userRepository = UserRepository();
   final transactionRepo = TransactionRepo();
   @override
   Widget build(BuildContext context) {

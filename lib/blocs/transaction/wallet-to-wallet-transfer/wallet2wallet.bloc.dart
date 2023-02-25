@@ -9,8 +9,6 @@ class Wallet2WalletBloc extends Bloc<Wallet2WalletEvent, Wallet2WalletState> {
   Wallet2WalletBloc({required this.transactionRepository}) : super(Wallet2WalletInitial()){
       on<Wallet2WalletButtonPressed>((event, emit) async {
         emit(Wallet2WalletLoading());
-        print(event.walletCode);
-        print(event.amount);
         try {
           print(7);
           final  response = await transactionRepository.wallet2WalletTransfer(

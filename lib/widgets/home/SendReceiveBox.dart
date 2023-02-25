@@ -8,9 +8,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.state.dart';
 import 'package:paytel/style/theme.dart' as Style;
-import 'package:paytel/widgets/utils/enterAmountBottomSheet.dart';
+import 'package:paytel/widgets/utils/increaseAmountBottomSheet.dart';
 import 'package:paytel/widgets/utils/mainPageIconButton.dart';
 import 'package:persian_tools/persian_tools.dart';
+import 'package:url_launcher/url_launcher.dart';
 class SendReceivePage extends StatelessWidget {
   const SendReceivePage({super.key});
 
@@ -40,7 +41,7 @@ class SendReceivePage extends StatelessWidget {
                               BlocBuilder<MeBloc, MeState>(
                                 builder: (context, state) {
                                if(state is MeSuccess){
-                                return Text('${addCommas(state.me!.wallet!.amount.toString())} ریال', style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), ); 
+                                return Text('${addCommas(state.me!.wallet!.amount.toString())  } ریال', style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), ); 
                                }else{
                                  return const SpinKitThreeBounce(
                                              color: Style.Colors.primary,
@@ -54,8 +55,17 @@ class SendReceivePage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children:  [
                                 InkWell(
-                                  onTap: (){
-                                          EnterAmountBottomSheet.show(context);
+                                  onTap: () async{
+                                   final value = await IncreaseAmountBottomSheet.show(context);
+                                    if (value != null) {
+                                      print(value);
+                                      try{
+                                          await launchUrl(Uri.parse(value),mode: LaunchMode.externalApplication);
+                                      }catch(e){
+                                          throw Exception('Could not launch');
+                                      }
+                                    } else {
+                                    }
                                   },
                                   child:
                                   const MainPageIcons(
@@ -71,8 +81,7 @@ class SendReceivePage extends StatelessWidget {
                                    
                                   InkWell(
                                     highlightColor: Style.Colors.accent,
-                                    onTap: (){
-                                            EnterAmountBottomSheet.show(context);
+                                    onTap: () async {
                                       },
                                     
                                     child:const  MainPageIcons(

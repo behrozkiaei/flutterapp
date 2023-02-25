@@ -11,10 +11,9 @@ import 'package:paytel/blocs/transaction/get-user-info-by-code/get-user-by-code.
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.event.dart';
 import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.bloc.dart';
-import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.event.dart';
 import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.state.dart';
 import 'package:paytel/style/theme.dart' as Style;
-import 'package:paytel/widgets/utils/enterAmountBottomSheet.dart';
+import 'package:paytel/widgets/scaner/enterAmountBottomSheet.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import "./enterCodeBottomSheet.dart" ;
@@ -191,18 +190,19 @@ class _ScannerPageState extends State<ScannerPage> {
                                 textColor: Style.Colors.white,
                                 onPressed: () async {
                                     await controller?.stopCamera();
-                                   // ignore: use_build_context_synchronously
+                                    if (!mounted) {
+                                    return;
+                                    }
                                    final value =  await ScannerBottomSheets.show(context);
-                                   print(3);
-                                   print(value);
                                     if (value != null) {
-                                      print(2);
                                       if(value.length == 8 ){
                                         final String code = value.replaceAll("-", "");
                                         setState(() {
                                           walletCode =code;
                                         });
-                                        // ignore: use_build_context_synchronously
+                                        if (!mounted) {
+                                        return;
+                                        }
                                         BlocProvider.of<UserByCodeBloc>(context).add(UserByCodeButtonPressed(code: walletCode!));
                                       }
                                     } else {

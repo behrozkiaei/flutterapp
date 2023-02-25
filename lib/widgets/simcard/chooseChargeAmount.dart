@@ -59,9 +59,9 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
                     foregroundColor: Style.Colors.primary,
                     
                     radius: 50.0,
-                    backgroundImage: operator == "irancel" ?const  AssetImage('assets/icons/irancel.png') : 
-                                     operator == "hamrah" ?  const  AssetImage('assets/icons/hamrah.png') :
-                                     operator == "rightel" ?const  AssetImage('assets/icons/hamrah.png'): 
+                    backgroundImage: operator == "MTN" ?const  AssetImage('assets/icons/MTN.png') : 
+                                     operator == "MCI" ?  const  AssetImage('assets/icons/MCI.png') :
+                                     operator == "RTL" ?const  AssetImage('assets/icons/MCI.png'): 
                                      const AssetImage('assets/icons/user.png')   ,
                     ),
                 
@@ -75,13 +75,7 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
             
               Row(
                 children: <Widget>[
-                  Expanded(
-                    child: ElevatedButton(
-                      style: StyledElevatedButton.buttonTinyStyle(isSelected == 0),
-                      child: AddComma(value: "1000", textStyle: ButtonStyleCustom.textStyle(isSelected == 0)),
-                      onPressed: () { _changeState(0);},
-                    ),
-                  ),
+
                   const SizedBox(width: 8.0),
                   Expanded(
                     child: ElevatedButton(

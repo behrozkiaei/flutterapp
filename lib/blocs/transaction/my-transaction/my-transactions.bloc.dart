@@ -11,22 +11,23 @@ class MyTransactionsBloc extends Bloc<MyTransactionsEvent, MyTransactionsState> 
   MyTransactionsBloc({required this.transactionRepository}) : super(MyTransactionsInitial()){
        on<MyTransactionsButtonPressed>((event, emit) async {
         final currentState = state;
+        
         emit(MyTransactionsLoading());
+         
         try {
           final  response = await transactionRepository.getMyTransactions(
             event.page
             );
-            if(response.data['result']["data"] != false ){
 
-              final List<Map<String, dynamic>> jsonList = List<Map<String, dynamic>>.from(jsonDecode(response.data['result']["data"]));
-              final List<MyTransactions> transactionList = jsonList.map((json) {
-                final List<Map<String, dynamic>> descJson = List<Map<String, dynamic>>.from(json['desc']);
-                final List<Desc> descList = descJson.map((descJson) => Desc.fromJson(descJson)).toList();
-                return MyTransactions.fromJson(json).copyWith(descList as Map<dynamic, List<Desc>>);
-              }).toList();
+            if(response.data['status'] == true ){
+     
+               List<MyTransactions> transactionList = List.from(response.data['result']['data']).map((json) => MyTransactions.fromJson(json)).toList();
               if(currentState is MyTransactionsSuccess && event.page !=0){
+              //   print(1);
                 List<MyTransactions> listOfAll = List.from([...currentState.myTransactions, ...transactionList]);
-                emit(MyTransactionsSuccess(listOfAll));
+                if(listOfAll.length  != response.data['result']['length']){
+                  emit(MyTransactionsSuccess(listOfAll));
+                }
               }else{
                 emit(MyTransactionsSuccess(transactionList));
               }

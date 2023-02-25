@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:paytel/blocs/auth/me/me.bloc.dart';
+import 'package:paytel/blocs/auth/me/me.event.dart';
+import 'package:paytel/blocs/auth/me/me.state.dart';
 
 import 'package:paytel/style/theme.dart' as Style;
+import 'package:shared_preferences/shared_preferences.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -18,12 +23,54 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   Future _getThingsOnStartup() async {
     await Future.delayed(const  Duration(seconds: 2));
-    // ignore: use_build_context_synchronously
-    Navigator.pushReplacementNamed(context, "/intro");
+     final prefs = await SharedPreferences.getInstance();
+     final String? token = prefs.getString("token");
+  print(token);
+    if(token != null){
+      print("home");
+        if (!mounted) {
+            return;
+             }
+      BlocProvider.of<MeBloc>(context).add( StartFetchMe());
+    }else{
+        if (!mounted) {
+            return;
+             }
+      Navigator.pushReplacementNamed(context, "/intro");
+
+    }
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return   MultiBlocListener(
+      listeners: [
+      BlocListener<MeBloc,MeState >(
+            listener: (context, state) async {
+              
+              if(state is MeSuccess){
+                print(2);
+                      Navigator.pushReplacementNamed(context, "/home");
+              }
+              if(state is MeFailure){
+                print(2);
+                  final prefs = await SharedPreferences.getInstance();
+                  final String? mobile = prefs.getString("mobile");
+                if(mobile != null){
+                  if (!mounted) {
+                    return;
+                  }                  
+                  Navigator.pushReplacementNamed(context, "/intro");
+                }else{
+                    if (!mounted) {
+            return;
+             }
+                  await  Navigator.pushReplacementNamed(context, "/");
+                }
+              }
+              
+              
+        })],child:
+      Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -54,6 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ],)
         )
       ]),
-    );;
+      ),
+    );
   }
 }

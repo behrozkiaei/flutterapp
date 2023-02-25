@@ -11,6 +11,7 @@ import 'package:paytel/blocs/user/update-avtar/update-avatar.bloc.dart';
 import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/widgets/profile/regiserStepper.dart';
 import 'package:paytel/style/theme.dart' as Style;
+import 'package:shared_preferences/shared_preferences.dart';
 class Profile extends StatefulWidget {
   Profile({super.key});
 
@@ -20,6 +21,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   File? file;
   final userRepository = UserRepository();
+
   final ImagePicker _picker = ImagePicker();
 
   Future<void> pickImage() async{
@@ -28,11 +30,11 @@ class _ProfileState extends State<Profile> {
         if(image == null) return;
         File? temp =  File(image.path);
         temp = await cropImage(imageFile: temp);
-        setState(() {
+             setState(() {
           file = temp;
         });
-    }catch(e){
-      return;
+    }catch(e){  
+      return;  
     }
   }
 
@@ -48,6 +50,7 @@ class _ProfileState extends State<Profile> {
     return null;
    }
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -151,7 +154,7 @@ class _ProfileState extends State<Profile> {
               
               )
             ),
-                   SizedBox(
+            SizedBox(
               height:70,
               width: double.infinity,
               child: 
@@ -221,7 +224,50 @@ class _ProfileState extends State<Profile> {
               
               )
             )
+            ,SizedBox(
+              height:70,
+              width: double.infinity,
+              child: 
+              InkWell(
+                  onTap: () async   { 
+                      final pref = await SharedPreferences.getInstance();
+                      await pref.remove("token");
+                        if (!mounted) {
+                          return;
+                        }
+                      Navigator.pushNamed(context,"/splash");
+                    },
+                child: 
+              Row(
+                  children: [
+                    const SizedBox(
+                      width: 40,
+                      height: 60,
+                      child:  CircleAvatar(child:  Icon(Icons.exit_to_app),)),
+                    const SizedBox( width:10,) ,
+                    Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                            children :const [
+                                Text("خروج", style: TextStyle(fontSize: 14.0)),
+                                Text("خروج از حساب کاربری", style: TextStyle(fontSize: 10.0,color: Style.Colors.gray1)),
+                            ]
+                                  ,
+                              ),
+                        Expanded(
+                            child:
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child:const SizedBox(width: 10,), 
+                                // const Icon(Icons.arrow_forward),
+                            ) 
+                        )
+                      ],
+                    ),  
               
+              )
+            )
+               
          ],
         ),
       )
