@@ -4,6 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:paytel/blocs/auth/login/login.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.bloc.dart';
+import 'package:paytel/blocs/services/buyCharge/buy-charge.bloc.dart';
+import 'package:paytel/blocs/services/buyInternet/buy-internet.bloc.dart';
+import 'package:paytel/blocs/services/internet-packages/internet-packages.bloc.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
 import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/repositories/transactions.repository.dart';
@@ -27,6 +30,10 @@ class MyApp extends StatelessWidget {
           BlocProvider<LoginBloc>(create: (BuildContext context) => LoginBloc(userRepository: userRepository),),
           BlocProvider<MeBloc>( create: (BuildContext context) => MeBloc( userRepository: userRepository),),
           BlocProvider<MyTransactionsBloc>( create: (BuildContext context) => MyTransactionsBloc( transactionRepository: transactionRepo)),
+          BlocProvider<InternetPackagesBloc>( create: (BuildContext context) => InternetPackagesBloc( transactionRepository: transactionRepo)),
+          BlocProvider<BuyInternetBloc>(create: (BuildContext context) => BuyInternetBloc(transactionRepository: transactionRepo),),
+          BlocProvider<BuyChargeBloc>(create: (BuildContext context) => BuyChargeBloc(transactionRepository: transactionRepo),),
+
       ], 
       child: SkeletonTheme(
     // themeMode: ThemeMode.light,

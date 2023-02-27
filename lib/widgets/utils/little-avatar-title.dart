@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:paytel/const.dart';
 import 'package:paytel/style/theme.dart' as Style;
@@ -31,11 +30,11 @@ class AvatarTitle extends StatelessWidget {
                             radius: 50.0,
                             backgroundImage:NetworkImage('$baseUrl/$avatar')) : 
                             const  CircleAvatar(
-                    backgroundColor: Style.Colors.primary,
-                    foregroundColor: Style.Colors.primary,
-                    radius: 50.0,
-                    backgroundImage:  AssetImage('assets/icons/user.png')   
-                    ),
+                              backgroundColor: Style.Colors.primary,
+                              foregroundColor: Style.Colors.primary,
+                              radius: 50.0,
+                              backgroundImage:  AssetImage('assets/icons/user.png')   
+                              ),
                    ),
                     Text(title ?? "نامشخص")
                 ],

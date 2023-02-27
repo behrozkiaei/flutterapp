@@ -79,14 +79,17 @@ class StyledElevatedButton extends StatelessWidget {
   static ButtonStyle buttonTinyStyle(isActive){
   return ButtonStyle( backgroundColor: MaterialStateColor.resolveWith((states)  {
                         return isActive ?  Style.Colors.primary : Style.Colors.gray2;
-                        }),elevation :  MaterialStateProperty.resolveWith((states) => 0),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        }),
+                      elevation :  MaterialStateProperty.resolveWith((states) => 0),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               side:const   BorderSide(color: Style.Colors.gray1),
                               borderRadius: BorderRadius.circular(10.0)
                             )
                           ),
-                          // fixedSize: MaterialStateProperty.resolveWith((states) =>const  Size(50, 40))
+                      textStyle: MaterialStateProperty.resolveWith((states) {
+                        return TextStyle(color: isActive? Style.Colors.white : Style.Colors.gray2 );
+                       }),
                       );
  }
 }

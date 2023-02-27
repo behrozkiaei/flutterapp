@@ -27,8 +27,8 @@ class HomePanelWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children:  [
               InkWell(
-                onTap: () {
-                          _setMode(Mode.charge .toString());
+                onTap: () async {
+                          _setMode("charge");
                           Navigator.pushNamed(context, "/sim-enter-phone");
                 },
                 child: 
@@ -50,8 +50,11 @@ class HomePanelWidget extends StatelessWidget {
                   ),
               ),
               InkWell(
-                onTap: () {
-                          _setMode(Mode.internet .toString());
+                onTap: () async {
+                          // _setMode(Mode.internet.toString());
+                            final prefs = await SharedPreferences.getInstance();
+                            prefs.setString("type", 'internet' ); 
+                          // ignore: use_build_context_synchronously
                           Navigator.pushNamed(context, "/sim-enter-phone");
                 },
                 child:

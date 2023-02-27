@@ -9,7 +9,8 @@ abstract class AppStateEvent extends Equatable {
 }
 
 class ChangeThemeColor extends AppStateEvent {
-  @override
+ 
+
   final String themeMode;
 
    const ChangeThemeColor({
@@ -23,7 +24,7 @@ class ChangeThemeColor extends AppStateEvent {
 }
 
 class AthenticationChanged extends AppStateEvent {
-  @override
+ 
   final bool authenticated;
 
    const AthenticationChanged({

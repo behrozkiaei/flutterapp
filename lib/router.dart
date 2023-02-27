@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paytel/models/internet-packages-model.model.dart';
 import 'package:paytel/presentations/auth/Login.dart';
 import 'package:paytel/presentations/auth/enterPhone.dart';
 import 'package:paytel/presentations/auth/intro_screen.dart';
@@ -10,6 +11,7 @@ import 'package:paytel/widgets/Auth/biometricWidget.dart';
 import 'package:paytel/widgets/bill/enterBillid.dart';
 import 'package:paytel/widgets/profile/regiserStepper.dart';
 import 'package:paytel/widgets/profile/themConfig.dart';
+import 'package:paytel/widgets/simcard/buyInternetPreReceipt.dart';
 import 'package:paytel/widgets/simcard/chooseChargeAmount.dart';
 import 'package:paytel/widgets/simcard/enterPhone.dart';
 import 'package:paytel/widgets/simcard/internetPackages.dart';
@@ -40,6 +42,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         return MaterialPageRoute(builder: (_) =>const  ChooseAmountCharge()); 
       case '/internet-packages':
               return MaterialPageRoute(builder: (_) =>const  IntertetPackages());
+      case '/internet-prereceipt':
+              final Value product = settings.arguments as Value;
+              return MaterialPageRoute(builder: (_) =>  InternetPreReceipt( product: product));
       case '/theme':
           return MaterialPageRoute(builder: (_) =>const  ThemeConfig());
           default:

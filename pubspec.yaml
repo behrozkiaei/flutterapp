@@ -61,6 +61,7 @@ dependencies:
   dio: ^5.0.0
   skeletons: ^0.0.3
   url_launcher: ^6.1.9
+  marquee: ^2.2.3
 
 dev_dependencies:
   flutter_test:

@@ -10,16 +10,17 @@ class InternetPackagesBloc extends Bloc<InternetPackagesEvent, InternetPackagesS
   InternetPackagesBloc({required this.transactionRepository}) : super(InternetPackagesInitial()){
        on<InternetPackagesButtonPressed>((event, emit) async {
         emit(InternetPackagesLoading());
-         
+         print("getinternetpackages");
         try {
           final  response = await transactionRepository.getInternetPackages();
-
+            print(response);
             if(response.data['status'] == true ){
                List<InternetPackagesModel> internetPackages = List.from(response.data['result']).map((json) => InternetPackagesModel.fromJson(json)).toList();
                 emit(InternetPackagesSuccess(internetPackages));
             }else{
-              emit(InternetPackagesFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
-          }
+
+             throw Exception(response.data['message']);
+             }
         } catch (e) {
           emit(InternetPackagesFailure( error: e.toString()));
         }

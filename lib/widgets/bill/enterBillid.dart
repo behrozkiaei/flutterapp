@@ -96,11 +96,14 @@ class _EnterBillIdState extends State<EnterBillId> {
                             textColor: Style.Colors.white,
                             onPressed:  () async  { 
                               if (_formKey.currentState!.validate()) {
-                                 ChooseOperatorBottomSheet.show(context,(value){
+                                final value =await  ChooseOperatorBottomSheet.show(context);
                                       if(value !=null ){
-                                                Navigator.pushNamed(context, "/charge-amount");
+                                        if(!mounted){
+                                          return;
+                                        }
+                                        Navigator.pushNamed(context, "/charge-amount");
                                       }
-                                    });
+                                    
                               }
                           },  
                         )

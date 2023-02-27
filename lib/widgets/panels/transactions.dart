@@ -184,7 +184,6 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
                              Row(children: [
                                 ToPersianDate(y: DateUtil.getYear(date),m:DateUtil.getMonth(date),d:DateUtil.getDay(date),style:  const TextStyle(color: Style.Colors.gray1,fontSize: 10),),
                                 Text( DateUtil.getTime(date),style:  const TextStyle(color: Style.Colors.gray1,fontSize: 10),),
-
                              ],) ],
                           ),
                           Expanded(child: 

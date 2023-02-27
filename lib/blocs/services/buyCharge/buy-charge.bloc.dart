@@ -18,9 +18,11 @@ class BuyChargeBloc extends Bloc<BuyChargeEvent, BuyChargeState> {
           );       
           if(response.data['status'] && !event.fromWallet)  {
             emit(BuyChargeSuccess(response.data['status']['result']['RedirectURL']));   
-          }            
+          }  else          
           if(response.data['status'] && event.fromWallet)  {
             // emit(BuyChargeSuccess());   
+          }else{
+             throw Exception(response.data['message']);
           }
           // throw Error(response.data['message'] ?? ''); 
         } catch (e) {

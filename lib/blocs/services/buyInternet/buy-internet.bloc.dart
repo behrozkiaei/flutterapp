@@ -18,10 +18,13 @@ class BuyInternetBloc extends Bloc<BuyInternetEvent, BuyInternetState> {
           );       
           if(response.data["status"] && event.fromWallet)  {
             emit(BuyInternetSuccess(response.data["status"]["result"]["RedirectURL"]));   
-          }            
-            if(response.data["status"] && !event.fromWallet)  {
+          }   else          
+          if(response.data["status"] && !event.fromWallet)  {
             // emit(BuyInternetSuccess());   
-          } 
+          } else{
+             throw Exception(response.data['message']);
+          }
+
         } catch (e) {
           emit(BuyInternetFailure( error: e.toString()));
         }

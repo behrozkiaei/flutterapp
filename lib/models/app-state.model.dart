@@ -11,13 +11,13 @@ class AppState  {
         this.themeMode,
     });
 
-    @override
+
     bool? authenticated;
 
-    @override
+   
     int? pageIndex;
 
-    @override
+
     String? themeMode;
 
     AppState copyWith({

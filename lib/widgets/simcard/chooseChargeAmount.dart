@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paytel/blocs/services/buyCharge/buy-charge.bloc.dart';
+import 'package:paytel/blocs/services/buyCharge/buy-charge.event.dart';
+import 'package:paytel/blocs/services/buyCharge/buy-charge.state.dart';
+import 'package:paytel/blocs/services/buyInternet/buy-internet.bloc.dart';
+import 'package:paytel/repositories/transactions.repository.dart';
 import 'package:paytel/widgets/utils/addCommaText.dart';
+import 'package:paytel/widgets/utils/avatar-title-sub.dart';
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 
 import 'package:paytel/style/theme.dart' as Style;
+import 'package:persian_tools/persian_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class ChooseAmountCharge extends StatefulWidget {
   const ChooseAmountCharge({super.key});
-
   @override
   State<ChooseAmountCharge> createState() => _ChooseAmountChargeState();
 }
 
 class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
+   bool loading = false;
    int? isSelected;
   _changeState(index){
     setState(() {
@@ -22,6 +30,7 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
   
   String? operator;
   String? mobile;
+  List<String> amounts = ['20000','50000','100000','200000','500000','1000000'] ;
   _getStoredValue() async {
       final prefs = await SharedPreferences.getInstance();
       final String _operator = prefs.getString("operator") ?? "";
@@ -34,12 +43,46 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
       _getStoredValue();
     }
 
-
+ final transactionRepo = TransactionRepo();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocListener<BuyChargeBloc, BuyChargeState>(
+          listener: (context, state) {
+           if (state is BuyChargeLoading) {
+              setState(() {
+                loading =true;
+              });
+            } 
+          if (state is BuyChargeFailure) {
+             setState(() {
+                loading =false;
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                 SnackBar(
+                  content: Text(state.error.isNotEmpty ? state.error :"خرید  ناموفق",style :const TextStyle(color: Style.Colors.gray2)),
+                  backgroundColor: Style.Colors.fail,
+                ),
+              );
+            }
+            if(state is BuyChargeSuccess){
+               setState(() {
+                loading =false;
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                 const SnackBar(
+                  content: Text("خرید  موفق",style : TextStyle(color: Style.Colors.gray2)),
+                  backgroundColor: Style.Colors.fail,
+                ),
+              );
+              Navigator.pushReplacementNamed(
+                                    context,
+                                    "/home",
+                                   
+                                    );
+            }
+      },
+      child: Scaffold(
         appBar: AppBar(
-          // backgroundColor: Style.Colors.white,
           elevation: 0,
             leading:  IconButton(
             icon: const Icon(Icons.arrow_back , color: Style.Colors.primary),
@@ -53,92 +96,52 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
             children: <Widget>[
 
                 const SizedBox(height: 20.0),
-        
-                   CircleAvatar(
-                    backgroundColor: Style.Colors.primary,
-                    foregroundColor: Style.Colors.primary,
-                    
-                    radius: 50.0,
-                    backgroundImage: operator == "MTN" ?const  AssetImage('assets/icons/MTN.png') : 
+                      AvatarTitleSub(avatarUrl: operator == "MTN" ? const  AssetImage('assets/icons/MTN.png') : 
                                      operator == "MCI" ?  const  AssetImage('assets/icons/MCI.png') :
                                      operator == "RTL" ?const  AssetImage('assets/icons/MCI.png'): 
-                                     const AssetImage('assets/icons/user.png')   ,
-                    ),
-                
+                                     const AssetImage('assets/icons/user.png')  ,title:operator == "MTN" ? "ایرانسل" :operator == "MCI" ? "همراه اول" :operator == "RTL" ?"رایتل" : "-" , subTitle: '${addCommas("540000")} ریال '),
             const SizedBox(height: 20.0),
-            const Text("ایرانسل", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-            Text(mobile ?? '', style:const TextStyle(fontSize: 14.0,color: Style.Colors.gray1)),
-            const SizedBox(height: 5.0),
-            const  AddComma(value: "540000", textStyle: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold) ),
-            const Text("مبلغ شارژ + مالیات", style: TextStyle(fontSize: 14.0,color: Style.Colors.gray1)),
-            const SizedBox(height: 20.0),
-            
-              Row(
-                children: <Widget>[
+                  Text(mobile??"", style:const TextStyle(fontSize: 14.0,color: Style.Colors.gray1)),
 
-                  const SizedBox(width: 8.0),
-                  Expanded(
-                    child: ElevatedButton(
-                      style:  StyledElevatedButton.buttonTinyStyle(isSelected == 1),
-                      child: AddComma(value: "2000", textStyle: ButtonStyleCustom.textStyle(isSelected == 1)),
-                      onPressed: () { _changeState(1);},
+            Wrap(
+                    spacing: 6.0,
+                    runSpacing: 6.0,
+                    children: amounts.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      String number = entry.value;
+
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width / 3 - 20,
+                        child: ElevatedButton(
+                      style:  StyledElevatedButton.buttonTinyStyle(isSelected == index),
+                      child: AddComma(value: number, textStyle: ButtonStyleCustom.textStyle(isSelected == index)),
+                      onPressed: () { _changeState(index);},
                     ),
+        
+                        
+                      );
+                    }).toList(),
                   ),
-                   const SizedBox(width: 8.0),
-                    Expanded(
-                    child: ElevatedButton(
-                      style:  StyledElevatedButton.buttonTinyStyle(isSelected == 2),
-                      child: AddComma(value: "50000", textStyle: ButtonStyleCustom.textStyle(isSelected == 2)),
-                      onPressed: () { _changeState(2);},
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 5.0),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ElevatedButton(
-                      style:  StyledElevatedButton.buttonTinyStyle(isSelected == 3),
-                                           child: AddComma(value: "100000", textStyle: ButtonStyleCustom.textStyle(isSelected == 3)),
-                      onPressed: () { _changeState(3);},
-                    ),
-                  ),
-                  const SizedBox(width: 8.0),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: StyledElevatedButton.buttonTinyStyle(isSelected == 4),
-                      child: AddComma(value: "200000", textStyle: ButtonStyleCustom.textStyle(isSelected == 4)),
-                      onPressed: () { _changeState(4);},
-                    ),
-                  ),
-                   const SizedBox(width: 8.0),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: StyledElevatedButton.buttonTinyStyle(isSelected == 5),
-                       child: AddComma(value: "500000", textStyle: ButtonStyleCustom.textStyle(isSelected == 5)),
-                      onPressed: () { 
-                        _changeState(5);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10.0),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-
-               StyledElevatedButton(
+                  
+                 StyledElevatedButton(
+                            isLoading: loading,
+                            disabled: loading,
                             width:double.maxFinite ,
                             icon : Icons.check_box  ,
                             text : "ادامه" ,
                             textColor: Style.Colors.white,
                             onPressed:  () { 
-                              if(isSelected != null){
+                              if(isSelected != null && isSelected != null && operator!=null){
+                                  BlocProvider.of<BuyChargeBloc>(context).add(BuyChargeButtonPressed( chargeType:"",
+                                       chargePayloadOperator:operator!,
+                                        mobile:mobile!,
+                                        amount:amounts[isSelected!],
+                                        fromWallet:true));
 
-                              Navigator.pushNamed(context, "/home");  
                               }
                           },  
                         )
@@ -148,6 +151,7 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
             ],
           ),
         ),
+      ) ,
       ) ,
     );
   }
@@ -159,6 +163,6 @@ class ButtonStyleCustom{
  
 
  static TextStyle textStyle(isActive){
-  return  TextStyle(color: isActive ? Style.Colors.white: Style.Colors.gray1 , fontSize: 12);
+  return  TextStyle(color: isActive ? Style.Colors.white: Style.Colors.gray1 , fontSize: 12 ,fontFamily: "IRANSansWeb");
  }
 }
