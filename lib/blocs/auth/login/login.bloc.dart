@@ -1,8 +1,4 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:paytel/blocs/auth/login/login.event.dart';
 import 'package:paytel/blocs/auth/login/login.state.dart';
 import 'package:paytel/models/TokenResponseModel.dart';
@@ -22,11 +18,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             );
             if(response.data['result'] != false ){
               final TokenResponseModel tokenObj = TokenResponseModel.fromJson(response.data['result']);
+                if(tokenObj.token ){
                   final prefs = await SharedPreferences.getInstance();
-                  prefs.setString("token" , tokenObj.token.accessToken);
-                  emit(LoginSuccess());
+                  prefs.setString("token" , tokenObj.token);
+                }
+                emit( LoginSuccess(otpType:tokenObj.otpType));
             }else{
-              emit(LoginFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
+                emit(LoginFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
+          }
+        } catch (e) {
+            print(e);
+          emit(LoginFailure( error: e.toString()));
+        }
+      });
+       on<LoginToAppEvent>((event, emit) async {
+        emit(LoginLoading());
+        try {
+          final  response = await userRepository.setPass(
+            event.password
+            );
+            if(response.data['status'] == true ){
+                  emit(const  LoginSuccess());
+            }else{
+                emit(LoginFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {
             print(e);

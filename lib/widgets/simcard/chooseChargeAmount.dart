@@ -12,6 +12,8 @@ import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:persian_tools/persian_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/paymentType.dart';
 class ChooseAmountCharge extends StatefulWidget {
   const ChooseAmountCharge({super.key});
   @override
@@ -20,20 +22,32 @@ class ChooseAmountCharge extends StatefulWidget {
 
 class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
    bool loading = false;
-   int? isSelected;
+   int? isSelected=0;
   _changeState(index){
     setState(() {
       isSelected = index;
     });
 
   }
-  
+   bool? isWallet ;
   String? operator;
   String? mobile;
   List<String> amounts = ['20000','50000','100000','200000','500000','1000000'] ;
+   getPaymentMode()async {
+      final prefs = await SharedPreferences.getInstance();
+      final bool _isWallet = prefs.getBool("isWallet") ?? true;
+      setState(() {
+        isWallet = _isWallet ;
+      });
+     }
   _getStoredValue() async {
       final prefs = await SharedPreferences.getInstance();
       final String _operator = prefs.getString("operator") ?? "";
+      if(_operator == "MCI"){
+        setState(() {
+          amounts = amounts..removeAt(0);
+        });
+      }
       final String _mobile = prefs.getString("mobile") ?? "";
       setState(() { operator = _operator ;mobile = _mobile; });     
   }
@@ -59,7 +73,7 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
               });
               ScaffoldMessenger.of(context).showSnackBar(
                  SnackBar(
-                  content: Text(state.error.isNotEmpty ? state.error :"خرید  ناموفق",style :const TextStyle(color: Style.Colors.gray2)),
+                  content: Text(state.error.isNotEmpty ? state.error :" خرید  ناموفق",style :const TextStyle(color: Style.Colors.gray2)),
                   backgroundColor: Style.Colors.fail,
                 ),
               );
@@ -70,8 +84,8 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
               });
               ScaffoldMessenger.of(context).showSnackBar(
                  const SnackBar(
-                  content: Text("خرید  موفق",style : TextStyle(color: Style.Colors.gray2)),
-                  backgroundColor: Style.Colors.fail,
+                  content: Text("خرید شارژ با موفقیت انجام شد",style : TextStyle(color: Style.Colors.gray2)),
+                  backgroundColor: Style.Colors.success,
                 ),
               );
               Navigator.pushReplacementNamed(
@@ -99,9 +113,11 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
                       AvatarTitleSub(avatarUrl: operator == "MTN" ? const  AssetImage('assets/icons/MTN.png') : 
                                      operator == "MCI" ?  const  AssetImage('assets/icons/MCI.png') :
                                      operator == "RTL" ?const  AssetImage('assets/icons/MCI.png'): 
-                                     const AssetImage('assets/icons/user.png')  ,title:operator == "MTN" ? "ایرانسل" :operator == "MCI" ? "همراه اول" :operator == "RTL" ?"رایتل" : "-" , subTitle: '${addCommas("540000")} ریال '),
+                                     const AssetImage('assets/icons/user.png')  ,title:operator == "MTN" ? " شارژ ایرانسل" :operator == "MCI" ? "شارژ همراه اول" :operator == "RTL" ?"شارژ رایتل" : "-" , 
+                                     subTitle: 'مبلغ : ${addCommas(amounts[isSelected!])} ریال '),
+            const SizedBox(height: 10.0),
+                  Text(mobile ?? "", style:const TextStyle(fontSize: 14.0,color: Style.Colors.gray1)),
             const SizedBox(height: 20.0),
-                  Text(mobile??"", style:const TextStyle(fontSize: 14.0,color: Style.Colors.gray1)),
 
             Wrap(
                     spacing: 6.0,
@@ -126,7 +142,11 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                  
+                  const SizedBox(
+                        height: 160,
+                        child: PaymentTypeChooser(),
+                       ),
+                       const SizedBox(height: 10.0),
                  StyledElevatedButton(
                             isLoading: loading,
                             disabled: loading,
@@ -134,13 +154,17 @@ class _ChooseAmountChargeState extends State<ChooseAmountCharge> {
                             icon : Icons.check_box  ,
                             text : "ادامه" ,
                             textColor: Style.Colors.white,
-                            onPressed:  () { 
+                            onPressed:  () async { 
                               if(isSelected != null && isSelected != null && operator!=null){
+                                 await getPaymentMode();
+                                 if(!mounted || isWallet== null){
+                                  return;
+                                 }
                                   BlocProvider.of<BuyChargeBloc>(context).add(BuyChargeButtonPressed( chargeType:"",
                                        chargePayloadOperator:operator!,
                                         mobile:mobile!,
                                         amount:amounts[isSelected!],
-                                        fromWallet:true));
+                                        fromWallet:isWallet!));
 
                               }
                           },  

@@ -14,7 +14,7 @@ class UpdateBankrButtonPressed extends UpdateBankrEvent {
 
   const UpdateBankrButtonPressed({
     required this.card,
-    required  this.sheba,
+    required  this.sheba, 
   });
 
   @override

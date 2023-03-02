@@ -1,14 +1,14 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:paytel/blocs/auth/login/login.bloc.dart';
+import 'package:paytel/blocs/auth/login/login.state.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.event.dart';
 import 'package:paytel/blocs/auth/me/me.state.dart';
-import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
-import 'package:paytel/blocs/transaction/my-transaction/my-transactions.event.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
@@ -26,6 +26,7 @@ class _AppLoginState extends State<AppLogin> {
   String _inputText = '';
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
+  bool loading =false;
   void _submitForm() async{
     if (_formKey.currentState!.validate())  {
       _formKey.currentState!.save();
@@ -78,7 +79,9 @@ class _AppLoginState extends State<AppLogin> {
     }
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MeBloc, MeState>(
+    return 
+    MultiBlocListener(listeners:[
+    BlocListener<MeBloc, MeState>(
           listener: (context, state) {
           if (state is MeFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -90,9 +93,36 @@ class _AppLoginState extends State<AppLogin> {
               );
             }
             if(state is MeSuccess){
+              // Navigator.pushNamed(context, "/home");
+            }
+          }
+       ), 
+      BlocListener<LoginBloc, LoginState>(
+          listener: (context, state) {
+          if (state is LoginFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("مشکل در دریافت اطلاعات رخ داده است",style :TextStyle(color: Style.Colors.gray2)),
+                  backgroundColor: Style.Colors.fail,
+
+                ),
+              );
+            }
+            if(state is LoginSuccess){
               Navigator.pushNamed(context, "/home");
             }
-      },
+            if(state is LoginLoading){
+              setState(() {
+                loading =true ;
+              });
+            }else{
+              setState(() {
+                loading =false ;
+              });
+            }
+          }
+       )
+      ],
       child: Scaffold(
             body: Container(
               height: double.infinity,

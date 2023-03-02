@@ -22,6 +22,7 @@ class IntertetPackages extends StatefulWidget {
 class _IntertetPackagesState extends State<IntertetPackages> {
   List<InternetPackagesModel>? internetPackages ;
    String? operator;
+   String? sim_type;
    int selectedIndex=0;
 
  @override
@@ -40,8 +41,10 @@ class _IntertetPackagesState extends State<IntertetPackages> {
 _getStoredValue() async {
   final prefs = await SharedPreferences.getInstance();
   final String _operator = prefs.getString("operator") ?? "";
+  final String _sim_type = prefs.getString("sim_type") ?? "";
   setState(() {
       operator = _operator;
+      sim_type = _sim_type;
     });
 }
 
@@ -103,7 +106,7 @@ _getStoredValue() async {
                             children:
                             List.generate(state.internetPackages[selectedIndex].value!.length, (index) {
                             Value value = state.internetPackages[selectedIndex].value![index];
-                            bool shouldInclude = value.valueOperator == operator;
+                            bool shouldInclude = (value.valueOperator == operator && value.simType == sim_type);
                             if(shouldInclude){
                               return Padding(padding:const  EdgeInsets.symmetric(vertical: 5),
                                 child: InkWell(

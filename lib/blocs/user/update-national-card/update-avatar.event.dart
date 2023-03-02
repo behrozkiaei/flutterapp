@@ -12,7 +12,7 @@ class UpdateNationalCardButtonPressed extends UpdateNationalCardEvent {
   final String cartMelli;
 
   const UpdateNationalCardButtonPressed({
-    required this.cartMelli,
+    required this.cartMelli
   });
 
   @override

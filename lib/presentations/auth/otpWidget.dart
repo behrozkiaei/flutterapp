@@ -17,34 +17,44 @@ import 'package:paytel/blocs/auth/sed-otp/send-otp.event.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.state.dart';
 import 'package:paytel/presentations/auth/enterPhone.dart';
 import 'package:paytel/style/theme.dart' as Style;
+import 'package:paytel/widgets/utils/enums.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class OtpWidget extends StatefulWidget {
   const OtpWidget({super.key});
-
-
 
   @override
   _OtpWidgetState createState() => _OtpWidgetState();
 }
 
 class _OtpWidgetState extends State<OtpWidget> {
+  int  duration = 120 ; 
+  bool loading = false ;
+  OtpFieldController otpController = OtpFieldController();
+  var spinkit = const SpinKitRotatingCircle(
+        color: Colors.white,
+        size: 50.0,
+      );
+
+  String storedValue = "";
+
   final _formKey = GlobalKey<FormState>();
   String? _otp;
-  String storedValue = "";
-  OtpFieldController otpController = OtpFieldController();
+  int _start = 120;
+  late Timer _timer;
 
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
- 
   @override
   void initState() {
     super.initState();
     _getStoredValue();
     startTimer();
   }
-  late Timer _timer;
-  int  duration = 120 ; 
-  int _start = 120;
-  bool loading = false ;
+
   void startTimer() {
     const oneSec =  Duration(seconds: 1);
     _timer = Timer.periodic(
@@ -63,16 +73,23 @@ class _OtpWidgetState extends State<OtpWidget> {
       },
     );
   }
+
   _getStoredValue() async {
       final prefs = await SharedPreferences.getInstance();
       final String value = prefs.getString("mobile") ?? "";
       print(value);
       setState(() { storedValue = value ; });     
   }
-  var spinkit = const SpinKitRotatingCircle(
-        color: Colors.white,
-        size: 50.0,
-      );
+
+   void _submitOtp() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      // Send request to server to login with phone number and OTP
+      // For example, using the http package:
+      // var response = await http.post(...);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
   double width = MediaQuery.of(context).size.width;
@@ -131,7 +148,13 @@ class _OtpWidgetState extends State<OtpWidget> {
                                   });
                                 } 
                                 if(state is LoginSuccess){
+                                  if(state.otpType == OtpType.Login.toString()){
+                                    Navigator.pushReplacementNamed(context, "/app-login");
+                                  }else if(state.otpType == OtpType.RessetPass.toString()){
                                     Navigator.pushReplacementNamed(context, "/set-pass");
+                                  }else{
+                                    print("not founded rout");
+                                  }
                                 } 
                             },
                           ),
@@ -254,20 +277,4 @@ class _OtpWidgetState extends State<OtpWidget> {
       ),
     );
   }
-
-   void _submitOtp() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      // Send request to server to login with phone number and OTP
-      // For example, using the http package:
-      // var response = await http.post(...);
-    }
-  }
-  
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
 }

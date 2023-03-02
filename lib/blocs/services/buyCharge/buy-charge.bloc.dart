@@ -15,12 +15,13 @@ class BuyChargeBloc extends Bloc<BuyChargeEvent, BuyChargeState> {
             chargePayloadOperator:  event.chargePayloadOperator, 
             amount: event.amount,
             chargeType:event.chargeType, 
-          );       
+          );    
+          print(response.data['status'] );   
           if(response.data['status'] && !event.fromWallet)  {
-            emit(BuyChargeSuccess(response.data['status']['result']['RedirectURL']));   
+            emit(BuyChargeSuccess(RedirectURL: response.data['status']['result']['RedirectURL']));   
           }  else          
           if(response.data['status'] && event.fromWallet)  {
-            // emit(BuyChargeSuccess());   
+            emit( BuyChargeSuccess());   
           }else{
              throw Exception(response.data['message']);
           }

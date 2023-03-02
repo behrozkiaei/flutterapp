@@ -6,8 +6,8 @@ import 'package:paytel/blocs/services/internet-packages/internet-packages.event.
 import 'package:paytel/blocs/services/internet-packages/internet-packages.state.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/simcard/chooseOperator.dart';
+import 'package:paytel/widgets/simcard/chooseSimTypeBottomSheet.dart';
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
-import 'package:paytel/widgets/utils/enums.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
 import 'package:persian_tools/persian_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,12 +33,7 @@ class _EnterPhoneSimState extends State<EnterPhoneSim> {
     void _getMode() async {
       final prefs = await SharedPreferences.getInstance();
       final _mode =  prefs.getString("type");
-      print(prefs.getString("type"));
-      
        setState(() { mode = _mode ; }); 
-
-   
-      print(mode);
       if(prefs.getString("type") == 'internet'){
         if(!mounted){
           return;
@@ -51,7 +46,11 @@ class _EnterPhoneSimState extends State<EnterPhoneSim> {
       prefs.setString("operator", value);
   }
   void _addPhoneInStorage(String mobile) async {
+    setState(() {
+      _phoneNumber=mobile;
+    });
       final prefs = await SharedPreferences.getInstance();
+      prefs.remove("mobile");
       prefs.setString("mobile", mobile);
   }
 
@@ -93,12 +92,14 @@ class _EnterPhoneSimState extends State<EnterPhoneSim> {
                                   label: "شماره تلفن",
                                   icon:  CupertinoIcons.person,
                                   onChange: (value){
-
+                                    setState(() {
+                                      _phoneNumber = convertArToEn(value);
+                                    });
                                   },
                                   onSave: (value){
-                                    (value) { 
-                                      _phoneNumber = convertArToEn(value!);
-                                      _addPhoneInStorage(value);
+                                    (value) {
+                                      final mobile = convertArToEn(value!);
+                                      _addPhoneInStorage(mobile);
                                     };
                                   },
                                   type: "phone",
@@ -116,21 +117,28 @@ class _EnterPhoneSimState extends State<EnterPhoneSim> {
                                     textColor: Style.Colors.white,
                                     onPressed:  () async  { 
                                       if (_formKey.currentState!.validate()) {
+                                        _formKey.currentState!.save();
                                        final value = await  ChooseOperatorBottomSheet.show(context); 
-                                       print(mode);          
-                                        if(value != null && mode =="charge"){
+                                          _addPhoneInStorage(_phoneNumber!);
+                                        if(value != null && mode =="charge" && _phoneNumber != null ){
                                           setOperator(value);
                                             if(!mounted){
                                               return;
                                             }
                                             Navigator.pushNamed(context, "/charge-amount");
                                         }
-                                        if(value != null && mode =="internet"){
+                                        if(value != null && mode =="internet" && _phoneNumber != null){
                                            setOperator(value);
                                             if(!mounted){
                                               return;
                                             }
-                                            Navigator.pushNamed(context, "/internet-packages");
+                                           final sim_type = await ChooseSimTypeBottomSheet.show(context);
+                                            if(sim_type!= null){
+                                                if(!mounted){
+                                                  return;
+                                                }
+                                                Navigator.pushNamed(context, "/internet-packages");
+                                            }
                                         }
                                             
                                       }

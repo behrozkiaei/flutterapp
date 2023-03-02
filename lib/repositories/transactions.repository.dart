@@ -111,4 +111,28 @@ static BaseOptions options = BaseOptions(
       });
       return response;
   }
+
+  
+     Future<Response> paymentRequestList( ) async {
+      final token = await getToken();
+      _dio.options.headers["Authorization"] = "Bearer $token";
+       Response response = await _dio.get('/payment-request');
+       return response;
+    }
+    Future<Response> paymentRequest(
+      String amount  ) async {
+      final token = await getToken();
+      _dio.options.headers["Authorization"] = "Bearer $token";
+       Response response = await _dio.post('/payment-request',data:{
+        'amount': amount
+       });
+       return response;
+    }
+    Future<Response> deletepaymentRequest(
+      String id  ) async {
+      final token = await getToken();
+      _dio.options.headers["Authorization"] = "Bearer $token";
+       Response response = await _dio.delete('/payment-request/$id');
+       return response;
+    }
 }

@@ -16,6 +16,7 @@ class UpdateUserButtonPressed extends UpdateUserEvent {
   final String? email;
   final String? lat;
   final String? lan;
+  final String? nationalCode;
 
   const UpdateUserButtonPressed({
      this.username,
@@ -25,6 +26,7 @@ class UpdateUserButtonPressed extends UpdateUserEvent {
      this.email,
      this.lat,
      this.lan,
+     this.nationalCode,
   });
 
   @override

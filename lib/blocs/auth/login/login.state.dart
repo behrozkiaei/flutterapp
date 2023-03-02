@@ -16,7 +16,10 @@ class LoginLoading extends LoginState {}
 
 // ignore: must_be_immutable
 class LoginSuccess extends LoginState {
-   
+    const LoginSuccess({
+        this.otpType,
+    });
+    final String? otpType;
 }
 
 class LoginFailure extends LoginState {

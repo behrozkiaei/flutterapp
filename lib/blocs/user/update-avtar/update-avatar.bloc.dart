@@ -9,17 +9,17 @@ class UpdateAvatar extends Bloc<UpdateAvatarEvent, UpdateAvatarState> {
   UpdateAvatar({required this.userRepository}) : super(UpdateAvatarInitial()){
       on<UpdateAvatarButtonPressed>((event, emit) async {
         emit(UpdateAvatarLoading());
+        
         try {
           final  response = await userRepository.updateAvatar(
             event.avatar,
             );
-            if(response.data['result'] != false ){
+            if(response.data['status'] == true ){
                   emit(UpdateAvatarSuccess());
             }else{
               emit(UpdateAvatarFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {
-            print(e);
           emit(UpdateAvatarFailure( error: e.toString()));
         }
       });

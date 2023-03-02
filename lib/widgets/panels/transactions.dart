@@ -12,12 +12,12 @@ import 'package:paytel/widgets/utils/timeUtil.dart';
 import 'package:paytel/widgets/utils/toPersianDate.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 class TransactionsPanel extends StatefulWidget {
-  
-  final PanelController panelController;
-  final ScrollController scrollController;
   const TransactionsPanel({super.key ,
    required this.scrollController ,
    required this.panelController});
+
+  final PanelController panelController;
+  final ScrollController scrollController;
 
   @override
   State<TransactionsPanel> createState() => _TransactionsPanelState();
@@ -26,8 +26,16 @@ class TransactionsPanel extends StatefulWidget {
 class _TransactionsPanelState extends State<TransactionsPanel> {
   // ScrollController _scrollController = ScrollController();
   List<MyTransactions> _dataList = [];
-  final int _page = 1;
+
   bool _isLoading =false;
+  final int _page = 1;
+
+  @override
+  void dispose() {
+    widget.scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,11 +43,15 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
     widget.scrollController.addListener(_onScroll);
   }
 
-  @override
-  void dispose() {
-    widget.scrollController.dispose();
-    super.dispose();
-  }
+  Widget draggableButton() => GestureDetector(
+          onTap: togglePanel,
+          child : Center(
+                      child:SizedBox(width:30 , height : 5 ,
+                      child:Container(decoration:const BoxDecoration(color:Style.Colors.primary,borderRadius:  BorderRadius.all(Radius.circular(10))) )  ,)
+                      ),
+      ); 
+
+     void togglePanel()=> widget.panelController.isPanelOpen ? widget.panelController.close() : widget.panelController.open();
 
   Future<void> _loadData() async {
     // Simulate loading data from network or other source
@@ -57,6 +69,7 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
       _isLoading = false;
     });
   }
+
   void _onScroll() {
       if (widget.scrollController.position.pixels ==
               widget.scrollController.position.maxScrollExtent &&
@@ -65,15 +78,23 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
       }
     }
 
-  Widget draggableButton() => GestureDetector(
-          onTap: togglePanel,
-          child : Center(
-                      child:SizedBox(width:30 , height : 5 ,
-                      child:Container(decoration:const BoxDecoration(color:Style.Colors.primary,borderRadius:  BorderRadius.all(Radius.circular(10))) )  ,)
-                      ),
-      ); 
-
-     void togglePanel()=> widget.panelController.isPanelOpen ? widget.panelController.close() : widget.panelController.open();
+  Widget _buildProgressIndicator() {
+    return
+    
+     Padding(
+      padding:const EdgeInsets.all(8.0),
+      child: Center(
+        child: _isLoading
+            ? const CircularProgressIndicator()
+            : ElevatedButton(
+                child: const Text('Load More'),
+                onPressed: () {
+                  _loadData();
+                },
+              ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,24 +145,6 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
       // ),
     ]),
     ),
-    );
-  }
-
-  Widget _buildProgressIndicator() {
-    return
-    
-     Padding(
-      padding:const EdgeInsets.all(8.0),
-      child: Center(
-        child: _isLoading
-            ? const CircularProgressIndicator()
-            : ElevatedButton(
-                child: const Text('Load More'),
-                onPressed: () {
-                  _loadData();
-                },
-              ),
-      ),
     );
   }
 }

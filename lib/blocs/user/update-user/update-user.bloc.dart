@@ -18,8 +18,9 @@ class UpdateUser extends Bloc<UpdateUserEvent, UpdateUserState> {
                 event.email,
                 event.lat,
                 event.lan,
+                event.nationalCode,
             );
-            if(response.data['result'] != false ){
+            if(response.data['status'] == true ){
                   emit(UpdateUserSuccess());
             }else{
               emit(UpdateUserFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   

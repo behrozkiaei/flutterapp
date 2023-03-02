@@ -9,6 +9,7 @@ import 'package:paytel/repositories/transactions.repository.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/avatar-title-sub.dart';
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
+import 'package:paytel/widgets/utils/paymentType.dart';
 import 'package:paytel/widgets/utils/receiptDetail.dart';
 import 'package:persian_tools/persian_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +26,7 @@ class _InternetPreReceiptState extends State<InternetPreReceipt> {
   List<Desc> descList=[]; 
   bool loading = false;
   final transactionRepo = TransactionRepo();
- 
+  bool? isWallet ;
 
   @override
     void initState() {
@@ -33,14 +34,21 @@ class _InternetPreReceiptState extends State<InternetPreReceipt> {
         _getStoredValue();
       
      }
+     getPaymentMode()async {
+      final prefs = await SharedPreferences.getInstance();
+      final bool _isWallet = prefs.getBool("isWallet") ?? true;
+      setState(() {
+        isWallet = _isWallet ;
+      });
+     }
   _getStoredValue() async {
       final prefs = await SharedPreferences.getInstance();
       final String _mobile = prefs.getString("mobile") ?? "";
       setState(() {
       mobile = _mobile;
         descList =   [
-          Desc(id: " ", key: "شماره موبایل", value: mobile?? "", orderId: " "),
-          Desc(id: " ", key: "نام بسته", value: widget.product.name!, orderId: " ")
+            Desc(id: " ", key: "شماره موبایل", value: mobile?? "", orderId: " "),
+            Desc(id: " ", key: "نام بسته", value: widget.product.name!, orderId: " ")
           ];
       });
   }
@@ -68,8 +76,8 @@ class _InternetPreReceiptState extends State<InternetPreReceipt> {
             if(state is BuyInternetSuccess){
               ScaffoldMessenger.of(context).showSnackBar(
                  const SnackBar(
-                  content: Text("خرید  موفق",style : TextStyle(color: Style.Colors.gray2)),
-                  backgroundColor: Style.Colors.fail,
+                  content: Text("خرید با موفقیت انجام شد",style : TextStyle(color: Style.Colors.gray2)),
+                  backgroundColor: Style.Colors.success,
                 ),
               );
               setState(() {
@@ -100,7 +108,7 @@ class _InternetPreReceiptState extends State<InternetPreReceipt> {
                       AvatarTitleSub(avatarUrl: widget.product.valueOperator == "MTN" ? const  AssetImage('assets/icons/MTN.png') : 
                                      widget.product.valueOperator == "MCI" ?  const  AssetImage('assets/icons/MCI.png') :
                                      widget.product.valueOperator == "RTL" ?const  AssetImage('assets/icons/MCI.png'): 
-                                     const AssetImage('assets/icons/user.png')  ,title:widget.product.valueOperator == "MTN" ? "ایرانسل" :widget.product.valueOperator == "MCI" ? "همراه اول" :widget.product.valueOperator == "RTL" ?"رایتل" : "-" , subTitle: '${addCommas(widget.product.amountRial.toString())} ریال '),
+                                     const AssetImage('assets/icons/user.png')  ,title:widget.product.valueOperator == "MTN" ? "بسته اینترنت ایرانسل " :widget.product.valueOperator == "MCI" ? "بسته اینترنت همراه اول" :widget.product.valueOperator == "RTL" ?" بسته اینترنت رایتل" : "-" , subTitle: ' مبلغ : ${addCommas(widget.product.amountRial.toString())} ریال '),
                        const SizedBox(height: 20.0),
                        SizedBox(
                         height: descList.length*40,
@@ -108,12 +116,17 @@ class _InternetPreReceiptState extends State<InternetPreReceipt> {
                           list:  descList
                         ),
                        ),
-                       
+                      
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                  
+                     const SizedBox(
+                        height: 160,
+                        child: PaymentTypeChooser(),
+                       ),
+                       const SizedBox(height: 10.0),
+
                  StyledElevatedButton(
                             width:double.maxFinite ,
                             icon : Icons.check_box  ,
@@ -121,18 +134,22 @@ class _InternetPreReceiptState extends State<InternetPreReceipt> {
                             isLoading: loading,
                             disabled: loading,
                             textColor: Style.Colors.white,
-                            onPressed:  () { 
-                         
+                            onPressed:  () async { 
+                                 await getPaymentMode();
+                                 if(!mounted || isWallet== null){
+                                  return;
+                                 }
                                   BlocProvider.of<BuyInternetBloc>(context).add(BuyInternetButtonPressed(
                                         productId: widget.product.productId!, 
                                         InternetPayloadOperator : widget.product.valueOperator!,
                                         mobile : mobile!,
                                         simType: widget.product.simType!,
-                                        fromWallet:true,
+                                        fromWallet:isWallet!,
                                        ));
 
                           },  
-                        )
+                        ),
+             
                   ],
                 )
               )

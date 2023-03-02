@@ -63,15 +63,31 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
                                 return 'لطفا فرم را پر کنید';
                               }
                             if(widget.type == "phone"){
-                              if (!RegExp(r'^09\d{9}$').hasMatch(value!)) {
+                              if (!RegExp(r'^09\d{9}$').hasMatch(value)) {
                                 return 'شماره وارد شده صحیح نیست';
                               }
                             }
                             if(widget.type == "money"){
-                              if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
+                              if (!RegExp(r'^\d{9}$').hasMatch(value)) {
                                 return 'مبلغ وارد شده صحیح نیست';
                               }
                             }
+                            if(widget.type == "card"){
+                              if (value.length != 19) {
+                                return 'شماره کارت را به درستی وارد کنید';
+                              }
+                            }
+                            if(widget.type == "sheba"){
+                              if (value.length != 20) {
+                                return 'شماره شبا را به درستی وارد کنید';
+                              }
+                            }
+                             if(widget.type == "nationalCode"){
+                              if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                                return 'شماره ملی صحیح نیست';
+                              }
+                            }
+                            return null;
                           },
                           onChanged:(value) {
                              widget.onChange(value);

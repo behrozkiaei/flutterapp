@@ -17,8 +17,8 @@ class BuyInternetLoading extends BuyInternetState {}
 
 // ignore: must_be_immutable
 class BuyInternetSuccess extends BuyInternetState {
-    String? RedirectURL="" ; 
-    BuyInternetSuccess(this.RedirectURL);
+    String? RedirectURL; 
+    BuyInternetSuccess({this.RedirectURL});
 }
 
 class BuyInternetFailure extends BuyInternetState {

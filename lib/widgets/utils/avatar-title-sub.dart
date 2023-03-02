@@ -20,6 +20,7 @@ class AvatarTitleSub extends StatelessWidget {
       ),
       const SizedBox(height: 20.0),
       Text(title ,style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+      const SizedBox(height: 10.0),
       Text(subTitle ?? '-', style:const TextStyle(fontSize: 14.0,color: Style.Colors.gray1)),
       ]
     );

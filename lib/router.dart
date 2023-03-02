@@ -7,7 +7,6 @@ import 'package:paytel/presentations/auth/otpWidget.dart';
 import 'package:paytel/presentations/auth/set-pass.dart';
 import 'package:paytel/presentations/auth/splash.dart';
 import 'package:paytel/presentations/home/home.dart';
-import 'package:paytel/widgets/Auth/biometricWidget.dart';
 import 'package:paytel/widgets/bill/enterBillid.dart';
 import 'package:paytel/widgets/profile/regiserStepper.dart';
 import 'package:paytel/widgets/profile/themConfig.dart';

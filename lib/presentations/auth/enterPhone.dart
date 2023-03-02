@@ -1,11 +1,6 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:paytel/blocs/auth/login/login.bloc.dart';
-import 'package:paytel/blocs/auth/login/login.state.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.bloc.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.event.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.state.dart';

@@ -15,10 +15,9 @@ class BuyChargeInitial extends BuyChargeState {}
 
 class BuyChargeLoading extends BuyChargeState {}
 
-// ignore: must_be_immutable
 class BuyChargeSuccess extends BuyChargeState {
-    String? RedirectURL="" ; 
-    BuyChargeSuccess(this.RedirectURL);
+    String? RedirectURL ; 
+    BuyChargeSuccess( {this.RedirectURL});
 }
 
 class BuyChargeFailure extends BuyChargeState {

@@ -1,16 +1,17 @@
 
+import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:paytel/blocs/user/update-avtar/update-avatar.bloc.dart';
+import 'package:paytel/blocs/user/update-avtar/update-avatar.event.dart';
+import 'package:paytel/blocs/user/update-avtar/update-avatar.state.dart';
 import 'package:paytel/repositories/auth.repository.dart';
-import 'package:paytel/widgets/profile/regiserStepper.dart';
 import 'package:paytel/style/theme.dart' as Style;
+import 'package:paytel/widgets/profile/regiserStepper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Profile extends StatefulWidget {
   Profile({super.key});
@@ -20,6 +21,7 @@ class Profile extends StatefulWidget {
 }
 class _ProfileState extends State<Profile> {
   File? file;
+  String? base64File;
   final userRepository = UserRepository();
 
   final ImagePicker _picker = ImagePicker();
@@ -30,8 +32,15 @@ class _ProfileState extends State<Profile> {
         if(image == null) return;
         File? temp =  File(image.path);
         temp = await cropImage(imageFile: temp);
-             setState(() {
+        if(temp == null){
+          return;
+        }
+        // final croppedFile = File(temp.path);
+        final croppedImageBytes = temp.readAsBytesSync();
+        String base64Image = base64Encode(croppedImageBytes);
+        setState(() {
           file = temp;
+          base64File = base64Image;
         });
     }catch(e){  
       return;  
@@ -53,13 +62,29 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-          BlocProvider<UpdateAvatar>(create: (BuildContext context) => UpdateAvatar(userRepository: userRepository),),
-     ], 
-      child: Scaffold(
+    return BlocListener<UpdateAvatar, UpdateAvatarState>(
+          listener: (context, state) {
+          if (state is UpdateAvatarFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("مشکل در دریافت اطلاعات رخ داده است",style :TextStyle(color: Style.Colors.gray2)),
+                  backgroundColor: Style.Colors.fail,
+
+                ),
+              );
+            }
+            if(state is UpdateAvatarSuccess){
+               ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("عکس با موفقیت اپدیت شد",style :TextStyle(color: Style.Colors.gray2)),
+                  backgroundColor: Style.Colors.success,
+                ),
+              );
+            }
+      },child: Scaffold(
       
-      body: Container(
+      body:SafeArea(child: 
+       Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -68,7 +93,13 @@ class _ProfileState extends State<Profile> {
           children:  [
             const SizedBox(height: 20.0),
             InkWell(
-              onTap:  pickImage,
+              onTap:  () async{
+                        // Code to open image library and crop image
+                       await pickImage();
+                       if(base64File!=null && mounted){
+                             BlocProvider.of<UpdateAvatar>(context).add(UpdateAvatarButtonPressed(avatar: base64File!));
+                       }
+                      },
               child: Stack(
                 children: <Widget>[
                     CircleAvatar(
@@ -90,10 +121,14 @@ class _ProfileState extends State<Profile> {
                       decoration:const  BoxDecoration(shape: BoxShape.circle , color: Style.Colors.primary) ,
                       child : IconButton(
                             icon: const  Icon(Icons.edit ,color: Style.Colors.white,size: 14,),
-                      onPressed: () {
+                      onPressed: 
+                        () async{
                         // Code to open image library and crop image
-                        pickImage();
-                      },
+                       await pickImage();
+                       if(base64File!=null && mounted){
+                             BlocProvider.of<UpdateAvatar>(context).add(UpdateAvatarButtonPressed(avatar: base64File!));
+                       }
+                      }
                     ),
                     ),
                   
@@ -270,8 +305,8 @@ class _ProfileState extends State<Profile> {
                
          ],
         ),
-      )
-      )
+      )),
+      ),
     );
   }
 }

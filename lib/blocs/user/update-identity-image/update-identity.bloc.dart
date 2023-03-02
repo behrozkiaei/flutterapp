@@ -13,7 +13,7 @@ class UpdateIdentityImage extends Bloc<UpdateIdentityImageEvent, UpdateIdentityI
           final  response = await userRepository.updateIdentityImage(
             event.shenasname,
             );
-            if(response.data['result'] != false ){
+            if(response.data['status'] == true ){
                   emit(UpdateIdentityImageSuccess());
             }else{
               emit(UpdateIdentityImageFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   

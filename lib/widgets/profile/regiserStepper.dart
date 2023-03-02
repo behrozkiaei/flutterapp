@@ -1,17 +1,27 @@
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:paytel/blocs/user/update-bank-data/update-user.bloc.dart';
+import 'package:paytel/blocs/user/update-bank-data/update-user.event.dart';
+import 'package:paytel/blocs/user/update-bank-data/update-user.state.dart';
 import 'package:paytel/blocs/user/update-identity-image/update-identity.bloc.dart';
+import 'package:paytel/blocs/user/update-identity-image/update-identity.state.dart';
 import 'package:paytel/blocs/user/update-national-card/update-avatar.bloc.dart';
+import 'package:paytel/blocs/user/update-national-card/update-avatar.event.dart';
+import 'package:paytel/blocs/user/update-national-card/update-avatar.state.dart';
 import 'package:paytel/blocs/user/update-user/update-user.bloc.dart';
+import 'package:paytel/blocs/user/update-user/update-user.event.dart';
+import 'package:paytel/blocs/user/update-user/update-user.state.dart';
 import 'package:paytel/repositories/auth.repository.dart';
+import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
-
-import 'package:paytel/style/theme.dart' as Style;
+import 'package:persian_tools/persian_tools.dart';
 class RegisterStepper extends StatefulWidget {
   const RegisterStepper({super.key});
 
@@ -20,30 +30,137 @@ class RegisterStepper extends StatefulWidget {
 }
 
 class _RegisterStepperState extends State<RegisterStepper> {
-  int _index = 0;
-  File? shenasname;
+  String? base64National;
+  String? base64Shenasname;
   File? cartmelli;
-  final ImagePicker _picker = ImagePicker();
+  bool loading =false;
+  File? shenasname;
   final userRepository = UserRepository();
+  final _persionalInfoFormKey = GlobalKey<FormState>();
+  final _bankAccountFormKey = GlobalKey<FormState>();
+  String? fname ;
+  String? lname ;
+  String? nationalCode ;
+  String? cardNumbers ;
+  String? shebaNumbers ;
+  int _index = 1;
+  final ImagePicker _picker = ImagePicker();
+
+    Future<void> pickImageShenasname() async{
+    try{
+        final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+        if(image == null) return;
+        File? temp =  File(image.path);
+        if(temp == null){
+          return;
+        }
+        final croppedImageBytes = temp.readAsBytesSync();
+        String base64Image = base64Encode(croppedImageBytes);
+        setState(() {
+          shenasname = temp;
+          base64National = base64Image;
+        });
+    }catch(e){
+      return;
+    }
+  }
+
+    Future<void> pickImageCartMelli() async{
+    try{
+        final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+        if(image == null) return;
+        File? temp =  File(image.path);
+        if(temp == null){
+          return;
+        }
+        print(5);
+        // final croppedFile = File(temp.path);
+        final croppedImageBytes = temp.readAsBytesSync();
+        String base64Image = base64Encode(croppedImageBytes);
+        print(base64Image);
+        setState(() {
+          cartmelli = temp;
+          base64National = base64Image;
+        });
+    }catch(e){
+      return;
+    }
+  }
 
   //  final StepperController _controller = StepperController();
 
   @override
   Widget build(BuildContext context) {
-    return  MultiBlocProvider(
-      providers: [
-          BlocProvider<UpdateNationalCard>(create: (BuildContext context) => UpdateNationalCard(userRepository: userRepository),),
-          BlocProvider<UpdateBankr>(create: (BuildContext context) => UpdateBankr(userRepository: userRepository),),
-          BlocProvider<UpdateUser>(create: (BuildContext context) => UpdateUser(userRepository: userRepository),),
-          BlocProvider<UpdateIdentityImage>(create: (BuildContext context) => UpdateIdentityImage(userRepository: userRepository),),
-     ], 
+    return MultiBlocListener(
+      listeners: [
+      BlocListener<UpdateNationalCard,UpdateNationalCardState >(
+            listener: (context, state) async {
+                if(state is UpdateNationalCardLoading){
+                  setState(() {
+                    loading=true;
+                  });
+                } else{
+                    setState(() {
+                    loading=false;
+                  });
+                }
+            }
+      ),
+      BlocListener<UpdateUser,UpdateUserState >(
+            listener: (context, state) async {
+                if(state is UpdateUserLoading){
+                  setState(() {
+                    loading=true;
+                  });
+                } else{
+                  if(state is UpdateUserSuccess){
+                      setState(() {
+                      _index = 1 ;
+                      });
+                    }
+                    setState(() {
+                    loading=false;
+                  });
+                }
+            }
+      ),
+      BlocListener<UpdateIdentityImage,UpdateIdentityImageState >(
+            listener: (context, state) async {
+                if(state is UpdateBankrLoading){
+                  setState(() {
+                    loading=true;
+                  });
+                } else {
+                   
+                    setState(() {
+                    loading=false;
+                  });
+                }
+            }
+      ), BlocListener<UpdateBankr,UpdateBankrState >(
+            listener: (context, state) async {
+                if(state is UpdateBankrLoading){
+                  setState(() {
+                    loading=true;
+                  });
+                } else {
+                     if(state is UpdateBankrSuccess){
+                      setState(() {
+                      _index = 2 ;
+                      });
+                    }
+                    setState(() {
+                    loading=false;
+                  });
+                }
+            }
+      )
+      ],
       child:Scaffold(
 
       body: SafeArea(child: 
-      
-      SizedBox(
-        height: double.infinity,
-        child:
+      Column(
+        children  : [
          Stepper(
            currentStep: _index,
             controlsBuilder: (BuildContext context, ControlsDetails) {
@@ -59,7 +176,7 @@ class _RegisterStepperState extends State<RegisterStepper> {
               );
             },
             elevation: 0,
-           onStepCancel: () {
+            onStepCancel: () {
                 if (_index > 0) {
                   setState(() {
                     _index -= 1;
@@ -67,7 +184,17 @@ class _RegisterStepperState extends State<RegisterStepper> {
                 }
               },
               onStepContinue: () {
-                if (_index <= 1) {
+
+                if(_index == 0 && _persionalInfoFormKey.currentState!.validate()){
+                   _persionalInfoFormKey.currentState!.save();
+                  BlocProvider.of<UpdateUser>(context).add(UpdateUserButtonPressed( name: '$fname $lname' ,nationalCode: nationalCode));
+                }else 
+                if (_index == 1 && _bankAccountFormKey.currentState!.validate()) {
+                   _bankAccountFormKey.currentState!.save();
+                    BlocProvider.of<UpdateBankr>(context).add(UpdateBankrButtonPressed( sheba: shebaNumbers! ,card: cardNumbers!));
+                 
+                }
+                 if (_index == 2) {
                   setState(() {
                     _index += 1;
                   });
@@ -81,16 +208,22 @@ class _RegisterStepperState extends State<RegisterStepper> {
               steps: [
                 Step(
                   title: const Text('مشخصات فردی'),
-                  content:Column(children: [
+                  content: Form(
+                        key: _persionalInfoFormKey,child :Column(children: [
                         const SizedBox(height: 10,),
                         InputDecorationStyle(
                           textInputType : TextInputType.text,
                           label: "نام",
                           icon:  CupertinoIcons.person,
                           onChange: (value){
+                            setState(() {
+                              fname = value;
+                            });
                               return value;
                           },
-                          // onSave: (value){},
+                          onSave: (value){
+                             print(value);
+                          },
                           type: "string",
                           validate :(value){
                                   if (value!.isEmpty) {
@@ -103,8 +236,14 @@ class _RegisterStepperState extends State<RegisterStepper> {
                          InputDecorationStyle(
                           label: "نام خانوادگی",
                           icon:  CupertinoIcons.person,
-                          onChange: (value){},
-                          onSave: (value){},
+                          onChange: (value){
+                              setState(() {
+                              lname = value;
+                            });
+                          },
+                          onSave: (value){
+                            print(value);
+                          },
                           type: "string",
                           textInputType : TextInputType.text,
                           validate :(value){
@@ -118,26 +257,31 @@ class _RegisterStepperState extends State<RegisterStepper> {
                          InputDecorationStyle(
                           label: "کد ملی",
                           icon:  CupertinoIcons.person,
-                          onChange: (value){},
+                          onChange: (value){
+                             setState(() {
+                              nationalCode = convertArToEn(value.toString().replaceAll("-",""));
+                            });
+                          },
                           onSave: (value){},
                           textInputType : TextInputType.number,
                           type: "nationalCode",
                           validate :(value){
-                                if (value!.isEmpty) {
-                                      return 'Please enter some text';
-                                    }
+                              if (value!.length != 10) {
+                                return 'کد ملی را به درستی وارد کنید';
+                              }
                               return null ;
                           }
                         ),
                       const SizedBox(height: 10,),
-                  ],)
-                  ,
+                  ],
+                  ),),
                   isActive: _index >= 0,
                 ),
               Step(
                 title:const  Text('اطلاعات بانکی'),
                 isActive: _index >= 1,
-                content:Column(children: [
+                content:Form(
+                        key: _bankAccountFormKey,child :Column(children: [
                         const SizedBox(height: 10,),
                         InputDecorationStyle(
                           textInputType : TextInputType.number,
@@ -146,12 +290,14 @@ class _RegisterStepperState extends State<RegisterStepper> {
                           onChange: (value){
                               return value;
                           },
-                          // onSave: (value){},
+                          onSave: (value){
+                             setState(() {
+                              cardNumbers  = convertArToEn(value.toString().replaceAll("-", ""));
+                            });
+                          },
                           type: "card",
                           validate :(value){
-                                  if (value!.isEmpty) {
-                                      return 'Please enter some text';
-                                    }
+                                  
                               return null ;
                           }
                         ),
@@ -163,24 +309,33 @@ class _RegisterStepperState extends State<RegisterStepper> {
                           onChange: (value){
                             
                           },
-                          onSave: (value){},
+                          onSave: (value){
+                            setState(() {
+                              shebaNumbers  = 'IR${convertArToEn(value.toString())}';
+                            });
+                          },
                           type: "sheba",
                           validate :(value){
-                                if (value!.isEmpty) {
-                                      return 'Please enter some text';
-                                    }
+                               
                               return null ;
                           }
                         ),
                       const SizedBox(height: 10,),
                 ])
+                ),
               ),
               Step(
                 title:const  Text('ارسال مدارک'),
                 content:
                   Row(children: [
                     InkWell(
-                      onTap: pickImageCartMelli,
+                      onTap:()async {
+                            await pickImageCartMelli();
+                              if(base64National!=null && mounted){
+                            BlocProvider.of<UpdateNationalCard>(context).add(UpdateNationalCardButtonPressed( cartMelli: base64National!));
+                              }
+
+                        } , 
                       child: 
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -211,7 +366,13 @@ class _RegisterStepperState extends State<RegisterStepper> {
                       ,),
                       const SizedBox(width: 10,),
                       InkWell(
-                        onTap: pickImageShenasname,
+                        onTap:()async{
+                            await pickImageShenasname();
+                            if(base64National!=null && mounted){
+                              BlocProvider.of<UpdateNationalCard>(context).add(UpdateNationalCardButtonPressed( cartMelli: base64National!));
+                            }
+
+                        } ,
                         child: 
                             Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -238,46 +399,21 @@ class _RegisterStepperState extends State<RegisterStepper> {
                                 const SizedBox(height: 10,),
                             ],
                           ),
-            
                       ),
                   ])
                 ,
                 isActive: _index >= 2,
               ),
-        ],
-             
+             ],
             ),
-      
-    ),
-      )
-      )
+          Container(
+            
+            child: loading ?  const SizedBox(width: 20,height: 20 ,child: Center(child: SpinKitThreeBounce(color: Style.Colors.primary,size: 12.0,))) : const SizedBox.shrink()
+          ),
+         ] ),
+      ),
+      ),
     );
     
-  }
-
-    Future<void> pickImageShenasname() async{
-    try{
-        final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-        if(image == null) return;
-        File? temp =  File(image.path);
-        setState(() {
-          shenasname = temp;
-        });
-    }catch(e){
-      return;
-    }
-  }
-    Future<void> pickImageCartMelli() async{
-    try{
-        final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-        if(image == null) return;
-        File? temp =  File(image.path);
-        // temp = await cropImage(imageFile: temp);
-        setState(() {
-          cartmelli = temp;
-        });
-    }catch(e){
-      return;
-    }
   }
 }

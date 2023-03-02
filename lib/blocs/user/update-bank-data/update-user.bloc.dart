@@ -13,11 +13,13 @@ class UpdateBankr extends Bloc<UpdateBankrEvent, UpdateBankrState> {
           final  response = await userRepository.updateBank(
                 event.card,
                 event.sheba,
-
             );
-            if(response.data['result'] != false ){
+            print(response.data);
+            if(response.data['status'] == true ){
+              print(1);
                   emit(UpdateBankrSuccess());
             }else{
+               print(2);
               emit(UpdateBankrFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {

@@ -17,10 +17,10 @@ class BuyInternetBloc extends Bloc<BuyInternetEvent, BuyInternetState> {
             internetPayloadOperator :event.InternetPayloadOperator ,
           );       
           if(response.data["status"] && event.fromWallet)  {
-            emit(BuyInternetSuccess(response.data["status"]["result"]["RedirectURL"]));   
+            emit(BuyInternetSuccess());   
           }   else          
           if(response.data["status"] && !event.fromWallet)  {
-            // emit(BuyInternetSuccess());   
+            emit(BuyInternetSuccess(RedirectURL : response.data["status"]["result"]["RedirectURL"]));   
           } else{
              throw Exception(response.data['message']);
           }

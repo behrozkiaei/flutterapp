@@ -10,36 +10,41 @@ String tokenResponseModelToJson(TokenResponseModel data) => json.encode(data.toJ
 
 class TokenResponseModel {
     TokenResponseModel({
-        required this.otpType,
-        required this.token,
+        this.otpType,
+        this.token,
+        this.uid,
+        this.userId,
     });
 
-    String otpType;
-    Token token;
+    final String? otpType;
+    final dynamic token;
+    final String? uid;
+    final String? userId;
+
+    TokenResponseModel copyWith({
+        String? otpType,
+        dynamic token,
+        String? uid,
+        String? userId,
+    }) => 
+        TokenResponseModel(
+            otpType: otpType ?? this.otpType,
+            token: token ?? this.token,
+            uid: uid ?? this.uid,
+            userId: userId ?? this.userId,
+        );
 
     factory TokenResponseModel.fromJson(Map<String, dynamic> json) => TokenResponseModel(
         otpType: json["otpType"],
-        token: Token.fromJson(json["token"]),
+        token: json["token"],
+        uid: json["uid"],
+        userId: json["userId"],
     );
 
     Map<String, dynamic> toJson() => {
         "otpType": otpType,
-        "token": token.toJson(),
-    };
-}
-
-class Token {
-    Token({
-        required this.accessToken,
-    });
-
-    String accessToken;
-
-    factory Token.fromJson(Map<String, dynamic> json) => Token(
-        accessToken: json["access_token"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "access_token": accessToken,
+        "token": token,
+        "uid": uid,
+        "userId": userId,
     };
 }

@@ -13,7 +13,7 @@ class UpdateNationalCard extends Bloc<UpdateNationalCardEvent, UpdateNationalCar
           final  response = await userRepository.updateNationalCard(
             event.cartMelli,
             );
-            if(response.data['result'] != false ){
+            if(response.data['status'] == true ){
                   emit(UpdateNationalCardSuccess());
             }else{
               emit(UpdateNationalCardFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   

@@ -69,25 +69,28 @@ static BaseOptions options = BaseOptions(
       String? description,
       String? email,
       String? lat,
-      String? lan) async {
+      String? lan,
+      String? nationalCode,
+      ) async {
       final token = await getToken();
       _dio.options.headers["Authorization"] = "Bearer $token";
-       Response response = await _dio.post('users/update-user', data:{ 
-          username :username,
-          name : name,
-          address : address,
-          description : description,
-          email : email,
-          lat :lat ,
-          lan: lan,
+       Response response = await _dio.patch('/users/update-user', data:{ 
+          'username' :username,
+          'name' : name,
+          'address' : address,
+          'description' : description,
+          'email' : email,
+          'nationalCode' : nationalCode,
+          'lat' :lat ,
+          'lan': lan,
         });
        return response;
     }
     Future<Response> updateAvatar(String avatar) async {
-            final token = await getToken();
+      final token = await getToken();
       _dio.options.headers["Authorization"] = "Bearer $token";
-       Response response = await _dio.post('users/update-avatar', data:{ 
-          avatar :avatar,
+       Response response = await _dio.patch('/users/update-avatar', data:{ 
+          'avatar' :avatar,
         });
        return response;
     }
@@ -97,8 +100,9 @@ static BaseOptions options = BaseOptions(
       String cartMelli ) async {
        final token = await getToken();
        _dio.options.headers["Authorization"] = "Bearer $token";
-       Response response = await _dio.post('/users/update-cartmaelli', data:{ 
-          cartMelli :cartMelli,
+       print(555555);
+       Response response = await _dio.patch('/users/update-cartmaelli', data:{ 
+          'cartMelli' :cartMelli,
         });
        return response;
     }
@@ -107,8 +111,8 @@ static BaseOptions options = BaseOptions(
       String shenasname ) async {
         final token = await getToken();
         _dio.options.headers["Authorization"] = "Bearer $token";
-       Response response = await _dio.post('/users/update-shenasname', data:{ 
-          shenasname :shenasname,
+       Response response = await _dio.patch('/users/update-shenasname', data:{ 
+          'shenasname' :shenasname,
         });
        return response;
     }
@@ -117,10 +121,33 @@ static BaseOptions options = BaseOptions(
       String sheba , String card ) async {
       final token = await getToken();
       _dio.options.headers["Authorization"] = "Bearer $token";
-       Response response = await _dio.post('/users/update-bank-account', data:{ 
-          sheba :sheba,
-          card :card,
+       Response response = await _dio.patch('/users/update-bank-account', data:{ 
+          'sheba' :sheba,
+          'card' :card,
         });
        return response;
     }
+
+    Future<Response> setPass(
+      String password  ) async {
+      final prefs = await SharedPreferences.getInstance();
+      final String? uid = prefs.getString("uid");
+      final String? userId = prefs.getString("userId");
+       Response response = await _dio.patch('/auth/set-pass', data:{ 
+          'uid' :uid,
+          'userId' :userId,
+          'password' :password,
+        });
+       return response;
+    }
+  Future<Response> loginToApp(
+      String password  ) async {
+      final token = await getToken();
+      _dio.options.headers["Authorization"] = "Bearer $token";
+       Response response = await _dio.patch('/auth/set-pass', data:{ 
+          'password' :password,
+        });
+       return response;
+    }
+
 }

@@ -8,6 +8,11 @@ import 'package:paytel/blocs/services/buyCharge/buy-charge.bloc.dart';
 import 'package:paytel/blocs/services/buyInternet/buy-internet.bloc.dart';
 import 'package:paytel/blocs/services/internet-packages/internet-packages.bloc.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
+import 'package:paytel/blocs/user/update-avtar/update-avatar.bloc.dart';
+import 'package:paytel/blocs/user/update-bank-data/update-user.bloc.dart';
+import 'package:paytel/blocs/user/update-identity-image/update-identity.bloc.dart';
+import 'package:paytel/blocs/user/update-national-card/update-avatar.bloc.dart';
+import 'package:paytel/blocs/user/update-user/update-user.bloc.dart';
 import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/repositories/transactions.repository.dart';
 import 'package:paytel/router.dart';
@@ -15,8 +20,7 @@ import 'package:skeletons/skeletons.dart';
 
 void main()   {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(  MyApp(),
-    );
+  runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
   MyApp({super.key});
@@ -33,7 +37,12 @@ class MyApp extends StatelessWidget {
           BlocProvider<InternetPackagesBloc>( create: (BuildContext context) => InternetPackagesBloc( transactionRepository: transactionRepo)),
           BlocProvider<BuyInternetBloc>(create: (BuildContext context) => BuyInternetBloc(transactionRepository: transactionRepo),),
           BlocProvider<BuyChargeBloc>(create: (BuildContext context) => BuyChargeBloc(transactionRepository: transactionRepo),),
-
+          BlocProvider<UpdateAvatar>(create: (BuildContext context) => UpdateAvatar(userRepository: userRepository),),
+          BlocProvider<UpdateNationalCard>(create: (BuildContext context) => UpdateNationalCard(userRepository: userRepository),),
+          BlocProvider<UpdateBankr>(create: (BuildContext context) => UpdateBankr(userRepository: userRepository),),
+          BlocProvider<UpdateUser>(create: (BuildContext context) => UpdateUser(userRepository: userRepository),),
+          BlocProvider<UpdateIdentityImage>(create: (BuildContext context) => UpdateIdentityImage(userRepository: userRepository),),
+    
       ], 
       child: SkeletonTheme(
     // themeMode: ThemeMode.light,
