@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:paytel/blocs/auth/check-pass/check-pass.bloc.dart';
 import 'package:paytel/blocs/auth/login/login.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
+import 'package:paytel/blocs/auth/ressetPass/resset-pass.bloc.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.bloc.dart';
 import 'package:paytel/blocs/services/buyCharge/buy-charge.bloc.dart';
 import 'package:paytel/blocs/services/buyInternet/buy-internet.bloc.dart';
@@ -42,6 +44,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<UpdateBankr>(create: (BuildContext context) => UpdateBankr(userRepository: userRepository),),
           BlocProvider<UpdateUser>(create: (BuildContext context) => UpdateUser(userRepository: userRepository),),
           BlocProvider<UpdateIdentityImage>(create: (BuildContext context) => UpdateIdentityImage(userRepository: userRepository),),
+          BlocProvider<CheckPassBloc>(create: (BuildContext context) => CheckPassBloc(userRepository: userRepository),),
+          BlocProvider<RessetPassBloc>(create: (BuildContext context) => RessetPassBloc(userRepository: userRepository),),
     
       ], 
       child: SkeletonTheme(
@@ -116,7 +120,7 @@ class MyApp extends StatelessWidget {
                 bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'IRANSansWeb',color:  Colors.white),
               ),
             ),
-      initialRoute: '/home', 
+      initialRoute: '/app-login', 
       debugShowCheckedModeBanner  : false,
       onGenerateRoute: generateRoute,
     ),

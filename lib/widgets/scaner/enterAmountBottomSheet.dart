@@ -40,7 +40,6 @@ class EnterAmountBottomSheet {
               //  Navigator.pop(context, false);
             }
             if(state is Wallet2WalletSuccess){
-               print(10);
                ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("انتقال موفق بود",style :TextStyle(color: Style.Colors.gray2)),
@@ -108,7 +107,6 @@ class EnterAmountBottomSheet {
 
                                   if(amount != null ){
                                     final String amountWithoutComma = amount!.replaceAll(",", "");
-                                    print(state.user.code);
                                     BlocProvider.of<Wallet2WalletBloc>(context).add(Wallet2WalletButtonPressed(walletCode: state.user.code, amount: amountWithoutComma));
                                     
                                   }else{

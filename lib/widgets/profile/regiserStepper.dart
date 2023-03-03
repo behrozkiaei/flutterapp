@@ -73,11 +73,8 @@ class _RegisterStepperState extends State<RegisterStepper> {
         if(temp == null){
           return;
         }
-        print(5);
-        // final croppedFile = File(temp.path);
         final croppedImageBytes = temp.readAsBytesSync();
         String base64Image = base64Encode(croppedImageBytes);
-        print(base64Image);
         setState(() {
           cartmelli = temp;
           base64National = base64Image;
@@ -222,7 +219,6 @@ class _RegisterStepperState extends State<RegisterStepper> {
                               return value;
                           },
                           onSave: (value){
-                             print(value);
                           },
                           type: "string",
                           validate :(value){
@@ -242,7 +238,6 @@ class _RegisterStepperState extends State<RegisterStepper> {
                             });
                           },
                           onSave: (value){
-                            print(value);
                           },
                           type: "string",
                           textInputType : TextInputType.text,

@@ -25,9 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const  Duration(seconds: 2));
      final prefs = await SharedPreferences.getInstance();
      final String? token = prefs.getString("token");
-  print(token);
     if(token != null){
-      print("home");
         if (!mounted) {
             return;
              }
@@ -48,11 +46,9 @@ class _SplashScreenState extends State<SplashScreen> {
             listener: (context, state) async {
               
               if(state is MeSuccess){
-                print(2);
                       Navigator.pushReplacementNamed(context, "/home");
               }
               if(state is MeFailure){
-                print(2);
                   final prefs = await SharedPreferences.getInstance();
                   final String? mobile = prefs.getString("mobile");
                 if(mobile != null){

@@ -58,7 +58,6 @@ class SendReceivePage extends StatelessWidget {
                                   onTap: () async{
                                    final value = await IncreaseAmountBottomSheet.show(context);
                                     if (value != null) {
-                                      print(value);
                                       try{
                                           await launchUrl(Uri.parse(value),mode: LaunchMode.externalApplication);
                                       }catch(e){

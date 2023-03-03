@@ -10,20 +10,16 @@ class Wallet2WalletBloc extends Bloc<Wallet2WalletEvent, Wallet2WalletState> {
       on<Wallet2WalletButtonPressed>((event, emit) async {
         emit(Wallet2WalletLoading());
         try {
-          print(7);
           final  response = await transactionRepository.wallet2WalletTransfer(
             event.amount,
             event.walletCode
             );
-            print(response.data);
             if(response.data['status'] == true ){
                   emit(Wallet2WalletSuccess());
             }else{
-              print(3);
               emit(Wallet2WalletFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {
-          print(4);
           emit(Wallet2WalletFailure( error: e.toString()));
         }
       });

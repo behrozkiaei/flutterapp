@@ -19,7 +19,6 @@ class UpdateIdentityImage extends Bloc<UpdateIdentityImageEvent, UpdateIdentityI
               emit(UpdateIdentityImageFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {
-            print(e);
           emit(UpdateIdentityImageFailure( error: e.toString()));
         }
       });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:paytel/blocs/user/payment-request/payment-request.bloc.dart';
+import 'package:paytel/blocs/user/payment-request/payment-request.event.dart';
 import 'package:paytel/blocs/user/payment-request/payment-request.state.dart';
 import 'package:paytel/models/payment-requests-model.dart';
 import 'package:persian_tools/persian_tools.dart';
@@ -15,6 +16,11 @@ class PaymentRequestListView extends StatefulWidget {
 class _PaymentRequestListViewState extends State<PaymentRequestListView> {
   bool loading =false;
 
+  @override
+  void initState(){
+     super.initState();
+      BlocProvider.of<PaymentRequestListBloc>(context).add(const GetAllPaymentRequestButtonPressed());
+  }
   @override
   Widget build(BuildContext context) {
       final double height = MediaQuery.of(context).size.height;

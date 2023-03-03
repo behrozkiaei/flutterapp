@@ -17,7 +17,7 @@ class TokenResponseModel {
     });
 
     final String? otpType;
-    final dynamic token;
+    final String? token;
     final String? uid;
     final String? userId;
 

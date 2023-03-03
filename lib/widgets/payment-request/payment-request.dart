@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:paytel/blocs/auth/sed-otp/send-otp.bloc.dart';
 import 'package:paytel/blocs/user/payment-request/payment-request.bloc.dart';
-import 'package:paytel/blocs/user/payment-request/payment-request.state.dart';
-import 'package:paytel/blocs/user/update-national-card/update-avatar.bloc.dart';
-import 'package:paytel/blocs/user/update-national-card/update-avatar.state.dart';
-import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/repositories/transactions.repository.dart';
+import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/payment-request/addPagePaymentRequest.dart';
 import 'package:paytel/widgets/payment-request/payment-request-list-view.dart';
 
@@ -21,6 +17,8 @@ class _PaymentRequestState extends State<PaymentRequest> {
 
   final transactionRepo = TransactionRepo();
   bool loading =false;
+
+
   @override
   Widget build(BuildContext context) {
     return  MultiBlocProvider(
@@ -31,6 +29,16 @@ class _PaymentRequestState extends State<PaymentRequest> {
           ],
           
       child : Scaffold(
+
+
+          appBar: AppBar(
+              // backgroundColor: Style.Colors.white,
+              elevation: 0,
+               leading:  IconButton(
+                icon: const Icon(Icons.arrow_back , color: Style.Colors.primary),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
       body: SafeArea(child: 
       Stack(
         children : [

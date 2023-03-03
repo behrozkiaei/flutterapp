@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:paytel/blocs/auth/login/login.bloc.dart';
-import 'package:paytel/blocs/auth/login/login.state.dart';
+import 'package:paytel/blocs/auth/ressetPass/resset-pass.bloc.dart';
+import 'package:paytel/blocs/auth/ressetPass/resset-pass.event.dart';
+import 'package:paytel/blocs/auth/ressetPass/resset-pass.state.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SetPass extends StatefulWidget {
   const SetPass({super.key});
@@ -26,24 +25,22 @@ class _SetPassState extends State<SetPass> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       if(pass == repass && pass.length> 5){
-          final prefs = await SharedPreferences.getInstance();
-          prefs.setString("pass", pass);
             if (!mounted) {
             return;
-             }
-          Navigator.pushReplacementNamed(context, "/app-login");
+            }
+            BlocProvider.of<RessetPassBloc>(context).add( RessetPassButtonPressed(password: pass));
       }
       if(pass != repass ){
             if (!mounted) {
             return;
              }
-          ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("رمز با یکدیگر یکسان نیست",style :TextStyle(color: Style.Colors.gray2)),
-                  backgroundColor: Style.Colors.fail,
+      ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("رمز با یکدیگر یکسان نیست",style :TextStyle(color: Style.Colors.gray2)),
+              backgroundColor: Style.Colors.fail,
 
-                )
-          );
+            )
+      );
       }
     }
   }
@@ -52,12 +49,12 @@ class _SetPassState extends State<SetPass> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
                         listeners: [  
-                          BlocListener<LoginBloc, LoginState>(
+                          BlocListener<RessetPassBloc, RessetPassState>(
                             listener: (context, state) {
-                                if (state is LoginFailure) {
+                                if (state is RessetPassFailure) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content: Text("ورود ناموفق بود",style :TextStyle(color: Style.Colors.gray2)),
+                                      content: Text("ثبت رمز عبور ناموفق بود",style :TextStyle(color: Style.Colors.gray2)),
                                       backgroundColor: Style.Colors.fail,
 
                                     ),
@@ -66,12 +63,13 @@ class _SetPassState extends State<SetPass> {
                                     loading = false;
                                   });
                                 }
-                                if(state is LoginLoading){
+                                if(state is RessetPassLoading){
                                   setState(() {
                                     loading = true;
                                   });
                                 } 
-                                if(state is LoginSuccess){
+                                if(state is RessetPassSuccess){
+                                    
                                     Navigator.pushReplacementNamed(context, "/app-login");
                                 } 
                             }

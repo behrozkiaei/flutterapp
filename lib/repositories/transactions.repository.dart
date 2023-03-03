@@ -68,7 +68,6 @@ static BaseOptions options = BaseOptions(
   Future<Response> getInternetPackages(  ) async {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
-      // print(token);
       _dio.options.headers["Authorization"] = "Bearer $token";
       Response response = await _dio.get('/Services/getInternetPackages');
       return response;

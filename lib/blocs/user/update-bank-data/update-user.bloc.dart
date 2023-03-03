@@ -14,16 +14,12 @@ class UpdateBankr extends Bloc<UpdateBankrEvent, UpdateBankrState> {
                 event.card,
                 event.sheba,
             );
-            print(response.data);
             if(response.data['status'] == true ){
-              print(1);
                   emit(UpdateBankrSuccess());
             }else{
-               print(2);
               emit(UpdateBankrFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {
-            print(e);
           emit(UpdateBankrFailure( error: e.toString()));
         }
       });

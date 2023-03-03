@@ -23,7 +23,6 @@ class MyTransactionsBloc extends Bloc<MyTransactionsEvent, MyTransactionsState> 
      
                List<MyTransactions> transactionList = List.from(response.data['result']['data']).map((json) => MyTransactions.fromJson(json)).toList();
               if(currentState is MyTransactionsSuccess && event.page !=0){
-              //   print(1);
                 List<MyTransactions> listOfAll = List.from([...currentState.myTransactions, ...transactionList]);
                 if(listOfAll.length  != response.data['result']['length']){
                   emit(MyTransactionsSuccess(listOfAll));

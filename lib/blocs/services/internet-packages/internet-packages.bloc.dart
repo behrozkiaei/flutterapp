@@ -10,10 +10,8 @@ class InternetPackagesBloc extends Bloc<InternetPackagesEvent, InternetPackagesS
   InternetPackagesBloc({required this.transactionRepository}) : super(InternetPackagesInitial()){
        on<InternetPackagesButtonPressed>((event, emit) async {
         emit(InternetPackagesLoading());
-         print("getinternetpackages");
         try {
           final  response = await transactionRepository.getInternetPackages();
-            print(response);
             if(response.data['status'] == true ){
                List<InternetPackagesModel> internetPackages = List.from(response.data['result']).map((json) => InternetPackagesModel.fromJson(json)).toList();
                 emit(InternetPackagesSuccess(internetPackages));

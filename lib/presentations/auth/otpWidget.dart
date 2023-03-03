@@ -1,12 +1,9 @@
 
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:paytel/blocs/auth/login/login.bloc.dart';
@@ -77,7 +74,6 @@ class _OtpWidgetState extends State<OtpWidget> {
   _getStoredValue() async {
       final prefs = await SharedPreferences.getInstance();
       final String value = prefs.getString("mobile") ?? "";
-      print(value);
       setState(() { storedValue = value ; });     
   }
 
@@ -148,12 +144,12 @@ class _OtpWidgetState extends State<OtpWidget> {
                                   });
                                 } 
                                 if(state is LoginSuccess){
-                                  if(state.otpType == OtpType.Login.toString()){
+
+                                  if(state.otpType == OtpType.Login.name){
                                     Navigator.pushReplacementNamed(context, "/app-login");
-                                  }else if(state.otpType == OtpType.RessetPass.toString()){
+                                  }else if(state.otpType == OtpType.RessetPass.name){
                                     Navigator.pushReplacementNamed(context, "/set-pass");
                                   }else{
-                                    print("not founded rout");
                                   }
                                 } 
                             },
@@ -201,7 +197,6 @@ class _OtpWidgetState extends State<OtpWidget> {
                      
                     },
                     onCompleted: (pin) {
-                      print(pin);
                         setState(() {
                         _otp =pin;
                       });

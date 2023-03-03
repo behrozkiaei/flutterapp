@@ -4,11 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:paytel/blocs/auth/check-pass/check-pass.bloc.dart';
+import 'package:paytel/blocs/auth/check-pass/check-pass.event.dart';
+import 'package:paytel/blocs/auth/check-pass/check-pass.state.dart';
 import 'package:paytel/blocs/auth/login/login.bloc.dart';
+import 'package:paytel/blocs/auth/login/login.event.dart';
 import 'package:paytel/blocs/auth/login/login.state.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.event.dart';
 import 'package:paytel/blocs/auth/me/me.state.dart';
+import 'package:paytel/blocs/auth/sed-otp/send-otp.bloc.dart';
+import 'package:paytel/blocs/auth/sed-otp/send-otp.event.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
@@ -24,6 +30,7 @@ class _AppLoginState extends State<AppLogin> {
   final _formKey = GlobalKey<FormState>();
   final LocalAuthentication auth = LocalAuthentication();
   String _inputText = '';
+  String? errorMessage ;
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
   bool loading =false;
@@ -31,11 +38,10 @@ class _AppLoginState extends State<AppLogin> {
     if (_formKey.currentState!.validate())  {
       _formKey.currentState!.save();
       final prefs = await SharedPreferences.getInstance();
-      print(prefs.getString("pass"));
-      if(prefs.getString("pass") == _inputText ){
-
-        gotoMainPage();
+      if(!mounted){
+        return;
       }
+      BlocProvider.of<CheckPassBloc>(context).add( CheckPassButtonPressed(password: _inputText));
     }
   }
  void _openFingerPrint(){
@@ -70,20 +76,30 @@ class _AppLoginState extends State<AppLogin> {
     }
 
     if(authenticated){
-      gotoMainPage();
+      final prefs = await SharedPreferences.getInstance();
+      final tempPass = prefs.getString("password")?? "";
+      if(tempPass.isEmpty){
+         setState(() {
+           errorMessage = "لطفا یک بار با رمز عبور وارد شوید";
+         });
+      }
+      if(!mounted){
+        return ;
+      }
+      BlocProvider.of<CheckPassBloc>(context).add( CheckPassButtonPressed(password: tempPass));
     }
   }
     void gotoMainPage(){
       BlocProvider.of<MeBloc>(context).add(StartFetchMe());
-   
+      Navigator.pushReplacementNamed(context, '/home');
     }
   @override
   Widget build(BuildContext context) {
     return 
     MultiBlocListener(listeners:[
-    BlocListener<MeBloc, MeState>(
+      BlocListener<CheckPassBloc, CheckPassState>(
           listener: (context, state) {
-          if (state is MeFailure) {
+          if (state is CheckPassFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("مشکل در دریافت اطلاعات رخ داده است",style :TextStyle(color: Style.Colors.gray2)),
@@ -92,26 +108,11 @@ class _AppLoginState extends State<AppLogin> {
                 ),
               );
             }
-            if(state is MeSuccess){
-              // Navigator.pushNamed(context, "/home");
+            if(state is CheckPassSuccess){
+              print(25555);
+                     gotoMainPage();
             }
-          }
-       ), 
-      BlocListener<LoginBloc, LoginState>(
-          listener: (context, state) {
-          if (state is LoginFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("مشکل در دریافت اطلاعات رخ داده است",style :TextStyle(color: Style.Colors.gray2)),
-                  backgroundColor: Style.Colors.fail,
-
-                ),
-              );
-            }
-            if(state is LoginSuccess){
-              Navigator.pushNamed(context, "/home");
-            }
-            if(state is LoginLoading){
+            if(state is CheckPassLoading){
               setState(() {
                 loading =true ;
               });
@@ -178,6 +179,23 @@ class _AppLoginState extends State<AppLogin> {
                                   onPressed: _inputText.isNotEmpty ? _submitForm : _openFingerPrint  
                               );
                         }),
+                        Center(child: (errorMessage!= null) ? Text(errorMessage!):const SizedBox(height: 10,)),
+                         TextButton(
+                        style :ButtonStyle(
+                          backgroundColor:MaterialStateProperty.resolveWith((states) {
+                          return  Style.Colors.background;
+                          }),
+                          textStyle:MaterialStateProperty.resolveWith((states) {
+                          return const TextStyle(color: Style.Colors.primary , fontFamily: "IRANSansWeb");
+                          }
+                        )
+                        ),
+                        onPressed: () async  {
+                            BlocProvider.of<SendOtpBloc>(context).add(const SendOtpRessetPassButtonPressed());
+                            Navigator.pushReplacementNamed(context, "/");
+                          },
+                          child:  const Text("ویرایش شماره تلفن" ,style : TextStyle(color: Style.Colors.primary)),
+                        ),
                       ],
                     )
                   )

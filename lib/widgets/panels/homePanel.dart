@@ -9,13 +9,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/enums.dart';
 class HomePanelWidget extends StatelessWidget {
-  final ScrollController scrollController;
   const HomePanelWidget({super.key , required this.scrollController});
+
+  final ScrollController scrollController;
+
  void _setMode(String mode) async {
       final prefs = await SharedPreferences.getInstance();
       prefs.setString("type", mode ); 
 
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,9 +105,45 @@ class HomePanelWidget extends StatelessWidget {
                           const Text("پرداخت قبوض" ,style:Style.TextStyling.primaryTextStyle)
                       ],) 
               ),
-              )
+              ),
+             
             ]
-            )
+            ),
+            
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children:  [
+                InkWell(
+                  onTap: () {                         
+                    Navigator.pushNamed(context, "/payment-requests");
+                  },
+                  child:
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration:  BoxDecoration(
+                        borderRadius:BorderRadius.circular(10.0) , 
+                        border:  Border.all(color: Style.Colors.primary)
+                      ),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                              Image.asset("assets/icons/bill.png",scale: 10,),
+                              const Text("پرداخت قبوض" ,style:Style.TextStyling.primaryTextStyle)
+                          ],) 
+                  ),
+                  ),
+                  const SizedBox(
+                    width: 80,
+                    height: 80,),
+                   const  SizedBox(
+                    width: 80,
+                    height: 80,
+                   ),
+            ]
+      ),
         ]
       ),
     );

@@ -41,8 +41,8 @@ static BaseOptions options = BaseOptions(
     await prefs.clear();
   }
 
-    Future<Response> sendOtp(String mobile) async {
-       Response response = await _dio.post('/auth/signIn', data:{ "mobile": mobile});
+    Future<Response> sendOtp(String mobile ,String otpType) async {
+       Response response = await _dio.post('/auth/signIn', data:{ "mobile": mobile ,"otpType":otpType});
        return response;
     }
      Future<Response> verifyOtp(String mobile, String password) async {
@@ -100,7 +100,6 @@ static BaseOptions options = BaseOptions(
       String cartMelli ) async {
        final token = await getToken();
        _dio.options.headers["Authorization"] = "Bearer $token";
-       print(555555);
        Response response = await _dio.patch('/users/update-cartmaelli', data:{ 
           'cartMelli' :cartMelli,
         });
@@ -128,23 +127,22 @@ static BaseOptions options = BaseOptions(
        return response;
     }
 
-    Future<Response> setPass(
-      String password  ) async {
+    Future<Response> setPass(String password) async {
       final prefs = await SharedPreferences.getInstance();
       final String? uid = prefs.getString("uid");
       final String? userId = prefs.getString("userId");
-       Response response = await _dio.patch('/auth/set-pass', data:{ 
+      Response response = await _dio.post('/auth/set-pass', data:{ 
           'uid' :uid,
           'userId' :userId,
           'password' :password,
         });
        return response;
     }
-  Future<Response> loginToApp(
+  Future<Response> checkPass(
       String password  ) async {
       final token = await getToken();
       _dio.options.headers["Authorization"] = "Bearer $token";
-       Response response = await _dio.patch('/auth/set-pass', data:{ 
+       Response response = await _dio.post('/users/check-pass', data:{ 
           'password' :password,
         });
        return response;

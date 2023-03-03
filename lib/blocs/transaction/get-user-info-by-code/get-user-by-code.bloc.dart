@@ -14,14 +14,12 @@ class UserByCodeBloc extends Bloc<UserByCodeEvent, UserByCodeState> {
           final  response = await transactionRepository.getWalletDataByCode(
             event.code
             );
-            print(response.data);
             if(response.data['status'] == true ){
                   emit(UserByCodeSuccess(UserByCode.fromJson(response.data['result']).copyWith(code: event.code)));
             }else{
               emit(UserByCodeFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {
-          print(e.toString());
           emit(UserByCodeFailure( error: e.toString()));
         }
       });

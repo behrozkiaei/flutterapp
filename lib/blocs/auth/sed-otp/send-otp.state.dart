@@ -14,6 +14,7 @@ class SendOtpInitial extends SendOtpState {}
 class SendOtpLoading extends SendOtpState {}
 
 class SendOtpSuccess extends SendOtpState {}
+class SendOtpRessetPass extends SendOtpState {}
 
 class SendOtpFailure extends SendOtpState {
   final String error;

@@ -25,7 +25,6 @@ class AppLifecycleObserverState extends State<AppLifecycleObserverWidget> with W
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      print("user paused");
       widget.onAppPaused();
     }
   }

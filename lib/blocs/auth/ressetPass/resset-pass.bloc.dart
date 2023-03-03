@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:paytel/blocs/auth/ressetPass/resset-pass.event.dart';
 import 'package:paytel/blocs/auth/ressetPass/resset-pass.state.dart';
 import 'package:paytel/repositories/auth.repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class RessetPassBloc extends Bloc<RessetPassEvent, RessetPassState> {
@@ -15,11 +16,13 @@ class RessetPassBloc extends Bloc<RessetPassEvent, RessetPassState> {
     on<RessetPassButtonPressed>((event, emit) async {
       emit(RessetPassLoading());
       try {
-
-       final  response = await userRepository.sendOtp(
-         event.mobile
+       final  response = await userRepository.setPass(
+         event.password,
         );
         if(response.data['status']){
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString("password", event.password);
+          prefs.setString("token",response.data['result']['token']);
           emit(RessetPassSuccess());
         }else{
           emit(RessetPassFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   

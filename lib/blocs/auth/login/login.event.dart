@@ -26,24 +26,7 @@ class LoginButtonPressed extends LoginEvent {
 }
 
 
-class SettPasswordEvent extends LoginEvent {
-  final String userId;
-  final String password;
-  final String uid;
 
-  const SettPasswordEvent({
-    required this.userId,
-    required this.password,
-    required this.uid,
-  });
-
-  @override
-  List<Object> get props => [userId, password,uid];
-
-  @override
-  String toString() =>
-      'LoginButtonPressed { email: $userId, password: $password }';
-}
 
 class LoginToAppEvent extends LoginEvent {
   final String password;

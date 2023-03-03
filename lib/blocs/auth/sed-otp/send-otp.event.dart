@@ -1,4 +1,3 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:equatable/equatable.dart';
 
 abstract class SendOtpEvent extends Equatable {
@@ -21,4 +20,16 @@ class SendOtpButtonPressed extends SendOtpEvent {
   @override
   String toString() =>
       'SendOtpButtonPressed { email: $mobile }';
+}
+
+class SendOtpRessetPassButtonPressed extends SendOtpEvent {
+
+  const SendOtpRessetPassButtonPressed();
+
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() =>
+      'SendOtpButtonPressed { email:  }';
 }

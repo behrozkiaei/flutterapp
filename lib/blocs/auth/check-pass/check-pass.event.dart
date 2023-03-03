@@ -1,22 +1,18 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:equatable/equatable.dart';
 
-abstract class RessetPassEvent extends Equatable {
-  const RessetPassEvent();
+abstract class CheckPassEvent extends Equatable {
+  const CheckPassEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class RessetPassButtonPressed extends RessetPassEvent {
-
+class CheckPassButtonPressed extends CheckPassEvent {
   final String password;
- 
 
-  const RessetPassButtonPressed({
-  
+  const CheckPassButtonPressed({
     required this.password,
- 
   });
 
   @override
@@ -24,7 +20,5 @@ class RessetPassButtonPressed extends RessetPassEvent {
 
   @override
   String toString() =>
-      'LoginButtonPressed { , password: $password }';
+      'CheckPassButtonPressed { email: $password }';
 }
-
-

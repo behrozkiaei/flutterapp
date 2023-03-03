@@ -26,7 +26,6 @@ class UpdateUser extends Bloc<UpdateUserEvent, UpdateUserState> {
               emit(UpdateUserFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {
-            print(e);
           emit(UpdateUserFailure( error: e.toString()));
         }
       });
