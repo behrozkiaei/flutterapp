@@ -8,6 +8,7 @@ import 'package:paytel/presentations/auth/set-pass.dart';
 import 'package:paytel/presentations/auth/splash.dart';
 import 'package:paytel/presentations/home/home.dart';
 import 'package:paytel/widgets/bill/enterBillid.dart';
+import 'package:paytel/widgets/payment-request/payment-request.dart';
 import 'package:paytel/widgets/profile/regiserStepper.dart';
 import 'package:paytel/widgets/profile/themConfig.dart';
 import 'package:paytel/widgets/simcard/buyInternetPreReceipt.dart';
@@ -41,6 +42,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         return MaterialPageRoute(builder: (_) =>const  ChooseAmountCharge()); 
       case '/internet-packages':
               return MaterialPageRoute(builder: (_) =>const  IntertetPackages());
+      case '/payment-requests':
+              return MaterialPageRoute(builder: (_) =>const  PaymentRequest());
       case '/internet-prereceipt':
               final Value product = settings.arguments as Value;
               return MaterialPageRoute(builder: (_) =>  InternetPreReceipt( product: product));

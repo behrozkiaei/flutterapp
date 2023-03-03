@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:marquee/marquee.dart';
 import 'package:paytel/blocs/services/internet-packages/internet-packages.bloc.dart';
 import 'package:paytel/blocs/services/internet-packages/internet-packages.event.dart';
 import 'package:paytel/blocs/services/internet-packages/internet-packages.state.dart';
