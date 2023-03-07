@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1064603956574",
+    "project_id": "paytel-ab99f",
+    "storage_bucket": "paytel-ab99f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064603956574:android:973f6ff6cc564cd16e4bcf",
+        "android_client_info": {
+          "package_name": "com.example.paytel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064603956574-nt4bmspptd1cehefaqhhu7t1p5f7gqi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSZWxj2Abxw6_ARqrl5wlVSyUK86bYP_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064603956574-nt4bmspptd1cehefaqhhu7t1p5f7gqi3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1064603956574-hcd3l3e3romsg6nqqgtfon3gt4ld4gog.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.paytel"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

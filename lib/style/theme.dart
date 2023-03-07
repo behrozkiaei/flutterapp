@@ -24,6 +24,7 @@ class Colors {
   static const Color fail= Color.fromARGB(255, 244, 33, 33);
   static const Color success  = Color.fromARGB(255, 10, 147, 42);
   static const Color white  = Color.fromARGB(255, 255, 255, 255);
+  static const Color alert  = Color.fromARGB(255, 247, 227, 10);
 }
 
 class TextStyling {

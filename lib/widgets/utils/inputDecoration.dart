@@ -1,11 +1,8 @@
 import 'dart:ffi';
 
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:paytel/style/theme.dart' as Style;
-import 'package:persian_tools/persian_tools.dart';
 class InputDecorationStyle extends StatefulWidget {
 const InputDecorationStyle({
   super.key, 
@@ -31,6 +28,7 @@ final String type ;
 final Function? validate;
 
   @override
+  // ignore: library_private_types_in_public_api
   _InputDecorationStyle createState() => _InputDecorationStyle();
 }
 

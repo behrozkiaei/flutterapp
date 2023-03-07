@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -86,6 +87,14 @@ class _OtpWidgetState extends State<OtpWidget> {
     }
   }
 
+
+
+  Future<void> getfirebase()   async {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      print(fcmToken);
+  }
+
+
   @override
   Widget build(BuildContext context) {
   double width = MediaQuery.of(context).size.width;
@@ -93,7 +102,7 @@ class _OtpWidgetState extends State<OtpWidget> {
       body:  MultiBlocListener(
                         listeners: [
                           BlocListener<SendOtpBloc, SendOtpState>(
-                            listener: (context, state) {
+                            listener: (context, state) async  {
                                 if (state is SendOtpFailure) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -113,6 +122,7 @@ class _OtpWidgetState extends State<OtpWidget> {
                                 }
                                 
                                 if(state is SendOtpSuccess){
+                                  
                                   setState(() {_start=duration;});
                                   startTimer();
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -125,7 +135,7 @@ class _OtpWidgetState extends State<OtpWidget> {
                             },
                           ),
                           BlocListener<LoginBloc, LoginState>(
-                            listener: (context, state) {
+                            listener: (context, state) async {
                                 if (state is LoginFailure) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -146,6 +156,10 @@ class _OtpWidgetState extends State<OtpWidget> {
                                 if(state is LoginSuccess){
 
                                   if(state.otpType == OtpType.Login.name){
+                                  getfirebase();
+                                  if(!mounted){
+                                    return;
+                                  }
                                     Navigator.pushReplacementNamed(context, "/app-login");
                                   }else if(state.otpType == OtpType.RessetPass.name){
                                     Navigator.pushReplacementNamed(context, "/set-pass");

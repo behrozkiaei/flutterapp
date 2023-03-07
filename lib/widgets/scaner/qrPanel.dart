@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:paytel/blocs/auth/me/me.bloc.dart';
+import 'package:paytel/blocs/auth/me/me.state.dart';
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -25,18 +29,33 @@ class QrPanel extends StatelessWidget {
         const  SizedBox(height: 15),
         const  Text("کد QR برای انتقال به کیف پول شما"),
         const  SizedBox(height: 10),
-        Center(
-                    child:  PrettyQr(
-                      image:const AssetImage('assets/icons/logo/p-logo-primary-boxed.png'),
-                      typeNumber: 3,
-                      size: 200,
-                      data: '123345665',
-                      errorCorrectLevel: QrErrorCorrectLevel.M,
-                      roundEdges: true,
-                    ),
-          ),
+        BlocBuilder<MeBloc, MeState>(
+          builder: (context, state) {
+            return 
+            (state is MeSuccess) ?
+              Center(
+                          child:  PrettyQr(
+                            image:const AssetImage('assets/icons/logo/p-logo-primary-boxed.png'),
+                            typeNumber: 3,
+                            size: 200,
+                            data: 'paytel/${state.me!.wallet!.walletCode}',
+                            errorCorrectLevel: QrErrorCorrectLevel.M,
+                            roundEdges: true,
+                          ),
+                ): const SpinKitRotatingCircle(
+                color: Style.Colors.primary,
+                size: 50.0,
+              );
+            }),
           const  SizedBox(height: 15),
-          const  Text("کد انتقال شما : 12873987587"),
+          BlocBuilder<MeBloc, MeState>(
+          builder: (context, state) {
+            return 
+              (state is MeSuccess) ? Text("کد انتقال شما : ${state.me!.wallet!.walletCode}") : const SpinKitRotatingCircle(
+                color: Style.Colors.primary,
+                size: 50.0,
+              );
+          }),
           InkWell(
             child: 
                 Container(

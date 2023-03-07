@@ -17,6 +17,7 @@ class CheckPassBloc extends Bloc<CheckPassEvent, CheckPassState> {
        final  response = await userRepository.checkPass(
          event.password
         );
+        print(response.data);
         if(response.data['status']){
           final prefs = await SharedPreferences.getInstance();
           prefs.setString("password", event.password);

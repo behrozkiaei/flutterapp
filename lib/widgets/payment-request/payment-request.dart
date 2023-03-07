@@ -5,7 +5,7 @@ import 'package:paytel/repositories/transactions.repository.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/payment-request/addPagePaymentRequest.dart';
 import 'package:paytel/widgets/payment-request/payment-request-list-view.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 class PaymentRequest extends StatefulWidget {
   const PaymentRequest({super.key});
 
@@ -18,7 +18,13 @@ class _PaymentRequestState extends State<PaymentRequest> {
   final transactionRepo = TransactionRepo();
   bool loading =false;
 
+  @override
+  void initState() {
 
+    super.initState();
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return  MultiBlocProvider(
@@ -41,11 +47,9 @@ class _PaymentRequestState extends State<PaymentRequest> {
             ),
       body: SafeArea(child: 
       Stack(
-        children : [
-          const PaymentRequestListView(),
-          Column(children: const [
+        children :  const [
+            PaymentRequestListView(),
             AddPaymentRequest()
-          ],)
           ]
          ),
        ),

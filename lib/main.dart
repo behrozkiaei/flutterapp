@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,19 +19,25 @@ import 'package:paytel/blocs/user/update-user/update-user.bloc.dart';
 import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/repositories/transactions.repository.dart';
 import 'package:paytel/router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletons/skeletons.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   print("Received FCM message in background: ${message.data}");
+// }
 
-void main()   {
+void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
-}
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   final userRepository = UserRepository();
   final transactionRepo = TransactionRepo();
-  @override
-  Widget build(BuildContext context) {
-    return  MultiBlocProvider(
+  runApp(MultiBlocProvider(
       providers: [
           BlocProvider<SendOtpBloc>(create: (BuildContext context) => SendOtpBloc(userRepository: userRepository),),
           BlocProvider<LoginBloc>(create: (BuildContext context) => LoginBloc(userRepository: userRepository),),
@@ -48,7 +55,29 @@ class MyApp extends StatelessWidget {
           BlocProvider<RessetPassBloc>(create: (BuildContext context) => RessetPassBloc(userRepository: userRepository),),
     
       ], 
-      child: SkeletonTheme(
+      child:MyApp(),
+      )
+      );
+}
+class MyApp extends StatelessWidget {
+  MyApp({super.key})  {
+    initializeFirebase();
+  }
+  initializeFirebase() async {
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    final String? fcmToken = await FirebaseMessaging.instance.getToken();
+    if(fcmToken != null){
+      final share = await SharedPreferences.getInstance();
+      share.setString('fcmToken', fcmToken);
+    }
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("Received FCM message");
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return   SkeletonTheme(
     // themeMode: ThemeMode.light,
     shimmerGradient: const LinearGradient(
          colors:  [
@@ -96,6 +125,7 @@ class MyApp extends StatelessWidget {
             ThemeData(
               fontFamily: "IRANSansWeb",
               brightness: Brightness.light,
+              appBarTheme:const AppBarTheme(color:   Colors.white) ,
               primaryColor: Colors.deepPurple[600],
               buttonTheme:ButtonThemeData(buttonColor : Colors.deepPurple[600]) ,
                     scaffoldBackgroundColor: Colors.white,
@@ -123,7 +153,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/app-login', 
       debugShowCheckedModeBanner  : false,
       onGenerateRoute: generateRoute,
-    ),
     ),
     );
   }

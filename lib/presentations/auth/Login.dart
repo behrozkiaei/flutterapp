@@ -109,7 +109,7 @@ class _AppLoginState extends State<AppLogin> {
               );
             }
             if(state is CheckPassSuccess){
-              print(25555);
+              
                      gotoMainPage();
             }
             if(state is CheckPassLoading){
@@ -194,7 +194,7 @@ class _AppLoginState extends State<AppLogin> {
                             BlocProvider.of<SendOtpBloc>(context).add(const SendOtpRessetPassButtonPressed());
                             Navigator.pushReplacementNamed(context, "/");
                           },
-                          child:  const Text("ویرایش شماره تلفن" ,style : TextStyle(color: Style.Colors.primary)),
+                          child:  const Text("رمز عبور خود را فراموش کرده ام" ,style : TextStyle(color: Style.Colors.primary)),
                         ),
                       ],
                     )

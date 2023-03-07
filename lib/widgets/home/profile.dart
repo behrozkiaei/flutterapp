@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:paytel/blocs/auth/me/me.bloc.dart';
+import 'package:paytel/blocs/auth/me/me.state.dart';
 import 'package:paytel/blocs/user/update-avtar/update-avatar.bloc.dart';
 import 'package:paytel/blocs/user/update-avtar/update-avatar.event.dart';
 import 'package:paytel/blocs/user/update-avtar/update-avatar.state.dart';
@@ -102,18 +104,30 @@ class _ProfileState extends State<Profile> {
                       },
               child: Stack(
                 children: <Widget>[
-                    CircleAvatar(
-                    backgroundColor: Style.Colors.primary,
-                    foregroundColor: Style.Colors.primary,
-                    
-                    radius: 50.0,
-                    backgroundImage: file != null ?
-                        FileImage(file!) as ImageProvider
-                    : const AssetImage(
-                      'assets/icons/user.png',
-                    ),
-                  ),
-                    
+                  BlocBuilder<MeBloc, MeState>(
+                      builder: (context, state) {
+                        return 
+                           ((state is MeSuccess ) &&
+                              state.me!.avatar != null) ? 
+                                CircleAvatar(
+                                backgroundColor: Style.Colors.primary,
+                                foregroundColor: Style.Colors.primary,
+                                radius: 50.0,
+                                backgroundImage: file != null ?
+                                    FileImage(file!) as ImageProvider
+                                : NetworkImage(state.me!.avatar.toString())
+                                
+                              ):   CircleAvatar(
+                                backgroundColor: Style.Colors.primary,
+                                foregroundColor: Style.Colors.primary,
+                                radius: 50.0,
+                                backgroundImage: file != null ?
+                                    FileImage(file!) as ImageProvider
+                                : const AssetImage(
+                                  'assets/icons/user.png',
+                                ),
+                                );
+                        }),
                       Container(
                       width: 28,
                       height: 28,
@@ -136,8 +150,21 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             const SizedBox(height: 20.0),
-            const Text("بهروز کیایی", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-            const Text("09116264382", style: TextStyle(fontSize: 14.0,color: Style.Colors.gray1)),
+            BlocBuilder<MeBloc, MeState>(
+                      builder: (context, state) {
+                        return 
+                           (state is MeSuccess ) ?
+                             Text(state.me!.name ?? "نامشخص", style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)):
+                            const  Text( "نامشخص", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold));
+                      }),
+                       BlocBuilder<MeBloc, MeState>(
+                      builder: (context, state) {
+                        return 
+                           (state is MeSuccess ) ?
+                             Text(state.me!.mobile ?? 'نامشخص', style: const  TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)):
+                             const Text( 'نامشخص', style:   TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold));
+
+                      }),
             const SizedBox(height: 20.0),
             
             Container(

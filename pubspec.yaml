@@ -61,8 +61,8 @@ dependencies:
   dio: ^5.0.0
   skeletons: ^0.0.3
   url_launcher: ^6.1.9
-  marquee: ^2.2.3
-
+  firebase_core: ^2.7.0 
+  firebase_messaging: ^14.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

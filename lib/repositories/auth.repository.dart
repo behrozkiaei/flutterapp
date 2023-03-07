@@ -46,9 +46,12 @@ static BaseOptions options = BaseOptions(
        return response;
     }
      Future<Response> verifyOtp(String mobile, String password) async {
+       final prefs = await SharedPreferences.getInstance();
+        final String? fcm =  prefs.getString('fcmToken');
       Response response = await _dio.post('/auth/verify-otp', data: {
         "mobile": mobile,
         "password": password,
+        'fcmToken' : fcm
       });
       return response;
     }
@@ -145,6 +148,21 @@ static BaseOptions options = BaseOptions(
        Response response = await _dio.post('/users/check-pass', data:{ 
           'password' :password,
         });
+       return response;
+    }
+    Future<Response> mutualFriends(
+      String listOfstring  ) async {
+      final token = await getToken();
+      _dio.options.headers["Authorization"] = "Bearer $token";
+      // exaple /users/mutual-friends?list=09302803271&list=string2423423
+       Response response = await _dio.get('/users/mutual-friends?$listOfstring' );
+       return response;
+    }
+    Future<Response> lastPaidUsers(
+      String listOfstring  ) async {
+      final token = await getToken();
+      _dio.options.headers["Authorization"] = "Bearer $token";
+       Response response = await _dio.get('/users/last-paid-users' );
        return response;
     }
 

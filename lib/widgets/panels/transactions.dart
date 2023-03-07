@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:paytel/blocs/auth/sed-otp/send-otp.bloc.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.event.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.state.dart';
@@ -135,7 +136,7 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
             if (index == _dataList.length) {
               return _buildProgressIndicator();
             } else {
-              return  MyTransactionRow(title :_dataList[index].title , date :_dataList[index].date , amount : _dataList[index].amount);
+              return  MyTransactionRow(title :_dataList[index].title , date :_dataList[index].date , amount : _dataList[index].amount , index :index);
             }
           }
         )
@@ -153,7 +154,8 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
   final String title;
   final int amount;
   final String date ;
-  const  MyTransactionRow({super.key,required this.title,required this.amount,required this.date});
+  final int index ;
+  const  MyTransactionRow({super.key,required this.title,required this.amount,required this.date, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +169,12 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
                        )   
                       ),
                     child: 
+                    InkWell(
+                      
+                      onTap:(){
+                       BlocProvider.of<MyTransactionsBloc>(context).add(ViewTransactionDetail(index: index));
+                      } ,
+                      child: 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -194,6 +202,7 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
                                child:  AddComma(value:amount.toString() ,textStyle: const TextStyle(fontSize: 12))) 
                           )
                       ],
+                    ),
                     ),
                   ),
               );

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1064603956574-hcd3l3e3romsg6nqqgtfon3gt4ld4gog.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1064603956574-hcd3l3e3romsg6nqqgtfon3gt4ld4gog</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCUDPY72lA92R5uzix8U3llxZOBWyIpktE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1064603956574</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.paytel</string>
+	<key>PROJECT_ID</key>
+	<string>paytel-ab99f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>paytel-ab99f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1064603956574:ios:dbb0536892ed3b6a6e4bcf</string>
+</dict>
+</plist>

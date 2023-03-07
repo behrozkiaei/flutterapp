@@ -50,3 +50,7 @@ class PageIndex extends AppStateEvent {
   String toString() =>
       'ChangeThemeColor ';
 }
+
+
+class SaveToStorage extends AppStateEvent {}
+class LoadFromStorage extends AppStateEvent {}

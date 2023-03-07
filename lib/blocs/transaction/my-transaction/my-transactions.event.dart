@@ -22,3 +22,18 @@ class MyTransactionsButtonPressed extends MyTransactionsEvent {
   String toString() =>
       'MyTransactionsButtonPressed { page: $page}';
 }
+
+class ViewTransactionDetail extends MyTransactionsEvent {
+  final int index;
+
+  const ViewTransactionDetail({
+    required this.index
+  });
+
+  @override
+  List<Object> get props => [index];
+
+  @override
+  String toString() =>
+      'MyTransactionsButtonPressed { page: $index}';
+}

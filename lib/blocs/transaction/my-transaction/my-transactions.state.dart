@@ -20,7 +20,18 @@ class MyTransactionsLoading extends MyTransactionsState {}
 // ignore: must_be_immutable
 class MyTransactionsSuccess extends MyTransactionsState {
   final  List<MyTransactions> myTransactions; 
-  const MyTransactionsSuccess(this.myTransactions);
+  int index=0; 
+  MyTransactionsSuccess(this.myTransactions, this.index);
+   MyTransactionsSuccess copyWith({
+        List<MyTransactions>? myTransactions,
+        int? index,
+    }) => 
+        MyTransactionsSuccess(
+            myTransactions ?? this.myTransactions,
+            index ?? this.index,
+        );
+
+
 }
 
 class MyTransactionsFailure extends MyTransactionsState {

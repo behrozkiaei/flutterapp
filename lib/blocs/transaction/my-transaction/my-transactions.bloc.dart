@@ -25,15 +25,27 @@ class MyTransactionsBloc extends Bloc<MyTransactionsEvent, MyTransactionsState> 
               if(currentState is MyTransactionsSuccess && event.page !=0){
                 List<MyTransactions> listOfAll = List.from([...currentState.myTransactions, ...transactionList]);
                 if(listOfAll.length  != response.data['result']['length']){
-                  emit(MyTransactionsSuccess(listOfAll));
+                    emit(MyTransactionsSuccess(listOfAll,currentState.index));
                 }
               }else{
-                emit(MyTransactionsSuccess(transactionList));
+                emit(MyTransactionsSuccess(transactionList,0));
               }
 
             }else{
               emit(MyTransactionsFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
+        } catch (e) {
+          emit(MyTransactionsFailure( error: e.toString()));
+        }
+      });
+
+      on<ViewTransactionDetail>((event, emit) async {
+        final currentState = state; 
+        emit(MyTransactionsLoading());  
+        try {
+            if(currentState is MyTransactionsSuccess){
+              emit(currentState.copyWith( myTransactions :currentState.myTransactions , index :event.index));
+            }
         } catch (e) {
           emit(MyTransactionsFailure( error: e.toString()));
         }

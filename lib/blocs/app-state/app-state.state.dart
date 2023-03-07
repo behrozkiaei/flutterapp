@@ -1,36 +1,35 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'package:equatable/equatable.dart';
-import 'package:paytel/models/app-state.model.dart';
+class AppStateState {
+    AppStateState({
+        this.tabIndex,
+        this.themeMode,
+        this.isAuthenticated,
+    });
 
-abstract class AppStateState extends Equatable {
-  const AppStateState();
+    final int? tabIndex ;
+    final String? themeMode;
+    final bool? isAuthenticated;
 
-  @override
-  List<Object> get props => [];
-}
+    AppStateState copyWith({
+        int? tabIndex,
+        String? themeMode,
+        bool? isAuthenticated,
+    }) => 
+        AppStateState(
+            tabIndex: tabIndex ?? this.tabIndex,
+            themeMode: themeMode ?? this.themeMode,
+            isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+        );
 
-class AppStateInitial extends AppStateState {}
+    factory AppStateState.fromJson(Map<String, dynamic> json) => AppStateState(
+        tabIndex: json["tabIndex"],
+        themeMode: json["themeMode"],
+        isAuthenticated: json["isAuthenticated"],
+    );
 
-class AppStateLoading extends AppStateState {}
-
-class AppStateSuccess extends AppStateState {
-  final AppState appState ;
-
-  const AppStateSuccess(this.appState); 
-
-}
-
-
-
-class AppStateFailure extends AppStateState {
-  final String error;
-
-  const AppStateFailure({required this.error});
-
-  @override
-  List<Object> get props => [error];
-
-  @override
-  String toString() => 'AppStateFailure { error: $error }';
+    Map<String, dynamic> toJson() => {
+        "tabIndex": tabIndex,
+        "themeMode": themeMode,
+        "isAuthenticated": isAuthenticated,
+    };
 }
