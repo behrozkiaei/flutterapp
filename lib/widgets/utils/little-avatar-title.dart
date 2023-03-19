@@ -25,7 +25,7 @@ class AvatarTitle extends StatelessWidget {
                         ),
                       ),
                         child:
-                        avatar != null ? 
+                        (avatar != null && avatar != "") ? 
                         CircleAvatar(
                             radius: 50.0,
                             backgroundImage:NetworkImage('$baseUrl/$avatar')) : 
@@ -36,9 +36,12 @@ class AvatarTitle extends StatelessWidget {
                               backgroundImage:  AssetImage('assets/icons/user.png')   
                               ),
                    ),
-                    Text(title ?? "نامشخص")
+                    Text(title ?? "نامشخص" ,
+                    textDirection:  title.startsWith("09")? TextDirection.ltr : TextDirection.rtl,
+                    )
                 ],
         
     );
   }
 }
+

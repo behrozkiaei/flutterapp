@@ -18,11 +18,11 @@ class MyTransactionsBloc extends Bloc<MyTransactionsEvent, MyTransactionsState> 
           final  response = await transactionRepository.getMyTransactions(
             event.page
             );
-
             if(response.data['status'] == true ){
-     
+                
                List<MyTransactions> transactionList = List.from(response.data['result']['data']).map((json) => MyTransactions.fromJson(json)).toList();
               if(currentState is MyTransactionsSuccess && event.page !=0){
+
                 List<MyTransactions> listOfAll = List.from([...currentState.myTransactions, ...transactionList]);
                 if(listOfAll.length  != response.data['result']['length']){
                     emit(MyTransactionsSuccess(listOfAll,currentState.index));
@@ -35,6 +35,7 @@ class MyTransactionsBloc extends Bloc<MyTransactionsEvent, MyTransactionsState> 
               emit(MyTransactionsFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
           }
         } catch (e) {
+           print(e);
           emit(MyTransactionsFailure( error: e.toString()));
         }
       });

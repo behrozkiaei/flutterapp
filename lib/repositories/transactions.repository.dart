@@ -59,8 +59,10 @@ static BaseOptions options = BaseOptions(
 
    Future<Response> getMyTransactions( int page ) async {
       var from = page * 10 ;
+      print(555555555555555);
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
+      print(token);
       _dio.options.headers["Authorization"] = "Bearer $token";
       Response response = await _dio.get('/transaction/get-all-orders/?from=$from&take=10');
       return response;

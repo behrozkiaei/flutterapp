@@ -10,7 +10,8 @@ class ReceiptDetail extends StatelessWidget{
   final List<Desc> list; 
   @override
   Widget build(BuildContext context) {
-    return  ListView.builder(
+    return list.isNotEmpty ? 
+    ListView.builder(
           itemCount: list.length,
           itemBuilder: (context, index) {
             if(list.isEmpty){
@@ -31,28 +32,28 @@ class ReceiptDetail extends StatelessWidget{
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: 
-                      [Text(item.key,style :ReceiptDescStyling.key),
+                      [Text(item.key!,style :ReceiptDescStyling.key),
                         Row(children: [
-                              ToPersianDate(y: DateUtil.getYear(item.value),m:DateUtil.getMonth(item.value),d:DateUtil.getDay(item.value),style:  const TextStyle(color: Style.Colors.gray1,fontSize: 12),),
-                              Text( DateUtil.getTime(item.value),style:  const TextStyle(color: Style.Colors.gray1,fontSize: 12),),]),
+                              ToPersianDate(y: DateUtil.getYear(item.value!),m:DateUtil.getMonth(item.value!),d:DateUtil.getDay(item.value!),style:  const TextStyle(color: Style.Colors.gray1,fontSize: 12),),
+                              Text( DateUtil.getTime(item.value!),style:  const TextStyle(color: Style.Colors.gray1,fontSize: 12),),]),
                       ]):item.key == 'مبلغ' ?
                       Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children:  
-                        [Text(item.key,style :ReceiptDescStyling.key),
-                        Text('${addCommas(item.value)} ریال',style: ReceiptDescStyling.value) 
+                        [Text(item.key!,style :ReceiptDescStyling.key),
+                        Text('${addCommas(item.value!)} ریال',style: ReceiptDescStyling.value) 
                       ]):Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children:  
                         [
-                        Text(item.key,style :ReceiptDescStyling.key),
-                        Text(item.value,style: ReceiptDescStyling.value) ,
+                        Text(item.key!,style :ReceiptDescStyling.key),
+                        Text(item.value!,style: ReceiptDescStyling.value) ,
                       ],),     
                   );
           },
-        );
+        ):const SizedBox.shrink();
   }
 }
 

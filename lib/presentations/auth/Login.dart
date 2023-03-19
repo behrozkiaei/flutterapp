@@ -7,17 +7,14 @@ import 'package:local_auth/local_auth.dart';
 import 'package:paytel/blocs/auth/check-pass/check-pass.bloc.dart';
 import 'package:paytel/blocs/auth/check-pass/check-pass.event.dart';
 import 'package:paytel/blocs/auth/check-pass/check-pass.state.dart';
-import 'package:paytel/blocs/auth/login/login.bloc.dart';
-import 'package:paytel/blocs/auth/login/login.event.dart';
-import 'package:paytel/blocs/auth/login/login.state.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.event.dart';
-import 'package:paytel/blocs/auth/me/me.state.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.bloc.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.event.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
+import 'package:persian_tools/persian_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class AppLogin extends StatefulWidget {
   const AppLogin({super.key});
@@ -27,13 +24,20 @@ class AppLogin extends StatefulWidget {
 }
 
 class _AppLoginState extends State<AppLogin> {
-  final _formKey = GlobalKey<FormState>();
   final LocalAuthentication auth = LocalAuthentication();
-  String _inputText = '';
   String? errorMessage ;
-  String _authorized = 'Not Authorized';
-  bool _isAuthenticating = false;
   bool loading =false;
+
+  String _authorized = 'Not Authorized';
+  final _formKey = GlobalKey<FormState>();
+  String _inputText = '';
+  bool _isAuthenticating = false;
+
+  void gotoMainPage(){
+    BlocProvider.of<MeBloc>(context).add(StartFetchMe());
+    Navigator.pushReplacementNamed(context, '/home');
+  }
+
   void _submitForm() async{
     if (_formKey.currentState!.validate())  {
       _formKey.currentState!.save();
@@ -44,6 +48,7 @@ class _AppLoginState extends State<AppLogin> {
       BlocProvider.of<CheckPassBloc>(context).add( CheckPassButtonPressed(password: _inputText));
     }
   }
+
  void _openFingerPrint(){
   _authenticate();
  }
@@ -82,17 +87,15 @@ class _AppLoginState extends State<AppLogin> {
          setState(() {
            errorMessage = "لطفا یک بار با رمز عبور وارد شوید";
          });
+      }else{
+        if(!mounted){
+          return ;
+        }
+        BlocProvider.of<CheckPassBloc>(context).add( CheckPassButtonPressed(password: tempPass));
       }
-      if(!mounted){
-        return ;
-      }
-      BlocProvider.of<CheckPassBloc>(context).add( CheckPassButtonPressed(password: tempPass));
     }
   }
-    void gotoMainPage(){
-      BlocProvider.of<MeBloc>(context).add(StartFetchMe());
-      Navigator.pushReplacementNamed(context, '/home');
-    }
+
   @override
   Widget build(BuildContext context) {
     return 
@@ -153,11 +156,12 @@ class _AppLoginState extends State<AppLogin> {
                           icon:  Icons.security,
                           onChange: (value){
                             setState(() {
-                              _inputText=value;
+                              // _inputText=value ;
+                                _inputText=convertArToEn(convertFaToEn(value));
                             });
                           },
                           onSave: (value){},
-                          type: "text",
+                          type: "text-en",
                           validate :(value){
                                 if (value!.length < 6 ) {
                                       return 'Please enter some text';
@@ -166,12 +170,12 @@ class _AppLoginState extends State<AppLogin> {
                           }
                         ),
                         const SizedBox(height: 10),
-                        BlocBuilder<MeBloc, MeState>(
+                        BlocBuilder<CheckPassBloc, CheckPassState>(
                             builder: (context, state) {
                             return
                             StyledElevatedButton(
-                                  isLoading: state is MeLoading? true :false,
-                                  disabled: state is MeLoading? true :false,
+                                  isLoading: state is  CheckPassLoading ? true :false,
+                                  disabled: state is  CheckPassLoading ? true :false,
                                   width:double.maxFinite ,
                                   icon : Icons.check_box  ,
                                   text : _inputText.isNotEmpty ? "ورود با رمز عبور" :"ورود با اثر انگشت" ,
@@ -204,6 +208,4 @@ class _AppLoginState extends State<AppLogin> {
       ), 
           );
   }
-
-  
 }

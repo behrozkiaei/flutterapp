@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:paytel/blocs/app-state/app-state.bloc.dart';
+import 'package:paytel/blocs/app-state/app-state.event.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.state.dart';
 import 'package:paytel/style/theme.dart' as Style;
@@ -41,12 +43,12 @@ class SendReceivePage extends StatelessWidget {
                               BlocBuilder<MeBloc, MeState>(
                                 builder: (context, state) {
                                if(state is MeSuccess){
-                                return Text('${addCommas(state.me!.wallet!.amount.toString())  } ریال', style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), ); 
+                                return  SizedBox(height :30 ,child:Text('${addCommas(state.me!.wallet!.amount.toString())  } ریال', style: const TextStyle(color: Style.Colors.background , fontSize: 18 ,fontWeight: FontWeight.bold), )); 
                                }else{
-                                 return const SpinKitThreeBounce(
-                                             color: Style.Colors.primary,
+                                 return const SizedBox(height :30 ,child: SpinKitThreeBounce(
+                                             color: Style.Colors.white,
                                               size: 12.0,
-                                          ); 
+                                          ) );
                                }
                                }),
                                const  Text("موجودی", style: const TextStyle(color: Style.Colors.background , fontSize: 10 )),
@@ -95,7 +97,8 @@ class SendReceivePage extends StatelessWidget {
                                     ),
                                   InkWell(
                                   onTap: (){
-                                        //  Navigator.pushNamed(context, "/");
+                                          BlocProvider.of<AppStateBloc>(context).add(const ChangeScannerPanelState( isScannerPanelOpen: true));
+                                          BlocProvider.of<AppStateBloc>(context).add(const PageIndex( pageIndex: 1));
                                     },
                                   child:const   MainPageIcons(
                                       iconSize:  40, 

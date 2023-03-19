@@ -81,19 +81,8 @@ class _OtpWidgetState extends State<OtpWidget> {
    void _submitOtp() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      // Send request to server to login with phone number and OTP
-      // For example, using the http package:
-      // var response = await http.post(...);
     }
   }
-
-
-
-  Future<void> getfirebase()   async {
-      final fcmToken = await FirebaseMessaging.instance.getToken();
-      print(fcmToken);
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +124,7 @@ class _OtpWidgetState extends State<OtpWidget> {
                             },
                           ),
                           BlocListener<LoginBloc, LoginState>(
-                            listener: (context, state) async {
+                            listener: (context, state)  {
                                 if (state is LoginFailure) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -156,7 +145,6 @@ class _OtpWidgetState extends State<OtpWidget> {
                                 if(state is LoginSuccess){
 
                                   if(state.otpType == OtpType.Login.name){
-                                  getfirebase();
                                   if(!mounted){
                                     return;
                                   }

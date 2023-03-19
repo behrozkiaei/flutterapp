@@ -37,59 +37,65 @@ class MeModel {
         this.dateVerified,
         this.date,
         this.password,
+        this.password2,
+        this.loginTime,
         this.otpType,
         this.otpDate,
         this.nationalCode,
         this.cartMelli,
         this.shenasname,
+        this.fcmToken,
         this.wallet,
-        this.order,
+        this.fromUsers,
     });
 
-    String? id;
-    String? mobile;
-    String? name;
-    String? address;
-    String? username;
-    String? description;
-    String? email;
-    String? lat;
-    String? lan;
-    dynamic status;
-    String? avatar;
-    String? role;
-    dynamic website;
-    dynamic contantPersonName;
-    dynamic contactPersonPhone;
-    dynamic icon;
-    bool? active;
-    bool? verified;
-    String? phone;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    String? sheba;
-    String? card;
-    bool? verifiedBank;
-    dynamic dateVerified;
-    String? date;
-    String? password;
-    String? otpType;
-    String? otpDate;
-    dynamic nationalCode;
-    String? cartMelli;
-    dynamic shenasname;
-    Wallet? wallet;
-    List<Order>? order;
+    final String? id;
+    final String? mobile;
+    final String? name;
+    final dynamic address;
+    final dynamic username;
+    final dynamic description;
+    final dynamic email;
+    final dynamic lat;
+    final String? lan;
+    final dynamic status;
+    final String? avatar;
+    final String? role;
+    final dynamic website;
+    final dynamic contantPersonName;
+    final dynamic contactPersonPhone;
+    final dynamic icon;
+    final bool? active;
+    final bool? verified;
+    final String? phone;
+    final String? createdAt;
+    final String? updatedAt;
+    final String? sheba;
+    final String? card;
+    final bool? verifiedBank;
+    final dynamic dateVerified;
+    final String? date;
+    final String? password;
+    final String? password2;
+    final String? loginTime;
+    final String? otpType;
+    final String? otpDate;
+    final String? nationalCode;
+    final String? cartMelli;
+    final dynamic shenasname;
+    final String? fcmToken;
+    final MeModelWallet? wallet;
+    final List<FromUser>? fromUsers;
 
     MeModel copyWith({
         String? id,
         String? mobile,
         String? name,
-        String? address,
-        String? username,
-        String? description,
-        String? email,
-        String? lat,
+        dynamic address,
+        dynamic username,
+        dynamic description,
+        dynamic email,
+        dynamic lat,
         String? lan,
         dynamic status,
         String? avatar,
@@ -101,21 +107,24 @@ class MeModel {
         bool? active,
         bool? verified,
         String? phone,
-        DateTime? createdAt,
-        DateTime? updatedAt,
+        String? createdAt,
+        String? updatedAt,
         String? sheba,
         String? card,
         bool? verifiedBank,
         dynamic dateVerified,
         String? date,
         String? password,
+        String? password2,
+        String? loginTime,
         String? otpType,
         String? otpDate,
-        dynamic nationalCode,
+        String? nationalCode,
         String? cartMelli,
         dynamic shenasname,
-        Wallet? wallet,
-        List<Order>? order,
+        String? fcmToken,
+        MeModelWallet? wallet,
+        List<FromUser>? fromUsers,
     }) => 
         MeModel(
             id: id ?? this.id,
@@ -145,13 +154,16 @@ class MeModel {
             dateVerified: dateVerified ?? this.dateVerified,
             date: date ?? this.date,
             password: password ?? this.password,
+            password2: password2 ?? this.password2,
+            loginTime: loginTime ?? this.loginTime,
             otpType: otpType ?? this.otpType,
             otpDate: otpDate ?? this.otpDate,
             nationalCode: nationalCode ?? this.nationalCode,
             cartMelli: cartMelli ?? this.cartMelli,
             shenasname: shenasname ?? this.shenasname,
+            fcmToken: fcmToken ?? this.fcmToken,
             wallet: wallet ?? this.wallet,
-            order: order ?? this.order,
+            fromUsers: fromUsers ?? this.fromUsers,
         );
 
     factory MeModel.fromJson(Map<String, dynamic> json) => MeModel(
@@ -174,21 +186,24 @@ class MeModel {
         active: json["active"],
         verified: json["verified"],
         phone: json["phone"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"],
+        updatedAt: json["updatedAt"],
         sheba: json["sheba"],
         card: json["card"],
         verifiedBank: json["verified_bank"],
         dateVerified: json["dateVerified"],
         date: json["date"],
         password: json["password"],
+        password2: json["password2"],
+        loginTime: json["loginTime"],
         otpType: json["otpType"],
         otpDate: json["otpDate"],
         nationalCode: json["nationalCode"],
         cartMelli: json["cartMelli"],
         shenasname: json["shenasname"],
-        wallet: json["Wallet"] == null ? null : Wallet.fromJson(json["Wallet"]),
-        order: json["order"] == null ? [] : List<Order>.from(json["order"]!.map((x) => Order.fromJson(x))),
+        fcmToken: json["fcmToken"],
+        wallet: json["Wallet"] == null ? null : MeModelWallet.fromJson(json["Wallet"]),
+        fromUsers: json["fromUsers"] == null ? [] : List<FromUser>.from(json["fromUsers"]!.map((x) => FromUser.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -211,139 +226,128 @@ class MeModel {
         "active": active,
         "verified": verified,
         "phone": phone,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
         "sheba": sheba,
         "card": card,
         "verified_bank": verifiedBank,
         "dateVerified": dateVerified,
         "date": date,
         "password": password,
+        "password2": password2,
+        "loginTime": loginTime,
         "otpType": otpType,
         "otpDate": otpDate,
         "nationalCode": nationalCode,
         "cartMelli": cartMelli,
         "shenasname": shenasname,
+        "fcmToken": fcmToken,
         "Wallet": wallet?.toJson(),
-        "order": order == null ? [] : List<dynamic>.from(order!.map((x) => x.toJson())),
+        "fromUsers": fromUsers == null ? [] : List<dynamic>.from(fromUsers!.map((x) => x.toJson())),
     };
 }
 
-class Order {
-    Order({
+class FromUser {
+    FromUser({
         this.id,
-        this.type,
-        this.amount,
-        this.userId,
-        this.date,
-        this.title,
-        this.subTitle,
-        this.avatar,
-        this.isPaid,
-        this.createdAt,
-        this.updatedAt,
-        this.datePaid,
-        this.data1,
-        this.data2,
-        this.data3,
-        this.data4,
+        this.fromUserId,
+        this.destUserId,
+        this.destUser,
     });
 
-    String? id;
-    String? type;
-    int? amount;
-    String? userId;
-    String? date;
-    String? title;
-    String? subTitle;
-    dynamic avatar;
-    bool? isPaid;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    String? datePaid;
-    dynamic data1;
-    dynamic data2;
-    dynamic data3;
-    dynamic data4;
+    final String? id;
+    final String? fromUserId;
+    final String? destUserId;
+    final DestUser? destUser;
 
-    Order copyWith({
+    FromUser copyWith({
         String? id,
-        String? type,
-        int? amount,
-        String? userId,
-        String? date,
-        String? title,
-        String? subTitle,
-        dynamic avatar,
-        bool? isPaid,
-        DateTime? createdAt,
-        DateTime? updatedAt,
-        String? datePaid,
-        dynamic data1,
-        dynamic data2,
-        dynamic data3,
-        dynamic data4,
+        String? fromUserId,
+        String? destUserId,
+        DestUser? destUser,
     }) => 
-        Order(
+        FromUser(
             id: id ?? this.id,
-            type: type ?? this.type,
-            amount: amount ?? this.amount,
-            userId: userId ?? this.userId,
-            date: date ?? this.date,
-            title: title ?? this.title,
-            subTitle: subTitle ?? this.subTitle,
-            avatar: avatar ?? this.avatar,
-            isPaid: isPaid ?? this.isPaid,
-            createdAt: createdAt ?? this.createdAt,
-            updatedAt: updatedAt ?? this.updatedAt,
-            datePaid: datePaid ?? this.datePaid,
-            data1: data1 ?? this.data1,
-            data2: data2 ?? this.data2,
-            data3: data3 ?? this.data3,
-            data4: data4 ?? this.data4,
+            fromUserId: fromUserId ?? this.fromUserId,
+            destUserId: destUserId ?? this.destUserId,
+            destUser: destUser ?? this.destUser,
         );
 
-    factory Order.fromJson(Map<String, dynamic> json) => Order(
+    factory FromUser.fromJson(Map<String, dynamic> json) => FromUser(
         id: json["id"],
-        type: json["type"],
-        amount: json["amount"],
-        userId: json["userId"],
-        date: json["date"],
-        title: json["title"],
-        subTitle: json["subTitle"],
-        avatar: json["avatar"],
-        isPaid: json["isPaid"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        datePaid: json["datePaid"],
-        data1: json["data1"],
-        data2: json["data2"],
-        data3: json["data3"],
-        data4: json["data4"],
+        fromUserId: json["fromUserId"],
+        destUserId: json["destUserId"],
+        destUser: json["destUser"] == null ? null : DestUser.fromJson(json["destUser"]),
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "type": type,
-        "amount": amount,
-        "userId": userId,
-        "date": date,
-        "title": title,
-        "subTitle": subTitle,
-        "avatar": avatar,
-        "isPaid": isPaid,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "datePaid": datePaid,
-        "data1": data1,
-        "data2": data2,
-        "data3": data3,
-        "data4": data4,
+        "fromUserId": fromUserId,
+        "destUserId": destUserId,
+        "destUser": destUser?.toJson(),
     };
 }
 
-class Wallet {
-    Wallet({
+class DestUser {
+    DestUser({
+        this.name,
+        this.avatar,
+        this.wallet,
+    });
+
+    final String? name;
+    final dynamic avatar;
+    final DestUserWallet? wallet;
+
+    DestUser copyWith({
+        String? name,
+        dynamic avatar,
+        DestUserWallet? wallet,
+    }) => 
+        DestUser(
+            name: name ?? this.name,
+            avatar: avatar ?? this.avatar,
+            wallet: wallet ?? this.wallet,
+        );
+
+    factory DestUser.fromJson(Map<String, dynamic> json) => DestUser(
+        name: json["name"],
+        avatar: json["avatar"],
+        wallet: json["Wallet"] == null ? null : DestUserWallet.fromJson(json["Wallet"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "name": name,
+        "avatar": avatar,
+        "Wallet": wallet?.toJson(),
+    };
+}
+
+class DestUserWallet {
+    DestUserWallet({
+        this.walletCode,
+    });
+
+    final String? walletCode;
+
+    DestUserWallet copyWith({
+        String? walletCode,
+    }) => 
+        DestUserWallet(
+            walletCode: walletCode ?? this.walletCode,
+        );
+
+    factory DestUserWallet.fromJson(Map<String, dynamic> json) => DestUserWallet(
+        walletCode: json["walletCode"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "walletCode": walletCode,
+    };
+}
+
+class MeModelWallet {
+    MeModelWallet({
         this.id,
         this.userId,
         this.name,
@@ -355,28 +359,28 @@ class Wallet {
         this.date,
     });
 
-    String? id;
-    String? userId;
-    dynamic name;
-    int? amount;
-    String? walletCode;
-    String? walletType;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    String? date;
+    final String? id;
+    final String? userId;
+    final dynamic name;
+    final int? amount;
+    final String? walletCode;
+    final String? walletType;
+    final String? createdAt;
+    final String? updatedAt;
+    final String? date;
 
-    Wallet copyWith({
+    MeModelWallet copyWith({
         String? id,
         String? userId,
         dynamic name,
         int? amount,
         String? walletCode,
         String? walletType,
-        DateTime? createdAt,
-        DateTime? updatedAt,
+        String? createdAt,
+        String? updatedAt,
         String? date,
     }) => 
-        Wallet(
+        MeModelWallet(
             id: id ?? this.id,
             userId: userId ?? this.userId,
             name: name ?? this.name,
@@ -388,15 +392,15 @@ class Wallet {
             date: date ?? this.date,
         );
 
-    factory Wallet.fromJson(Map<String, dynamic> json) => Wallet(
+    factory MeModelWallet.fromJson(Map<String, dynamic> json) => MeModelWallet(
         id: json["id"],
         userId: json["userId"],
         name: json["name"],
         amount: json["amount"],
         walletCode: json["walletCode"],
         walletType: json["walletType"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"],
+        updatedAt: json["updatedAt"],
         date: json["date"],
     );
 
@@ -407,8 +411,8 @@ class Wallet {
         "amount": amount,
         "walletCode": walletCode,
         "walletType": walletType,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
         "date": date,
     };
 }

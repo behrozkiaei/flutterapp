@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:paytel/blocs/app-state/app-state.bloc.dart';
 import 'package:paytel/blocs/auth/check-pass/check-pass.bloc.dart';
 import 'package:paytel/blocs/auth/login/login.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
@@ -16,12 +18,13 @@ import 'package:paytel/blocs/user/update-bank-data/update-user.bloc.dart';
 import 'package:paytel/blocs/user/update-identity-image/update-identity.bloc.dart';
 import 'package:paytel/blocs/user/update-national-card/update-avatar.bloc.dart';
 import 'package:paytel/blocs/user/update-user/update-user.bloc.dart';
+import 'package:paytel/models/app-state.model.dart';
 import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/repositories/transactions.repository.dart';
 import 'package:paytel/router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:paytel/style/theme.dart' as Style;
 import 'firebase_options.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -37,6 +40,7 @@ void main() async {
 
   final userRepository = UserRepository();
   final transactionRepo = TransactionRepo();
+
   runApp(MultiBlocProvider(
       providers: [
           BlocProvider<SendOtpBloc>(create: (BuildContext context) => SendOtpBloc(userRepository: userRepository),),
@@ -53,6 +57,7 @@ void main() async {
           BlocProvider<UpdateIdentityImage>(create: (BuildContext context) => UpdateIdentityImage(userRepository: userRepository),),
           BlocProvider<CheckPassBloc>(create: (BuildContext context) => CheckPassBloc(userRepository: userRepository),),
           BlocProvider<RessetPassBloc>(create: (BuildContext context) => RessetPassBloc(userRepository: userRepository),),
+          BlocProvider<AppStateBloc>(create: (BuildContext context) => AppStateBloc()),
     
       ], 
       child:MyApp(),
@@ -62,98 +67,47 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key})  {
     initializeFirebase();
+
   }
+
   initializeFirebase() async {
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    final String? fcmToken = await FirebaseMessaging.instance.getToken();
-    if(fcmToken != null){
-      final share = await SharedPreferences.getInstance();
-      share.setString('fcmToken', fcmToken);
+    try{
+      final String? fcmToken = await FirebaseMessaging.instance.getToken();
+      if(fcmToken != null){
+        print(fcmToken);
+        final share = await SharedPreferences.getInstance();
+        share.setString('fcmToken', fcmToken);
+      }
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print("Received FCM message");
+      });
+    }catch(e){
+      print("token not founded");
     }
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("Received FCM message");
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return   SkeletonTheme(
-    // themeMode: ThemeMode.light,
-    shimmerGradient: const LinearGradient(
-         colors:  [
-          Color(0xFFD8E3E7),
-          Color(0xFFC8D5DA),
-          Color(0xFFD8E3E7),
-        ],
-        stops: [
-          0.1,
-          0.5,
-          0.9,
-        ],
-      ),
-      darkShimmerGradient:const LinearGradient(
-        colors: [
-          Color(0xFF222222),
-          Color(0xFF242424),
-          Color(0xFF2B2B2B),
-          Color(0xFF242424),
-          Color(0xFF222222),
-        ],
-        stops: [
-          0.0,
-          0.2,
-          0.5,
-          0.8,
-          1,
-        ],
-        begin: Alignment(-2.4, -0.2),
-        end: Alignment(2.4, 0.2),
-        tileMode: TileMode.clamp,
-      ),
+        shimmerGradient: Style.Colors.lightLinearGradient,
+        darkShimmerGradient:Style.Colors.darkLinearGradient,
         child: MaterialApp(
-      themeMode: ThemeMode.light,
-      localizationsDelegates:const  [
-          GlobalCupertinoLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-      supportedLocales: const [
-          Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales
-        ],
-      locale:const Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales,
-      theme:  
-            ThemeData(
-              fontFamily: "IRANSansWeb",
-              brightness: Brightness.light,
-              appBarTheme:const AppBarTheme(color:   Colors.white) ,
-              primaryColor: Colors.deepPurple[600],
-              buttonTheme:ButtonThemeData(buttonColor : Colors.deepPurple[600]) ,
-                    scaffoldBackgroundColor: Colors.white,
-                    primarySwatch: Colors.deepPurple,
-                    colorScheme:  ColorScheme.light(
-                      primary: Colors.deepPurple.shade400,
-                    ),
-              textTheme: const TextTheme(
-           
-                displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-                titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-                bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'IRANSansWeb'),
-              ),
-            ),
-             darkTheme: ThemeData(
-               brightness: Brightness.dark,
-               fontFamily: "IRANSansWeb",
-               primaryColor: Colors.deepPurple[800],
-                textTheme: const TextTheme(
-                displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold,color:  Colors.white),
-                titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic,color:  Colors.white),
-                bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'IRANSansWeb',color:  Colors.white),
-              ),
-            ),
-      initialRoute: '/app-login', 
-      debugShowCheckedModeBanner  : false,
-      onGenerateRoute: generateRoute,
-    ),
+          themeMode: ThemeMode.light,
+          localizationsDelegates:const  [
+              GlobalCupertinoLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+          supportedLocales: const [
+              Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales
+            ],
+          locale:const Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales,
+          theme:Style.Colors.themeData,
+          darkTheme: Style.Colors.darkTheme,
+          initialRoute: '/splash', 
+          debugShowCheckedModeBanner  : false,
+          onGenerateRoute: generateRoute,
+        ),
     );
   }
 }

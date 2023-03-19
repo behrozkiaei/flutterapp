@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:paytel/blocs/auth/sed-otp/send-otp.bloc.dart';
+import 'package:paytel/blocs/app-state/app-state.bloc.dart';
+import 'package:paytel/blocs/app-state/app-state.event.dart';
+import 'package:paytel/blocs/app-state/app-state.state.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.event.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.state.dart';
@@ -30,9 +31,10 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
 
   bool _isLoading =false;
   final int _page = 1;
-
+  bool? panelIsOpen = false;
   @override
   void dispose() {
+    // BlocProvider.of<AppStateBloc>(context).add(const ChangeTransactionPanelState(isTransactionPanelOpen: false));
     widget.scrollController.dispose();
     super.dispose();
   }
@@ -101,9 +103,10 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
   Widget build(BuildContext context) {
     
     final double height = MediaQuery.of(context).size.height;
-    return BlocListener<MyTransactionsBloc,MyTransactionsState>(listener: (context,state){
+    return 
+    MultiBlocListener(listeners: [
+    BlocListener<MyTransactionsBloc,MyTransactionsState>(listener: (context,state){
       if(state is MyTransactionsSuccess){
-        // print(staste.myTransactions[0].title);
         setState(() {
           _isLoading =false;
         _dataList = state.myTransactions;
@@ -119,8 +122,16 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
           _isLoading =false;
         });
       }
-    },
-    child :Scaffold(
+    }),
+    BlocListener<AppStateBloc,AppStateState>(listener: (context,state){
+      if(state.transactionPanelStateIsOpen == true){
+        widget.panelController.open();
+      }else{
+        widget.panelController.close();
+      }
+    }),
+    ],
+     child: Scaffold(
       body: Column(
       children: [
       const  SizedBox(height: 10),
@@ -136,7 +147,7 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
             if (index == _dataList.length) {
               return _buildProgressIndicator();
             } else {
-              return  MyTransactionRow(title :_dataList[index].title , date :_dataList[index].date , amount : _dataList[index].amount , index :index);
+              return  MyTransactionRow(title :_dataList[index].title ?? "نامشخص" , date :_dataList[index].date ?? "نامشخص" , amount : _dataList[index].amount ?? 0  , index :index ,panelController : widget.panelController);
             }
           }
         )
@@ -155,7 +166,8 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
   final int amount;
   final String date ;
   final int index ;
-  const  MyTransactionRow({super.key,required this.title,required this.amount,required this.date, required this.index});
+  final PanelController panelController ;
+  const  MyTransactionRow({super.key,required this.title,required this.amount,required this.date, required this.index,required this.panelController});
 
   @override
   Widget build(BuildContext context) {
@@ -173,6 +185,7 @@ class _TransactionsPanelState extends State<TransactionsPanel> {
                       
                       onTap:(){
                        BlocProvider.of<MyTransactionsBloc>(context).add(ViewTransactionDetail(index: index));
+                        panelController.close();
                       } ,
                       child: 
                     Row(

@@ -6,6 +6,8 @@ import 'package:paytel/blocs/auth/ressetPass/resset-pass.state.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
+import 'package:persian_tools/persian_tools.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SetPass extends StatefulWidget {
   const SetPass({super.key});
@@ -50,7 +52,7 @@ class _SetPassState extends State<SetPass> {
     return MultiBlocListener(
                         listeners: [  
                           BlocListener<RessetPassBloc, RessetPassState>(
-                            listener: (context, state) {
+                            listener: (context, state) async  {
                                 if (state is RessetPassFailure) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -69,8 +71,12 @@ class _SetPassState extends State<SetPass> {
                                   });
                                 } 
                                 if(state is RessetPassSuccess){
-                                    
-                                    Navigator.pushReplacementNamed(context, "/app-login");
+                                    final prefs = await SharedPreferences.getInstance();
+                                    prefs.setString("password" , convertArToEn(convertFaToEn(pass)));
+                                    if(!mounted){
+                                      return;
+                                    }
+                                    Navigator.pushReplacementNamed(context, "/home");
                                 } 
                             }
                             
@@ -104,11 +110,15 @@ class _SetPassState extends State<SetPass> {
                                     onChange: (value){
                                       if(value!= null){
                                         setState(() {
-                                          pass= value;
+                                          pass= convertArToEn(convertFaToEn(value));
                                         });
                                       }
                                     },
-                                    onSave: (value){},
+                                    onSave: (value){
+                                      setState(() {
+                                          pass= convertArToEn(convertFaToEn(value));
+                                        });
+                                    },
                                     type: "text",
                                     validate :(value){
                                           if (value!.length < 6 ) {
@@ -124,14 +134,14 @@ class _SetPassState extends State<SetPass> {
                                     onChange: (value){
                                       if(value!= null){
                                         setState(() {
-                                          repass= value;
+                                          repass= convertArToEn(convertFaToEn(value));
                                         });
                                       }
                                     },
                                     onSave: (value){
                                     if(value!= null){
                                         setState(() {
-                                          repass= value;
+                                          repass= convertArToEn(convertFaToEn(value));
                                         });
 
                                       }

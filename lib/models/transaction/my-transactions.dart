@@ -2,54 +2,54 @@
 //
 //     final myTransactions = myTransactionsFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
-MyTransactions myTransactionsFromJson(String str) => MyTransactions.fromJson(json.decode(str));
+List<MyTransactions> myTransactionsFromJson(String str) => List<MyTransactions>.from(json.decode(str).map((x) => MyTransactions.fromJson(x)));
 
-String myTransactionsToJson(MyTransactions data) => json.encode(data.toJson());
+String myTransactionsToJson(List<MyTransactions> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class MyTransactions {
     MyTransactions({
-        required this.id,
-        required this.type,
-        required this.amount,
-        required this.userId,
-        required this.date,
-        required this.title,
-        required this.subTitle,
-        required this.avatar,
-        required this.isPaid,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.datePaid,
-        required this.data1,
-        required this.data2,
-        required this.data3,
-        required this.data4,
-        required this.payload,
-        required this.desc,
+        this.id,
+        this.type,
+        this.amount,
+        this.userId,
+        this.date,
+        this.title,
+        this.subTitle,
+        this.avatar,
+        this.isPaid,
+        this.createdAt,
+        this.updatedAt,
+        this.datePaid,
+        this.data1,
+        this.data2,
+        this.data3,
+        this.data4,
+        this.payload,
+        this.desc,
     });
 
-    String id;
-    String type;
-    int amount;
-    String userId;
-    String date;
-    String title;
-    String subTitle;
-    dynamic avatar;
-    bool isPaid;
-    DateTime createdAt;
-    DateTime updatedAt;
-    String datePaid;
-    dynamic data1;
-    dynamic data2;
-    dynamic data3;
-    dynamic data4;
-    dynamic payload;
-    List<Desc> desc;
- MyTransactions copyWith(Map<dynamic, List<Desc>> map, {
+    final String? id;
+    final String? type;
+    final int? amount;
+    final String? userId;
+    final String? date;
+    final String? title;
+    final String? subTitle;
+    final dynamic avatar;
+    final bool? isPaid;
+    final String? createdAt;
+    final String? updatedAt;
+    final dynamic datePaid;
+    final dynamic data1;
+    final dynamic data2;
+    final dynamic data3;
+    final dynamic data4;
+    final String? payload;
+    final List<Desc>? desc;
+
+    MyTransactions copyWith({
         String? id,
         String? type,
         int? amount,
@@ -59,14 +59,14 @@ class MyTransactions {
         String? subTitle,
         dynamic avatar,
         bool? isPaid,
-        DateTime? createdAt,
-        DateTime? updatedAt,
-        String? datePaid,
+        String? createdAt,
+        String? updatedAt,
+        dynamic datePaid,
         dynamic data1,
         dynamic data2,
         dynamic data3,
         dynamic data4,
-        dynamic payload,
+        String? payload,
         List<Desc>? desc,
     }) => 
         MyTransactions(
@@ -89,6 +89,7 @@ class MyTransactions {
             payload: payload ?? this.payload,
             desc: desc ?? this.desc,
         );
+
     factory MyTransactions.fromJson(Map<String, dynamic> json) => MyTransactions(
         id: json["id"],
         type: json["type"],
@@ -99,17 +100,17 @@ class MyTransactions {
         subTitle: json["subTitle"],
         avatar: json["avatar"],
         isPaid: json["isPaid"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"],
+        updatedAt: json["updatedAt"],
         datePaid: json["datePaid"],
         data1: json["data1"],
         data2: json["data2"],
         data3: json["data3"],
         data4: json["data4"],
         payload: json["payload"],
-        desc: List<Desc>.from(json["desc"].map((x) => Desc.fromJson(x))),
+        desc: json["desc"] == null ? [] : List<Desc>.from(json["desc"]!.map((x) => Desc.fromJson(x))),
     );
-   
+
     Map<String, dynamic> toJson() => {
         "id": id,
         "type": type,
@@ -120,37 +121,31 @@ class MyTransactions {
         "subTitle": subTitle,
         "avatar": avatar,
         "isPaid": isPaid,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
         "datePaid": datePaid,
         "data1": data1,
         "data2": data2,
         "data3": data3,
         "data4": data4,
         "payload": payload,
-        "desc": List<dynamic>.from(desc.map((x) => x.toJson())),
+        "desc": desc == null ? [] : List<dynamic>.from(desc!.map((x) => x.toJson())),
     };
 }
 
 class Desc {
     Desc({
-        required this.id,
-        required this.key,
-        required this.value,
-        required this.orderId,
+        this.id,
+        this.key,
+        this.value,
+        this.orderId,
     });
 
-    String id;
-    String key;
-    String value;
-    String orderId;
+    final String? id;
+    final String? key;
+    final String? value;
+    final String? orderId;
 
-    factory Desc.fromJson(Map<String, dynamic> json) => Desc(
-        id: json["id"],
-        key: json["key"],
-        value: json["value"],
-        orderId: json["orderId"],
-    );
     Desc copyWith({
         String? id,
         String? key,
@@ -163,12 +158,18 @@ class Desc {
             value: value ?? this.value,
             orderId: orderId ?? this.orderId,
         );
+
+    factory Desc.fromJson(Map<String, dynamic> json) => Desc(
+        id: json["id"],
+        key: json["key"],
+        value: json["value"],
+        orderId: json["orderId"],
+    );
+
     Map<String, dynamic> toJson() => {
         "id": id,
         "key": key,
         "value": value,
         "orderId": orderId,
     };
-
-  toList() {}
 }

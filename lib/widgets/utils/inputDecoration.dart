@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:paytel/style/theme.dart' as Style;
+import 'package:persian_tools/persian_tools.dart';
 class InputDecorationStyle extends StatefulWidget {
 const InputDecorationStyle({
   super.key, 
@@ -88,7 +89,17 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
                             return null;
                           },
                           onChanged:(value) {
-                             widget.onChange(value);
+                            
+                            if((widget.type == "number" || widget.type == "text-en1" ||
+                               widget.type == "nationalCode"||widget.type == "code" ||
+                               widget.type == "phone") && isPersian(value)){
+                               String enValue =  convertFaToEn(value);
+                                statusController?.text =enValue;
+                                widget.onChange(enValue);
+                            }else{
+                                widget.onChange(value);
+                            }
+                            
                           },
                           initialValue: widget.type == "sheba "? "IR": null ,
                           textAlignVertical: TextAlignVertical.center,

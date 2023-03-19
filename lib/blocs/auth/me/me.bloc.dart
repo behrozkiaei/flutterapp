@@ -18,6 +18,7 @@ class MeBloc extends Bloc<MeEvent, MeState> {
         try {
           final  response = await userRepository.me();
             if(response.data['status']){
+              // print(response.data["result"]);
               emit(MeSuccess(MeModel.fromJson(response.data["result"])));
             }else{
               emit(MeFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   

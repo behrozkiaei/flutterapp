@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paytel/blocs/app-state/app-state.bloc.dart';
+import 'package:paytel/blocs/app-state/app-state.event.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/bill/chooseBilBootomSheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +15,6 @@ class HomePanelWidget extends StatelessWidget {
  void _setMode(String mode) async {
       final prefs = await SharedPreferences.getInstance();
       prefs.setString("type", mode ); 
-
   }
 
   @override
@@ -47,7 +45,8 @@ class HomePanelWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.asset("assets/icons/sim.png",scale: 10,),
+                            Image.asset("assets/icons/sim.png",scale: 2,),
+                            const SizedBox(height: 2),
                             const Text("خرید شارژ" ,style:Style.TextStyling.primaryTextStyle)
                         ],) 
                   ),
@@ -72,7 +71,7 @@ class HomePanelWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                            Image.asset("assets/icons/internet.png",scale:10,),
+                            Image.asset("assets/icons/internet.png",scale:1.5),
                             const Text("خرید اینترنت" ,style:Style.TextStyling.primaryTextStyle)
                         ],) 
                   ),
@@ -130,14 +129,42 @@ class HomePanelWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                              Image.asset("assets/icons/bill.png",scale: 10,),
-                              const Text("پرداخت قبوض" ,style:Style.TextStyling.primaryTextStyle)
+                              Image.asset("assets/icons/cashback.png",scale: 1.75,),
+                              const Text("درخواست تسویه" ,style: TextStyle(
+                              color: Style.Colors.primary,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "IRANSansWeb"
+                            ))
                           ],) 
                   ),
                   ),
-                  const SizedBox(
+                   InkWell(
+                  onTap: () {                         
+                    BlocProvider.of<AppStateBloc>(context).add(const PageIndex( pageIndex: 1));
+                  },
+                  child:
+                  Container(
                     width: 80,
-                    height: 80,),
+                    height: 80,
+                    decoration:  BoxDecoration(
+                        borderRadius:BorderRadius.circular(10.0) , 
+                        border:  Border.all(color: Style.Colors.primary)
+                      ),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                              Image.asset("assets/icons/taxi.png",scale: 1.5,),
+                              const Text("پرداخت تاکسی" ,style: TextStyle(
+                              color: Style.Colors.primary,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "IRANSansWeb"
+                            ))
+                          ],) 
+                  ),
+                  ),
                    const  SizedBox(
                     width: 80,
                     height: 80,

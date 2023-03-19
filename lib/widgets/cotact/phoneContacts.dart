@@ -1,10 +1,10 @@
 // ignore: file_names, unused_import
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fast_contacts/fast_contacts.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:paytel/style/theme.dart';
-import 'package:paytel/style/theme.dart' as Style;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paytel/blocs/user/mutual-friends/mutual-friends.bloc.dart';
+import 'package:paytel/blocs/user/mutual-friends/mutual-friends.event.dart';
 import 'package:permission_handler/permission_handler.dart';
 class MyContacts extends StatefulWidget {
   const MyContacts({super.key});
@@ -33,7 +33,12 @@ class PhoneContacts extends State<MyContacts> {
           final temp = await FastContacts.allContacts;
           setState(() {
             _contacts = temp.toList();
+
           });
+          if(!mounted){
+            return ;
+          }
+          BlocProvider.of<MutualFriendsBloc>(context).add(MutualFriendsButtonPressed(listOfContacts: _contacts!));
         }
       }catch(e){
         return ;

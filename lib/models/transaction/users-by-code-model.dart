@@ -11,16 +11,16 @@ String userByCodeToJson(UserByCode data) => json.encode(data.toJson());
 
 class UserByCode {
     UserByCode({
-        required this.username,
-        required this.name,
-        required this.avatar,
-        required this.code,
+         this.username,
+         this.name,
+         this.avatar,
+        this.code,
     });
 
-    String username;
-    String name;
-    String avatar;
-    String code;
+    String? username;
+    String? name;
+    String? avatar;
+    String? code;
 
     UserByCode copyWith({
         String? username,

@@ -1,5 +1,6 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:equatable/equatable.dart';
+import 'package:fast_contacts/fast_contacts.dart';
 
 abstract class MutualFriendsEvent extends Equatable {
   const MutualFriendsEvent();
@@ -9,7 +10,7 @@ abstract class MutualFriendsEvent extends Equatable {
 }
 
 class MutualFriendsButtonPressed extends MutualFriendsEvent {
-  final List<String> listOfContacts;
+  final List<Contact> listOfContacts;
 
   const MutualFriendsButtonPressed({
     required this.listOfContacts,

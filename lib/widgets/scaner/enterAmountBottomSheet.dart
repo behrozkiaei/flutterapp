@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paytel/blocs/app-state/app-state.bloc.dart';
+import 'package:paytel/blocs/app-state/app-state.event.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.event.dart';
 import 'package:paytel/blocs/transaction/get-user-info-by-code/get-user-by-code.bloc.dart';
@@ -45,8 +47,10 @@ class EnterAmountBottomSheet {
                   content: Text("انتقال موفق بود",style :TextStyle(color: Style.Colors.gray2)),
                   backgroundColor: Style.Colors.success,
                 ),
+
               );
               BlocProvider.of<MeBloc>(context).add(StartFetchMe());
+              BlocProvider.of<AppStateBloc>(context).add(const PageIndex(pageIndex: 2));
               Navigator.pop(context, "");
             }
       },
@@ -67,7 +71,8 @@ class EnterAmountBottomSheet {
               builder: (context, state) {
                 if (state is UserByCodeSuccess){
                   // return const SizedBox(width: 5);
-                  return AvatarTitle(avatar: state.user.avatar,title: state.user.username);
+                 
+                  return AvatarTitle(avatar: state.user.avatar ??"",title: state.user.username?? "");
                 }else{
                   return const SizedBox(width: 5);
                 }
@@ -107,7 +112,7 @@ class EnterAmountBottomSheet {
 
                                   if(amount != null ){
                                     final String amountWithoutComma = amount!.replaceAll(",", "");
-                                    BlocProvider.of<Wallet2WalletBloc>(context).add(Wallet2WalletButtonPressed(walletCode: state.user.code, amount: amountWithoutComma));
+                                    BlocProvider.of<Wallet2WalletBloc>(context).add(Wallet2WalletButtonPressed(walletCode: state.user.code!, amount: amountWithoutComma));
                                     
                                   }else{
                                     Navigator.pop(context, 1);

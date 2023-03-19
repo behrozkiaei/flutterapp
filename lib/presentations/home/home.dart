@@ -3,6 +3,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paytel/blocs/app-state/app-state.bloc.dart';
+import 'package:paytel/blocs/app-state/app-state.state.dart';
 import 'package:paytel/blocs/transaction/increase-wallet/increase-wallet.bloc.dart';
 import 'package:paytel/repositories/transactions.repository.dart';
 import 'package:paytel/style/theme.dart' as Style;
@@ -11,6 +13,8 @@ import 'package:paytel/widgets/home/homeScreen.dart';
 import 'package:paytel/widgets/home/profile.dart';
 import 'package:paytel/widgets/home/tansactionScreen.dart';
 import 'package:paytel/widgets/scaner/transferPage.dart';
+
+import '../../blocs/app-state/app-state.event.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -30,7 +34,8 @@ class _HomePageState extends State<HomePage> {
       Profile(),
   ];
   void changeSelectedItem(int item){
-    setState(() {selectedItem = item;});
+    BlocProvider.of<AppStateBloc>(context).add(PageIndex(pageIndex: item));
+    // setState(() {selectedItem = item;});
   }
   @override
   initState(){
@@ -43,7 +48,16 @@ class _HomePageState extends State<HomePage> {
       providers: [
           BlocProvider<IncreaseWalletBloc>(create: (BuildContext context) => IncreaseWalletBloc(transactionRepository: transactionRepo),),
       ], 
-      child:  Scaffold(
+      child: MultiBlocListener(listeners:[
+      BlocListener<AppStateBloc, AppStateState>(
+          listener: (context, state) {
+            if(state != null ){
+             setState(() {selectedItem = state.tabIndex ?? 0; });
+            }
+          }
+       )
+      ],
+      child: Scaffold(
       resizeToAvoidBottomInset: false,
       body: pages[selectedItem],
       bottomNavigationBar: BottomNavigationBar(
@@ -61,7 +75,8 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(icon:Icon(EvaIcons.phone ) , label:"کاربران"),
           BottomNavigationBarItem(icon:Icon(EvaIcons.person ) , label:"پروفایل"),
         ]),
-      )
+      ),
+      ),
     );
   }
 }

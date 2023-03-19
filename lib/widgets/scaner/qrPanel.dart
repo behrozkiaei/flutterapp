@@ -42,19 +42,19 @@ class QrPanel extends StatelessWidget {
                             errorCorrectLevel: QrErrorCorrectLevel.M,
                             roundEdges: true,
                           ),
-                ): const SpinKitRotatingCircle(
-                color: Style.Colors.primary,
-                size: 50.0,
-              );
+                ): const  SpinKitThreeBounce(
+                                             color: Style.Colors.primary,
+                                              size: 15.0,
+                                          );
             }),
           const  SizedBox(height: 15),
           BlocBuilder<MeBloc, MeState>(
           builder: (context, state) {
             return 
-              (state is MeSuccess) ? Text("کد انتقال شما : ${state.me!.wallet!.walletCode}") : const SpinKitRotatingCircle(
-                color: Style.Colors.primary,
-                size: 50.0,
-              );
+              (state is MeSuccess) ? Text("کد انتقال شما : ${state.me!.wallet!.walletCode}") : const SpinKitThreeBounce(
+                                             color: Style.Colors.primary,
+                                              size: 15.0,
+                                          );
           }),
           InkWell(
             child: 

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
@@ -80,6 +81,19 @@ class _ScannerPageState extends State<ScannerPage> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
+      if(result!= null){
+        
+      // print(result!.code?.split("/"));
+        final  barcodeData = result!.code?.split("/");
+        print(barcodeData![1]);
+        if(barcodeData != null ){
+          controller.pauseCamera();
+          if(barcodeData.length == 2){
+            
+           BlocProvider.of<UserByCodeBloc>(context).add(UserByCodeButtonPressed(code: barcodeData[1]));
+          }
+        }
+      }
         setState(() {
           result = scanData;
         });
@@ -104,6 +118,7 @@ class _ScannerPageState extends State<ScannerPage> {
       BlocListener<UserByCodeBloc, UserByCodeState>(
             listener: (context, state) {
               if (state is UserByCodeFailure) {
+                
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text("کد کاربر یافت نشد",style :TextStyle(color: Style.Colors.gray2)),
@@ -204,6 +219,8 @@ class _ScannerPageState extends State<ScannerPage> {
                                         return;
                                         }
                                         BlocProvider.of<UserByCodeBloc>(context).add(UserByCodeButtonPressed(code: walletCode!));
+                                      }else{
+                                        
                                       }
                                     } else {
                                     }

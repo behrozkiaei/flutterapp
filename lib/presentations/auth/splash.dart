@@ -30,6 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
             return;
              }
       BlocProvider.of<MeBloc>(context).add( StartFetchMe());
+      Navigator.pushReplacementNamed(context, "/app-login");
     }else{
         if (!mounted) {
             return;

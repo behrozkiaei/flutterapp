@@ -28,12 +28,12 @@ class _MyAppState extends State<FingerprintLoginScreen> {
 
   @override
   void initState() {
-    super.initState();
     auth.isDeviceSupported().then(
           (bool isSupported) => setState(() => _supportState = isSupported
               ? _SupportState.supported
               : _SupportState.unsupported),
         );
+    super.initState();
   }
 
   Future<void> _checkBiometrics() async {

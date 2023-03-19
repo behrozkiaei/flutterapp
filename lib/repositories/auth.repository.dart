@@ -1,6 +1,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:paytel/const.dart';
+import 'package:paytel/repositories/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class UserRepository {
 static final UserRepository _instance = UserRepository._internal();
@@ -15,7 +16,7 @@ static BaseOptions options = BaseOptions(
   baseUrl: Config.baseUrl,
   headers: {'Content-Type': 'application/json' ,}
   );
-  final Dio _dio = Dio(options);
+  final Dio _dio = DioSingleton.dio;
   String? token ;
   Future<bool> hasToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -48,6 +49,8 @@ static BaseOptions options = BaseOptions(
      Future<Response> verifyOtp(String mobile, String password) async {
        final prefs = await SharedPreferences.getInstance();
         final String? fcm =  prefs.getString('fcmToken');
+        print(fcm);
+        print(888888888888);
       Response response = await _dio.post('/auth/verify-otp', data: {
         "mobile": mobile,
         "password": password,
@@ -59,6 +62,7 @@ static BaseOptions options = BaseOptions(
     Future<Response> me() async {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
+      print(token);
       _dio.options.headers["Authorization"] = "Bearer $token";
       Response response = await _dio.get('/users/me');
       return response;
@@ -154,8 +158,7 @@ static BaseOptions options = BaseOptions(
       String listOfstring  ) async {
       final token = await getToken();
       _dio.options.headers["Authorization"] = "Bearer $token";
-      // exaple /users/mutual-friends?list=09302803271&list=string2423423
-       Response response = await _dio.get('/users/mutual-friends?$listOfstring' );
+       Response response = await _dio.post('/users/mutual-friends',data:listOfstring );
        return response;
     }
     Future<Response> lastPaidUsers(

@@ -36,6 +36,24 @@ class AthenticationChanged extends AppStateEvent {
   String toString() =>
       'ChangeThemeColor ';
 }
+class ChangeTransactionPanelState extends AppStateEvent {
+ 
+  final bool isTransactionPanelOpen;
+
+   const ChangeTransactionPanelState({
+    required this.isTransactionPanelOpen
+  });
+  List<Object> get props => [isTransactionPanelOpen];
+}
+class ChangeScannerPanelState extends AppStateEvent {
+ 
+  final bool isScannerPanelOpen;
+
+   const ChangeScannerPanelState({
+    required this.isScannerPanelOpen
+  });
+  List<Object> get props => [isScannerPanelOpen];
+}
 
 class PageIndex extends AppStateEvent {
   @override

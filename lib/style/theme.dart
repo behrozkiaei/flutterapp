@@ -25,6 +25,68 @@ class Colors {
   static const Color success  = Color.fromARGB(255, 10, 147, 42);
   static const Color white  = Color.fromARGB(255, 255, 255, 255);
   static const Color alert  = Color.fromARGB(255, 247, 227, 10);
+
+  static const LinearGradient lightLinearGradient = LinearGradient(
+         colors:  [
+          Color(0xFFD8E3E7),
+          Color(0xFFC8D5DA),
+          Color(0xFFD8E3E7),
+        ],
+        stops: [
+          0.1,
+          0.5,
+          0.9,
+        ],
+      );  
+  static const LinearGradient darkLinearGradient = LinearGradient(
+        colors: [
+          Color(0xFF222222),
+          Color(0xFF242424),
+          Color(0xFF2B2B2B),
+          Color(0xFF242424),
+          Color(0xFF222222),
+        ],
+        stops: [
+          0.0,
+          0.2,
+          0.5,
+          0.8,
+          1,
+        ],
+        begin: Alignment(-2.4, -0.2),
+        end: Alignment(2.4, 0.2),
+        tileMode: TileMode.clamp,
+      );  
+
+  static    ThemeData themeData =   ThemeData(
+              fontFamily: "IRANSansWeb",
+              brightness: Brightness.light,
+              appBarTheme:const AppBarTheme(color:   Colors.white) ,
+              primaryColor: Colors.primary,
+              buttonTheme:const ButtonThemeData(buttonColor : Colors.primary) ,
+                    scaffoldBackgroundColor: Colors.white,
+                    colorScheme: const  ColorScheme.light(
+                      primary: Colors.primary,
+                    ),
+              textTheme: const TextTheme(
+           
+                displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+                titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+                bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'IRANSansWeb'),
+              ),
+            );
+
+  static  ThemeData darkTheme = ThemeData(
+        brightness: Brightness.dark,
+        fontFamily: "IRANSansWeb",
+        primaryColor: Colors.primary,
+        textTheme: const TextTheme(
+        displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold,color:  Colors.white),
+        titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic,color:  Colors.white),
+        bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'IRANSansWeb',color:  Colors.white),
+      )
+  );
+    
 }
 
 class TextStyling {
