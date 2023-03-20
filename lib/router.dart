@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paytel/models/internet-packages-model.model.dart';
+import 'package:paytel/models/transaction/users-by-code-model.dart';
 import 'package:paytel/presentations/auth/Login.dart';
 import 'package:paytel/presentations/auth/enterPhone.dart';
 import 'package:paytel/presentations/auth/intro_screen.dart';
@@ -9,6 +10,7 @@ import 'package:paytel/presentations/auth/splash.dart';
 import 'package:paytel/presentations/home/home.dart';
 import 'package:paytel/widgets/bill/enterBillid.dart';
 import 'package:paytel/widgets/payment-request/payment-request.dart';
+import 'package:paytel/widgets/prereceipt/transfer-prereceipt.dart';
 import 'package:paytel/widgets/profile/regiserStepper.dart';
 import 'package:paytel/widgets/profile/themConfig.dart';
 import 'package:paytel/widgets/simcard/buyInternetPreReceipt.dart';
@@ -47,6 +49,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       case '/internet-prereceipt':
               final Value product = settings.arguments as Value;
               return MaterialPageRoute(builder: (_) =>  InternetPreReceipt( product: product));
+      case '/transfer-prereceipt':
+          final args = settings.arguments as Map<String, dynamic>?;
+          final UserByCode toUser = args?['toUser'] as UserByCode;
+          final String amount = args?['amount'] ;
+          return MaterialPageRoute(builder: (_) =>   TransferPrereceipt(amount: amount, toUser: toUser,));
+          // return MaterialPageRoute(builder: (_) =>  const  TransferPrereceipt());
       case '/theme':
           return MaterialPageRoute(builder: (_) =>const  ThemeConfig());
           default:

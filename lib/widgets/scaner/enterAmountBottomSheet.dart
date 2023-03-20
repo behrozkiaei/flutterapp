@@ -17,7 +17,7 @@ import 'package:persian_tools/persian_tools.dart';
 
 class EnterAmountBottomSheet {
 
-  static void show(BuildContext context ) async {
+  static dynamic show(BuildContext context ) async {
    String? amount;
    return await showModalBottomSheet(
     useSafeArea: true,
@@ -111,11 +111,9 @@ class EnterAmountBottomSheet {
                               onPressed: () async {
 
                                   if(amount != null ){
-                                    final String amountWithoutComma = amount!.replaceAll(",", "");
-                                    BlocProvider.of<Wallet2WalletBloc>(context).add(Wallet2WalletButtonPressed(walletCode: state.user.code!, amount: amountWithoutComma));
-                                    
+                                     Navigator.pop(context, amount);
                                   }else{
-                                    Navigator.pop(context, 1);
+                                    Navigator.pop(context, "");
                                   }
                                 }
                               );

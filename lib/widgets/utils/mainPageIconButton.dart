@@ -27,16 +27,15 @@ class MainPageIcons extends StatelessWidget {
     return  Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    InkWell(
-                                    onTap :(){},
-                                    highlightColor:Style.Colors.gray1,
-                                    child :Container(
+                                    
+                                   
+                                   Container(
                                       width: iconSize,
                                       height: iconSize,
                                       decoration:  BoxDecoration(shape: BoxShape.circle , color: iconBackgroundColor),
                                       child:  Icon(icon,color: iconColor , size:iconSize ,),
                                     ),
-                                    ),
+                                    
                                     const SizedBox( height:10),
                                      Text(text ,style: TextStyle(color: textColor ,fontSize: textSize, fontFamily: "IRANSansWeb"))
                                   ],

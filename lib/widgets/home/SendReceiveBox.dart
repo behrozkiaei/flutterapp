@@ -81,8 +81,8 @@ class SendReceivePage extends StatelessWidget {
                                 ),
                                    
                                   InkWell(
-                                    highlightColor: Style.Colors.accent,
                                     onTap: () async {
+                                      BlocProvider.of<AppStateBloc>(context).add(const PageIndex( pageIndex: 1));
                                       },
                                     
                                     child:const  MainPageIcons(

@@ -19,6 +19,7 @@ class MutualFriendsBloc extends Bloc<MutualFriendsEvent, MutualFriendsState> {
           final  response = await userRepository.mutualFriends(
             contactMaps,
             );
+            print(response.data);
             if(response.data['status'] == true ){
                 List<MutualFriendsModel> data = List.from(response.data['result']).map((json) => MutualFriendsModel.fromJson(json)).toList();
                 emit( MutualFriendsListSuccess(data));

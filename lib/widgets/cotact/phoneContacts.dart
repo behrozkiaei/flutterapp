@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:paytel/blocs/user/mutual-friends/mutual-friends.bloc.dart';
 import 'package:paytel/blocs/user/mutual-friends/mutual-friends.event.dart';
+import 'package:paytel/blocs/user/mutual-friends/mutual-friends.state.dart';
+import 'package:paytel/models/mutual-friends.model.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'package:paytel/style/theme.dart' as Style;
 class MyContacts extends StatefulWidget {
   const MyContacts({super.key});
 
@@ -16,7 +20,8 @@ class MyContacts extends StatefulWidget {
 
 
 class PhoneContacts extends State<MyContacts> {
-   List<Contact>? _contacts;
+   List<MutualFriendsModel>? _contacts;
+   List<Contact>? _mobilecontacts;
 
     @override
     void initState() {
@@ -32,13 +37,13 @@ class PhoneContacts extends State<MyContacts> {
           // Get all contacts
           final temp = await FastContacts.allContacts;
           setState(() {
-            _contacts = temp.toList();
+            _mobilecontacts = temp.toList();
 
           });
           if(!mounted){
             return ;
           }
-          BlocProvider.of<MutualFriendsBloc>(context).add(MutualFriendsButtonPressed(listOfContacts: _contacts!));
+          BlocProvider.of<MutualFriendsBloc>(context).add(MutualFriendsButtonPressed(listOfContacts: _mobilecontacts!));
         }
       }catch(e){
         return ;
@@ -48,20 +53,38 @@ class PhoneContacts extends State<MyContacts> {
 
   @override
   Widget build(BuildContext context) {
-    return 
+    return BlocListener<MutualFriendsBloc, MutualFriendsState>(
+      listener: (context, state) {
+        if (state is MutualFriendsFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("مشکل در دریافت اطلاعات رخ داده است",
+                  style: TextStyle(color: Style.Colors.gray2)),
+              backgroundColor: Style.Colors.fail,
+            ),
+          );
+        }
+        if (state is MutualFriendsListSuccess) {
+          setState(() {
+            _contacts = state.mutualFriends;
+          });
+        }
+      },
+      child: 
      _contacts == null
           ? const  Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: _contacts!.length,
               itemBuilder: (context, index) {
-                Contact contact = _contacts![index];
+                MutualFriendsModel contact = _contacts![index] ;
                 return ListTile(
                   leading: CircleAvatar(
-                    child: Text(contact.displayName.split('').first),
+                    child: Text(contact.name!.split('').first),
                   ),
-                  title: Text(contact.displayName),
+                  title: Text(contact.name ?? ""),
                 );
               },
+            ),
             );
     
   }

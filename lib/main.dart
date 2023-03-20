@@ -13,6 +13,7 @@ import 'package:paytel/blocs/services/buyCharge/buy-charge.bloc.dart';
 import 'package:paytel/blocs/services/buyInternet/buy-internet.bloc.dart';
 import 'package:paytel/blocs/services/internet-packages/internet-packages.bloc.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
+import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.bloc.dart';
 import 'package:paytel/blocs/user/update-avtar/update-avatar.bloc.dart';
 import 'package:paytel/blocs/user/update-bank-data/update-user.bloc.dart';
 import 'package:paytel/blocs/user/update-identity-image/update-identity.bloc.dart';
@@ -58,7 +59,8 @@ void main() async {
           BlocProvider<CheckPassBloc>(create: (BuildContext context) => CheckPassBloc(userRepository: userRepository),),
           BlocProvider<RessetPassBloc>(create: (BuildContext context) => RessetPassBloc(userRepository: userRepository),),
           BlocProvider<AppStateBloc>(create: (BuildContext context) => AppStateBloc()),
-    
+          BlocProvider<Wallet2WalletBloc>(create: (BuildContext context) => Wallet2WalletBloc( transactionRepository: transactionRepo),),
+
       ], 
       child:MyApp(),
       )

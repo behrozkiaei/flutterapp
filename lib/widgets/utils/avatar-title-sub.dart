@@ -6,7 +6,7 @@ import 'package:paytel/style/theme.dart' as Style;
 
 class AvatarTitleSub extends StatelessWidget {
 
-  final ImageProvider avatarUrl ;
+  final dynamic avatarUrl ;
   final String subTitle ;
   final String title ;
 

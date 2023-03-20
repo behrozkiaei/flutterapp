@@ -41,7 +41,6 @@ class _Transfer extends State<Transfer>  {
     return  MultiBlocProvider(
       providers: [
           BlocProvider<UserByCodeBloc>(create: (BuildContext context) => UserByCodeBloc(transactionRepository: transactionRepo),),
-          BlocProvider<Wallet2WalletBloc>(create: (BuildContext context) => Wallet2WalletBloc( transactionRepository: transactionRepo),),
      ], 
       child: Scaffold(
       resizeToAvoidBottomInset: false,

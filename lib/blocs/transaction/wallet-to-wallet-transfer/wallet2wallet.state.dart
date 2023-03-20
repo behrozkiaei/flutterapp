@@ -14,9 +14,9 @@ class Wallet2WalletInitial extends Wallet2WalletState {}
 
 class Wallet2WalletLoading extends Wallet2WalletState {}
 
-// ignore: must_be_immutable
 class Wallet2WalletSuccess extends Wallet2WalletState {
-   
+   final String? RedirectURL ; 
+   const Wallet2WalletSuccess( {this.RedirectURL});
 }
 
 class Wallet2WalletFailure extends Wallet2WalletState {
