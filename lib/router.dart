@@ -11,6 +11,8 @@ import 'package:paytel/presentations/home/home.dart';
 import 'package:paytel/widgets/bill/enterBillid.dart';
 import 'package:paytel/widgets/payment-request/payment-request.dart';
 import 'package:paytel/widgets/prereceipt/transfer-prereceipt.dart';
+import 'package:paytel/widgets/profile/player.dart';
+import 'package:paytel/widgets/profile/recorde-video.dart';
 import 'package:paytel/widgets/profile/regiserStepper.dart';
 import 'package:paytel/widgets/profile/themConfig.dart';
 import 'package:paytel/widgets/simcard/buyInternetPreReceipt.dart';
@@ -20,10 +22,10 @@ import 'package:paytel/widgets/simcard/internetPackages.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
-      case '/':
-        return MaterialPageRoute(builder: (_) => const EnterPhone());
       case '/home':
         return MaterialPageRoute(builder: (_) => const HomePage());
+      case '/':
+        return MaterialPageRoute(builder: (_) => const EnterPhone());
       case '/otp':
          return MaterialPageRoute(builder: (_) => const OtpWidget()); 
       case '/register':
@@ -49,6 +51,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       case '/internet-prereceipt':
               final Value product = settings.arguments as Value;
               return MaterialPageRoute(builder: (_) =>  InternetPreReceipt( product: product));
+     
       case '/transfer-prereceipt':
           final args = settings.arguments as Map<String, dynamic>?;
           final UserByCode toUser = args?['toUser'] as UserByCode;

@@ -47,6 +47,7 @@ class MeModel {
         this.fcmToken,
         this.wallet,
         this.fromUsers,
+        this.selfiVideo,
     });
 
     final String? id;
@@ -84,6 +85,7 @@ class MeModel {
     final String? cartMelli;
     final dynamic shenasname;
     final String? fcmToken;
+    final String? selfiVideo;
     final MeModelWallet? wallet;
     final List<FromUser>? fromUsers;
 
@@ -123,6 +125,7 @@ class MeModel {
         String? cartMelli,
         dynamic shenasname,
         String? fcmToken,
+        String? selfiVideo,
         MeModelWallet? wallet,
         List<FromUser>? fromUsers,
     }) => 
@@ -164,6 +167,7 @@ class MeModel {
             fcmToken: fcmToken ?? this.fcmToken,
             wallet: wallet ?? this.wallet,
             fromUsers: fromUsers ?? this.fromUsers,
+            selfiVideo: selfiVideo ?? this.selfiVideo,
         );
 
     factory MeModel.fromJson(Map<String, dynamic> json) => MeModel(
@@ -202,6 +206,7 @@ class MeModel {
         cartMelli: json["cartMelli"],
         shenasname: json["shenasname"],
         fcmToken: json["fcmToken"],
+        selfiVideo: json["selfiVideo"],
         wallet: json["Wallet"] == null ? null : MeModelWallet.fromJson(json["Wallet"]),
         fromUsers: json["fromUsers"] == null ? [] : List<FromUser>.from(json["fromUsers"]!.map((x) => FromUser.fromJson(x))),
     );
@@ -242,6 +247,7 @@ class MeModel {
         "cartMelli": cartMelli,
         "shenasname": shenasname,
         "fcmToken": fcmToken,
+        "selfiVideo": selfiVideo,
         "Wallet": wallet?.toJson(),
         "fromUsers": fromUsers == null ? [] : List<dynamic>.from(fromUsers!.map((x) => x.toJson())),
     };

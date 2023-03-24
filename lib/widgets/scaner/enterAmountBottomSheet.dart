@@ -7,7 +7,6 @@ import 'package:paytel/blocs/auth/me/me.event.dart';
 import 'package:paytel/blocs/transaction/get-user-info-by-code/get-user-by-code.bloc.dart';
 import 'package:paytel/blocs/transaction/get-user-info-by-code/get-user-by-code.state.dart';
 import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.bloc.dart';
-import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.event.dart';
 import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.state.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
@@ -70,8 +69,6 @@ class EnterAmountBottomSheet {
               BlocBuilder<UserByCodeBloc, UserByCodeState>(
               builder: (context, state) {
                 if (state is UserByCodeSuccess){
-                  // return const SizedBox(width: 5);
-                 
                   return AvatarTitle(avatar: state.user.avatar ??"",title: state.user.username?? "");
                 }else{
                   return const SizedBox(width: 5);

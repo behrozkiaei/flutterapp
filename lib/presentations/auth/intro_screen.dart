@@ -47,7 +47,7 @@ class _IntroPageState extends State<IntroPage> {
           )
         ],
       ),
-      body: "Free gifts with purchase. Offer free gifts like a gift wrap, gift card, or any free product.",
+      body: "انتقال سریع و آسان وجه  به دوستان",
       image: Center(
         child: SvgPicture.asset("assets/icons/gift.svg")
       ),
@@ -77,7 +77,7 @@ class _IntroPageState extends State<IntroPage> {
           )
         ],
       ),
-      body: "A payment gateway as a merchant service that processes credit card payments for ecommerce sites and traditional brick and mortar stores.",
+      body: "با اسکن بارکد به راحتی و بدون کارمزد انتقال وجه انجام دهید",
       image: Center(
         child: SizedBox(
           width: 450.0,
@@ -108,7 +108,7 @@ class _IntroPageState extends State<IntroPage> {
           )
         ],
       ),
-      body: "Call center gives a small business a big business feel. 24-hour sales, order entry, payment processing, billing inquiries, and more.",
+      body: "شما همچنین می‌توانید از طریق کارت بانکی و کیف پول خود شارژ و بسته اینترنت تهیه کنید.",
       image: Center(
         child: SizedBox(
           width: 450.0,

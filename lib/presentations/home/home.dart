@@ -2,6 +2,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:paytel/blocs/app-state/app-state.bloc.dart';
 import 'package:paytel/blocs/app-state/app-state.state.dart';
@@ -44,7 +45,11 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
-    return  MultiBlocProvider(
+    return  WillPopScope(
+      onWillPop: () async {
+          SystemNavigator.pop();
+        return true;
+      },child : MultiBlocProvider(
       providers: [
           BlocProvider<IncreaseWalletBloc>(create: (BuildContext context) => IncreaseWalletBloc(transactionRepository: transactionRepo),),
       ], 
@@ -75,6 +80,7 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(icon:Icon(EvaIcons.phone ) , label:"کاربران"),
           BottomNavigationBarItem(icon:Icon(EvaIcons.person ) , label:"پروفایل"),
         ]),
+      ),
       ),
       ),
     );

@@ -1,6 +1,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:paytel/const.dart';
+import 'package:paytel/repositories/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class TransactionRepo {
 static final TransactionRepo _instance = TransactionRepo._internal();
@@ -12,11 +13,8 @@ static final TransactionRepo _instance = TransactionRepo._internal();
 
   TransactionRepo._internal();
   
-static BaseOptions options = BaseOptions(
-  baseUrl: Config.baseUrl,
-  headers: {'Content-Type': 'application/json' ,}
-  );
-  final Dio _dio = Dio(options);
+
+  final Dio _dio = DioSingleton.dio;
   String? token ;
 
   static Future<String> getToken() async {

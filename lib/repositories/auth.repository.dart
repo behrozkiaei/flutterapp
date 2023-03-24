@@ -12,10 +12,7 @@ static final UserRepository _instance = UserRepository._internal();
 
   UserRepository._internal();
   
-static BaseOptions options = BaseOptions(
-  baseUrl: Config.baseUrl,
-  headers: {'Content-Type': 'application/json' ,}
-  );
+
   final Dio _dio = DioSingleton.dio;
   String? token ;
   Future<bool> hasToken() async {

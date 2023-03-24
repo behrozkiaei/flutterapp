@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:paytel/blocs/app-state/app-state.bloc.dart';
-import 'package:paytel/blocs/app-state/app-state.event.dart';
 import 'package:paytel/blocs/app-state/app-state.state.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.event.dart';

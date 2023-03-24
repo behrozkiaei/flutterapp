@@ -20,6 +20,7 @@ class UpdateUser extends Bloc<UpdateUserEvent, UpdateUserState> {
                 event.lan,
                 event.nationalCode,
             );
+            print(response.data);
             if(response.data['status'] == true ){
                   emit(UpdateUserSuccess());
             }else{

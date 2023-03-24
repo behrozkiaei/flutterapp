@@ -19,13 +19,13 @@ import 'package:paytel/blocs/user/update-bank-data/update-user.bloc.dart';
 import 'package:paytel/blocs/user/update-identity-image/update-identity.bloc.dart';
 import 'package:paytel/blocs/user/update-national-card/update-avatar.bloc.dart';
 import 'package:paytel/blocs/user/update-user/update-user.bloc.dart';
-import 'package:paytel/models/app-state.model.dart';
 import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/repositories/transactions.repository.dart';
 import 'package:paytel/router.dart';
+import 'package:paytel/style/theme.dart' as Style;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:paytel/style/theme.dart' as Style;
+
 import 'firebase_options.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
