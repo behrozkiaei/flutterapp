@@ -12,20 +12,20 @@ class Wallet2WalletBloc extends Bloc<Wallet2WalletEvent, Wallet2WalletState> {
         try {
           final  response = await transactionRepository.wallet2WalletTransfer(
             event.amount,
-            event.walletCode
+            event.walletCode,
+            event.fromWallet,
             );
-            print(response.data);
             if(response.data['status'] == true ){
-                  if(response.data["result"]["RedirectURL"]){
-                  emit( Wallet2WalletSuccess(RedirectURL : response.data["result"]["RedirectURL"] as String));
-                  }else{
-                  emit(const Wallet2WalletSuccess());
+                  if(response.data["result"] != null){
+                      emit( Wallet2WalletSuccess(RedirectURL : response.data["result"]["RedirectURL"] as String));
                   }
+                  else{
+                    emit(const Wallet2WalletSuccess());
+                  }  
             }else{
               emit(Wallet2WalletFailure(error: response.data["message"] ?? "خطا در ورود رخ داده است"));   
-          }
+            }
         } catch (e) {
-          print(e);
           emit(Wallet2WalletFailure( error: e.toString()));
         }
       });

@@ -1,9 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
-import 'package:paytel/style/theme.dart' as Style;
 
 class MainPageIcons extends StatelessWidget {
   final double iconSize;
@@ -28,9 +24,7 @@ class MainPageIcons extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
+        Stack(alignment: Alignment.center, children: [
           Container(
             width: iconSize + 30,
             height: iconSize + 30,
@@ -40,7 +34,8 @@ class MainPageIcons extends StatelessWidget {
                   71, 255, 255, 255), // set white color with 50% opacity
             ),
           ),
-         Center(child: Container(
+          Center(
+              child: Container(
             width: iconSize,
             height: iconSize,
             decoration: BoxDecoration(
@@ -50,8 +45,7 @@ class MainPageIcons extends StatelessWidget {
               color: iconColor,
               size: iconSize,
             ),
-          )
-          )
+          ))
         ]),
         const SizedBox(height: 10),
         Text(text,

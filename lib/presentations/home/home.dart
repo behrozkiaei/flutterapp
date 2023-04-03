@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> pages  = [
      const HomeScreen(),
-     Transfer(),
+     const Transfer(),
      const Transactions(),
      const Contacts(),
       Profile(),

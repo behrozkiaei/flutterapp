@@ -44,12 +44,13 @@ static final TransactionRepo _instance = TransactionRepo._internal();
 
  
   Future<Response> wallet2WalletTransfer(
-    String amount , String walletCode ) async {
+    String amount , String walletCode ,bool fromWallet) async {
        final token = await getToken();
       _dio.options.headers["Authorization"] = "Bearer $token";
       Response response = await _dio.post('/wallet/user-transfer', data:{ 
         "amount" :amount,
-        "walletCode" : walletCode
+        "walletCode" : walletCode,
+        "fromWallet" : fromWallet
       });
       return response;
   }

@@ -22,7 +22,7 @@ class _PaymentTypeChooserState extends State<PaymentTypeChooser> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 120,
       child: Padding(
         padding: const EdgeInsets.all(0),
@@ -64,7 +64,7 @@ class _PaymentTypeChooserState extends State<PaymentTypeChooser> {
                             BlocBuilder<MeBloc, MeState>(
                                 builder: (context, state) {
                               return RichText(
-                                text:  TextSpan(
+                                text: TextSpan(
                                   style: const TextStyle(
                                       fontSize: 11,
                                       fontFamily: "IRANSansWeb",
@@ -72,11 +72,14 @@ class _PaymentTypeChooserState extends State<PaymentTypeChooser> {
                                   children: <TextSpan>[
                                     const TextSpan(text: ' موجودی :'),
                                     TextSpan(
-                                        text:  state is MeSuccess ? addCommas(state.me?.wallet?.amount.toString() as String): "" ,
+                                        text: state is MeSuccess
+                                            ? addCommas(state.me?.wallet?.amount
+                                                .toString() as String)
+                                            : "",
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Style.Colors.primary)),
-                                   const  TextSpan(text: " ریال"),
+                                    const TextSpan(text: " ریال"),
                                   ],
                                 ),
                               );

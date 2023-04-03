@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -20,11 +19,13 @@ class NetworkImageProvider extends ImageProvider<NetworkImageProvider> {
   @override
   ImageStreamCompleter load(NetworkImageProvider key, DecoderCallback decode) {
     return MultiFrameImageStreamCompleter(
-      codec: _loadAsync(key), // <-- specify the type of codec parameter as Future<ui.Codec>
+      codec: _loadAsync(
+          key), // <-- specify the type of codec parameter as Future<ui.Codec>
       scale: 1.0,
       informationCollector: () sync* {
         yield DiagnosticsProperty<ImageProvider>('Image provider', this);
-        yield DiagnosticsProperty<NetworkImageProvider>('NetworkImage provider', key);
+        yield DiagnosticsProperty<NetworkImageProvider>(
+            'NetworkImage provider', key);
       },
     );
   }
@@ -41,7 +42,10 @@ class NetworkImageProvider extends ImageProvider<NetworkImageProvider> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is NetworkImageProvider && runtimeType == other.runtimeType && url == other.url;
+      identical(this, other) ||
+      other is NetworkImageProvider &&
+          runtimeType == other.runtimeType &&
+          url == other.url;
 
   @override
   int get hashCode => url.hashCode;

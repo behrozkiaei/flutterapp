@@ -9,72 +9,78 @@ import 'package:paytel/models/me-model.dart';
 import 'package:paytel/style/theme.dart' as Style;
 
 import '../../const.dart';
+
 class LastPaid extends StatelessWidget {
   const LastPaid({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  BlocBuilder<MeBloc, MeState>(builder: (context, state) {
-    if(state is MeSuccess  ){
-      if(state.me!.fromUsers!.isNotEmpty){
-        return ListView(
+    return BlocBuilder<MeBloc, MeState>(builder: (context, state) {
+      if (state is MeSuccess) {
+        if (state.me!.fromUsers!.isNotEmpty) {
+          return ListView(
               scrollDirection: Axis.horizontal,
-              physics:  const BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               children: List.generate(state.me!.fromUsers!.length, (index) {
-                FromUser user = state.me!.fromUsers![index]; 
+                FromUser user = state.me!.fromUsers![index];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                              margin:const EdgeInsets.all(4),
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Style.Colors.gray1,
-                                  width: 1
-                                ), 
-                              ),
-                                child: 
-                                user.destUser!.avatar != null ? 
-                                CachedNetworkImage(
-                                    imageUrl:'${Config.baseUrl}/${user.destUser!.avatar}',
-                                    imageBuilder: (context, imageProvider) => Container(
-                                    width: 80.0,
-                                    height: 80.0,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
+                      margin: const EdgeInsets.all(4),
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Style.Colors.gray1, width: 1),
+                      ),
+                      child: user.destUser!.avatar != null
+                          ? CachedNetworkImage(
+                              imageUrl:
+                                  '${Config.baseUrl}/${user.destUser!.avatar}',
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                width: 80.0,
+                                height: 80.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
                                       image: imageProvider, fit: BoxFit.cover),
-                                      ),
-                                    ),
-                                    progressIndicatorBuilder: (context, url, downloadProgress) => 
-                                      CircularProgressIndicator(value: downloadProgress.progress,color: Style.Colors.gray2,strokeWidth :1.0),
-                                    errorWidget: (context, url, error) =>const Icon(Icons.error),
-                              ):
-                              const CircleAvatar(
-                                backgroundColor: Style.Colors.primary,
-                                foregroundColor: Style.Colors.primary,
-                                radius: 50.0,
-                                backgroundImage:  AssetImage(
-                                  'assets/icons/user.png',
                                 ),
-                                )
-                              ,
+                              ),
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                          value: downloadProgress.progress,
+                                          color: Style.Colors.gray2,
+                                          strokeWidth: 1.0),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            )
+                          : const CircleAvatar(
+                              backgroundColor: Style.Colors.primary,
+                              foregroundColor: Style.Colors.primary,
+                              radius: 50.0,
+                              backgroundImage: AssetImage(
+                                'assets/icons/user.png',
+                              ),
                             ),
-                            Text(user.destUser?.name ?? " ")
-                        ],
+                    ),
+                    Text(user.destUser?.name ?? " ")
+                  ],
                 );
-              
-              })
-            ); 
-      }else{
-        return const SizedBox.expand();
+              }));
+        } else {
+          return const SizedBox.expand();
+        }
+      } else {
+        return const SizedBox(
+            height: 120,
+            child: SpinKitThreeBounce(
+              color: Style.Colors.white,
+              size: 12.0,
+            ));
       }
-    }else{
-      return const SizedBox(height :120 ,child: SpinKitThreeBounce( color: Style.Colors.white,size: 12.0,) );
-    }
-  });
+    });
   }
 }

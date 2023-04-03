@@ -61,9 +61,9 @@ class _TransferPrereceipt extends State<TransferPrereceipt> {
             listener: (context, state) async {
           if (state is Wallet2WalletFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("مشکل در انتقال رخ داده است",
-                    style: TextStyle(color: Style.Colors.gray2)),
+               SnackBar(
+                content: Text(state.error ?? "مشکل در انتقال رخ داده است",
+                    style:const TextStyle(color: Style.Colors.gray2)),
                 backgroundColor: Style.Colors.fail,
               ),
             );

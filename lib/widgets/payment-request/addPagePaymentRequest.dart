@@ -14,59 +14,56 @@ class AddPaymentRequest extends StatefulWidget {
 }
 
 class _AddPaymentRequestState extends State<AddPaymentRequest> {
-  bool loading =false;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
-    return    MultiBlocListener(
+    return MultiBlocListener(
       listeners: [
-      BlocListener<PaymentRequestBloc,PaymentRequestState >(
+        BlocListener<PaymentRequestBloc, PaymentRequestState>(
             listener: (context, state) async {
-                if(state is PaymentRequestLoading){
-                  setState(() {
-                    loading=true;
-                  });
-                } else{
-                    setState(() {
-                    loading=false;
-                  });
-                }
-                if(state is PaymentRequestSuccess){
-                    BlocProvider.of<PaymentRequestListBloc>(context).add(const GetAllPaymentRequestButtonPressed());
-                } 
-            }
-      ),
+          if (state is PaymentRequestLoading) {
+            setState(() {
+              loading = true;
+            });
+          } else {
+            setState(() {
+              loading = false;
+            });
+          }
+          if (state is PaymentRequestSuccess) {
+            BlocProvider.of<PaymentRequestListBloc>(context)
+                .add(const GetAllPaymentRequestButtonPressed());
+          }
+        }),
       ],
-      child:   Padding(padding: const EdgeInsets.all(10),
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              child: StyledElevatedButton(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Container(
+            alignment: Alignment.bottomCenter,
+            child: StyledElevatedButton(
                 icon: Icons.add,
-                isLoading : loading,
+                isLoading: loading,
                 disabled: loading,
-               onPressed: ()async {
-
-                //open bottomSehhet add amount
-              final value = await AmountBottomSheet.show(context);
-              print(value);
-              if (value != null) {
-                try{
-                  if(!mounted){
-                    return;
-                  }
-                  BlocProvider.of<PaymentRequestBloc>(context).add(PaymentRequestButtonPressed(amount: value));
-
-                }catch(e){
-                    throw Exception('Could not launch');
-                }
-              } else {
-              }
-               },
-              width: 170,
-               text: "درخواست تسویه")
-               ),
-            ),
+                onPressed: () async {
+                  //open bottomSehhet add amount
+                  final value = await AmountBottomSheet.show(context);
+                  print(value);
+                  if (value != null) {
+                    try {
+                      if (!mounted) {
+                        return;
+                      }
+                      BlocProvider.of<PaymentRequestBloc>(context)
+                          .add(PaymentRequestButtonPressed(amount: value));
+                    } catch (e) {
+                      throw Exception('Could not launch');
+                    }
+                  } else {}
+                },
+                width: 170,
+                text: "درخواست تسویه")),
+      ),
     );
   }
 }
-

@@ -4,39 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:persian_tools/persian_tools.dart';
-class InputDecorationStyle extends StatefulWidget {
-const InputDecorationStyle({
-  super.key, 
-  required this.label,
-  this.onSave,
-  this.validate,
-  this.initialValue = "1",
-  this.autofocus = true,
-  required  this.onChange,
-  this.type = "", 
-  required this.icon,
-  this.textInputType = TextInputType.number
-});
 
-final bool? autofocus;
-final IconData icon;
-final String initialValue;
-final String label;
-final Function onChange;
-final Function? onSave;
-final TextInputType textInputType;
-final String type ;
-final Function? validate;
+class InputDecorationStyle extends StatefulWidget {
+  const InputDecorationStyle(
+      {super.key,
+      required this.label,
+      this.onSave,
+      this.validate,
+      this.initialValue = "1",
+      this.autofocus = true,
+      required this.onChange,
+      this.type = "",
+      required this.icon,
+      this.textInputType = TextInputType.number});
+
+  final bool? autofocus;
+  final IconData icon;
+  final String initialValue;
+  final String label;
+  final Function onChange;
+  final Function? onSave;
+  final TextInputType textInputType;
+  final String type;
+  final Function? validate;
 
   @override
   // ignore: library_private_types_in_public_api
   _InputDecorationStyle createState() => _InputDecorationStyle();
 }
 
-
 class _InputDecorationStyle extends State<InputDecorationStyle> {
-    Array<dynamic>? formatter  ;
-    TextEditingController? statusController = TextEditingController();
+  Array<dynamic>? formatter;
+  TextEditingController? statusController = TextEditingController();
 
   @override
   void dispose() {
@@ -44,123 +43,130 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
     super.dispose();
   }
 
- @override
+  @override
   void initState() {
     super.initState();
-   
-
   }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-                          controller: statusController,
-                          keyboardType: widget.textInputType,
-                          autofocus :widget.autofocus!,
-                          validator:(value){
-                             if (value!.isEmpty) {
-                                return 'لطفا فرم را پر کنید';
-                              }
-                            if(widget.type == "phone"){
-                              if (!RegExp(r'^09\d{9}$').hasMatch(value)) {
-                                return 'شماره وارد شده صحیح نیست';
-                              }
-                            }
-                            if(widget.type == "money"){
-                              if (!RegExp(r'^\d{9}$').hasMatch(value)) {
-                                return 'مبلغ وارد شده صحیح نیست';
-                              }
-                            }
-                            if(widget.type == "card"){
-                              if (value.length != 19) {
-                                return 'شماره کارت را به درستی وارد کنید';
-                              }
-                            }
-                            if(widget.type == "sheba"){
-                              if (value.length != 20) {
-                                return 'شماره شبا را به درستی وارد کنید';
-                              }
-                            }
-                             if(widget.type == "nationalCode"){
-                              if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                                return 'شماره ملی صحیح نیست';
-                              }
-                            }
-                            return null;
-                          },
-                          onChanged:(value) {
-                            
-                            if((widget.type == "number" || widget.type == "text-en1" ||
-                               widget.type == "nationalCode"||widget.type == "code" ||
-                               widget.type == "phone") && isPersian(value)){
-                               String enValue =  convertFaToEn(value);
-                                statusController?.text =enValue;
-                                widget.onChange(enValue);
-                            }else{
-                                widget.onChange(value);
-                            }
-                            
-                          },
-                          initialValue: widget.type == "sheba "? "IR": null ,
-                          textAlignVertical: TextAlignVertical.center,
-                          textAlign: TextAlign.center,
-                          style:const TextStyle(
-                            fontSize: 14.0,
-                            color: Style.Colors.primary,
-                            fontWeight: FontWeight.bold
+      controller: statusController,
+      keyboardType: widget.textInputType,
+      autofocus: widget.autofocus!,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'لطفا فرم را پر کنید';
+        }
+        if (widget.type == "phone") {
+          if (!RegExp(r'^09\d{9}$').hasMatch(value)) {
+            return 'شماره وارد شده صحیح نیست';
+          }
+        }
+        if (widget.type == "money") {
+          if (!RegExp(r'^\d{9}$').hasMatch(value)) {
+            return 'مبلغ وارد شده صحیح نیست';
+          }
+        }
+        if (widget.type == "card") {
+          if (value.length != 19) {
+            return 'شماره کارت را به درستی وارد کنید';
+          }
+        }
+        if (widget.type == "sheba") {
+          if (value.length != 20) {
+            return 'شماره شبا را به درستی وارد کنید';
+          }
+        }
+        if (widget.type == "nationalCode") {
+          if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+            return 'شماره ملی صحیح نیست';
+          }
+        }
+        return null;
+      },
+      onChanged: (value) {
+        if ((widget.type == "number" ||
+                widget.type == "text-en1" ||
+                widget.type == "nationalCode" ||
+                widget.type == "code" ||
+                widget.type == "phone") &&
+            isPersian(value)) {
+          String enValue = convertFaToEn(value);
+          statusController?.text = enValue;
+          widget.onChange(enValue);
+        } else {
+          widget.onChange(value);
+        }
+      },
+      initialValue: widget.type == "sheba " ? "IR" : null,
+      textAlignVertical: TextAlignVertical.center,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+          fontSize: 14.0,
+          color: Style.Colors.primary,
+          fontWeight: FontWeight.bold),
+      inputFormatters: widget.type == "money"
+          ? [
+              LengthLimitingTextInputFormatter(11),
+              ThousandsSeparatorInputFormatter(",")
+            ]
+          : widget.type == "code"
+              ? [
+                  ThousandsSeparatorInputFormatter("-"),
+                  LengthLimitingTextInputFormatter(
+                      8) // for coding with separator
+                ]
+              : widget.type == "nationalCode"
+                  ? [LengthLimitingTextInputFormatter(10)]
+                  : widget.type == "card"
+                      ? [
+                          LengthLimitingTextInputFormatter(19),
+                          MaskedTextInputFormatter(
+                            mask: 'xxxx-xxxx-xxxx-xxxx',
+                            separator: '-',
                           ),
-                          inputFormatters:widget.type == "money" ? [
-                            LengthLimitingTextInputFormatter(11),
-                              ThousandsSeparatorInputFormatter(",") 
-                          ]:widget.type == "code" ?[
-                              ThousandsSeparatorInputFormatter("-") ,
-                              LengthLimitingTextInputFormatter(8)// for coding with separator
-                          ]:widget.type == "nationalCode" ?[
-                            LengthLimitingTextInputFormatter(10)
-                          ]:widget.type == "card" ?[
-                            LengthLimitingTextInputFormatter(19),
-                             MaskedTextInputFormatter(
-                              mask: 'xxxx-xxxx-xxxx-xxxx',
-                              separator: '-',
-                            ),
-                          ]:widget.type == "phone" ?[
-                             LengthLimitingTextInputFormatter(11),
-                          ]:[
-                            LengthLimitingTextInputFormatter(20),
-                          ],
-                          
-                          onSaved: (value) => widget.onSave!(value!),
-                          decoration: InputDecoration(
-                              suffixIcon: widget.type == "sheba" ?  Image.asset('assets/icons/IR.png',scale: 2,):null,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(widget.icon, color:Style.Colors.primary),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:  const BorderSide(color: Style.Colors.primary),
-                                  borderRadius: BorderRadius.circular(10.0)
-                                  ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Style.Colors.primary),
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              contentPadding: const EdgeInsets.only(
-                                  left: 10.0, right: 10.0),
-                              labelText: widget.label,
-                              hintStyle:const TextStyle(
-                                  fontSize: 12.0,
-                                  color: Style.Colors.primary,
-                                  fontWeight: FontWeight.bold),
-                              labelStyle:const TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                        );  
-                  }
+                        ]
+                      : widget.type == "phone"
+                          ? [
+                              LengthLimitingTextInputFormatter(11),
+                            ]
+                          : [
+                              LengthLimitingTextInputFormatter(20),
+                            ],
+      onSaved: (value) => widget.onSave!(value!),
+      decoration: InputDecoration(
+        suffixIcon: widget.type == "sheba"
+            ? Image.asset(
+                'assets/icons/IR.png',
+                scale: 2,
+              )
+            : null,
+        fillColor: Colors.white,
+        prefixIcon: Icon(widget.icon, color: Style.Colors.primary),
+        enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Style.Colors.primary),
+            borderRadius: BorderRadius.circular(10.0)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Style.Colors.primary),
+            borderRadius: BorderRadius.circular(10.0)),
+        contentPadding: const EdgeInsets.only(left: 10.0, right: 10.0),
+        labelText: widget.label,
+        hintStyle: const TextStyle(
+            fontSize: 12.0,
+            color: Style.Colors.primary,
+            fontWeight: FontWeight.bold),
+        labelStyle: const TextStyle(
+            fontSize: 12.0, color: Colors.grey, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
 }
 
 class ThousandsSeparatorInputFormatter extends TextInputFormatter {
-   ThousandsSeparatorInputFormatter(this.separator);
+  ThousandsSeparatorInputFormatter(this.separator);
 
-   final String separator ; // Change this to '.' for other locales
+  final String separator; // Change this to '.' for other locales
 
   @override
   TextEditingValue formatEditUpdate(
@@ -205,7 +211,6 @@ class ThousandsSeparatorInputFormatter extends TextInputFormatter {
   }
 }
 
-
 class MaskedTextInputFormatter extends TextInputFormatter {
   final String mask;
   final String separator;
@@ -213,16 +218,22 @@ class MaskedTextInputFormatter extends TextInputFormatter {
   MaskedTextInputFormatter({
     required this.mask,
     required this.separator,
-  }) { assert(mask != null); assert (separator != null); }
+  }) {
+    assert(mask != null);
+    assert(separator != null);
+  }
 
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    if(newValue.text.length! > 0) {
-      if(newValue.text.length > oldValue.text.length) {
-        if(newValue.text.length > mask.length) return oldValue;
-        if(newValue.text.length < mask.length && mask[newValue.text.length - 1] == separator) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.length! > 0) {
+      if (newValue.text.length > oldValue.text.length) {
+        if (newValue.text.length > mask.length) return oldValue;
+        if (newValue.text.length < mask.length &&
+            mask[newValue.text.length - 1] == separator) {
           return TextEditingValue(
-            text: '${oldValue.text}$separator${newValue.text.substring(newValue.text.length-1)}',
+            text:
+                '${oldValue.text}$separator${newValue.text.substring(newValue.text.length - 1)}',
             selection: TextSelection.collapsed(
               offset: newValue.selection.end + 1,
             ),
