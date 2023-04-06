@@ -32,7 +32,7 @@ class IncreaseAmountBottomSheet {
                 }
               },
               child: Container(
-                height: 700,
+                height: 350,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -51,6 +51,7 @@ class IncreaseAmountBottomSheet {
                         label: "مبلغ به ریال",
                         onSave: (value) {},
                         initialValue: "",
+                        disableKeyboard :false,
                         autofocus: true,
                         onChange: (value) {
                           amount = value;

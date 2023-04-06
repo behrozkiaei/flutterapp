@@ -120,7 +120,7 @@ class _TransferPrereceipt extends State<TransferPrereceipt> {
                             cacheManager: DefaultCacheManager())
                         : const AssetImage('assets/icons/user.png'),
                     title: widget.toUser.name ?? 'نامشخص',
-                    subTitle: 'مبلغ انتقال: ${addCommas(amount!)}'),
+                    subTitle: 'مبلغ انتقال: ${addCommas(amount!)} ریال'),
                 const SizedBox(height: 15.0),
                 TextButton(
                   style: ButtonStyle(backgroundColor:

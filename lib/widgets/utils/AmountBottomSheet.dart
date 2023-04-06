@@ -11,7 +11,7 @@ class AmountBottomSheet {
         context: context,
         builder: (_) {
           return Container(
-            height: 700,
+            height: 350,
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -49,6 +49,8 @@ class AmountBottomSheet {
                           onPressed: () async {
                             if (amount != null) {
                               Navigator.pop(context, amount);
+                            }else{
+                              Navigator.pop(context, "");
                             }
                           });
                     }),

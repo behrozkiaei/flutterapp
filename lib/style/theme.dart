@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 class Colors {
   
   const Colors();
-
+ 
   static const Color primary =Color.fromARGB(255, 126, 87, 194 );
   static const Color secondary =Color.fromARGB(255, 183, 181, 187);
-  static const Color tertiary = Color.fromARGB(255, 33, 32, 32);
+  // static const Color tertiary = Color.fromRGBO(28, 122, 230, 1);
+  static const Color tertiary = Color.fromRGBO(28, 186, 85, 211);
   static const Color accent = Color.fromARGB(255, 84, 0, 252);
   static const Color gray1 = Color.fromARGB(255, 113,142, 156);
   static const Color gray2 = Color.fromARGB(255, 241, 245, 246);

@@ -4,7 +4,6 @@ import 'package:paytel/blocs/app-state/app-state.bloc.dart';
 import 'package:paytel/blocs/app-state/app-state.event.dart';
 import 'package:paytel/blocs/app-state/app-state.state.dart';
 import 'package:paytel/blocs/transaction/get-user-info-by-code/get-user-by-code.bloc.dart';
-import 'package:paytel/blocs/transaction/wallet-to-wallet-transfer/wallet2wallet.bloc.dart';
 import 'package:paytel/repositories/transactions.repository.dart';
 import 'package:paytel/widgets/scaner/qrPanel.dart';
 import 'package:paytel/widgets/scaner/scanner.dart';
@@ -43,7 +42,7 @@ class _Transfer extends State<Transfer>  {
           BlocProvider<UserByCodeBloc>(create: (BuildContext context) => UserByCodeBloc(transactionRepository: transactionRepo),),
      ], 
       child: Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body:BlocBuilder<AppStateBloc, AppStateState>(
         builder: (context, state) {
         return  SlidingUpPanel(

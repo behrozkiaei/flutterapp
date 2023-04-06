@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paytel/blocs/auth/me/me.bloc.dart';
 import 'package:paytel/blocs/auth/me/me.state.dart';
 import 'package:paytel/models/me-model.dart';
+import 'package:paytel/models/transaction/users-by-code-model.dart';
 import 'package:paytel/style/theme.dart' as Style;
 
 import '../../const.dart';
@@ -26,45 +27,53 @@ class LastPaid extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      margin: const EdgeInsets.all(4),
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Style.Colors.gray1, width: 1),
-                      ),
-                      child: user.destUser!.avatar != null
-                          ? CachedNetworkImage(
-                              imageUrl:
-                                  '${Config.baseUrl}/${user.destUser!.avatar}',
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                width: 80.0,
-                                height: 80.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: imageProvider, fit: BoxFit.cover),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/transfer-prereceipt',arguments: {'toUser': UserByCode(name: user.destUser!.name , avatar: user.destUser?.avatar , code: user.destUser!.wallet!.walletCode), 'amount': "10000"});
+
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(4),
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border:
+                              Border.all(color: Style.Colors.gray1, width: 1),
+                        ),
+                        child: user.destUser!.avatar != null
+                            ? CachedNetworkImage(
+                                imageUrl:
+                                    '${Config.baseUrl}/${user.destUser!.avatar}',
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  width: 80.0,
+                                  height: 80.0,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress,
+                                            color: Style.Colors.gray2,
+                                            strokeWidth: 1.0),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              )
+                            : const CircleAvatar(
+                                backgroundColor: Style.Colors.primary,
+                                foregroundColor: Style.Colors.primary,
+                                radius: 50.0,
+                                backgroundImage: AssetImage(
+                                  'assets/icons/user.png',
                                 ),
                               ),
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) =>
-                                      CircularProgressIndicator(
-                                          value: downloadProgress.progress,
-                                          color: Style.Colors.gray2,
-                                          strokeWidth: 1.0),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            )
-                          : const CircleAvatar(
-                              backgroundColor: Style.Colors.primary,
-                              foregroundColor: Style.Colors.primary,
-                              radius: 50.0,
-                              backgroundImage: AssetImage(
-                                'assets/icons/user.png',
-                              ),
-                            ),
+                      ),
                     ),
                     Text(user.destUser?.name ?? " ")
                   ],

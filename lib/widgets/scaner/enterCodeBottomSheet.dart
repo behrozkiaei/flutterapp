@@ -15,7 +15,7 @@ class ScannerBottomSheets {
         return BlocProvider.value(
          value: BlocProvider.of<UserByCodeBloc>(context),
          child:  Container(
-          height: 600,
+          height: 400,
           decoration:const  BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(

@@ -13,12 +13,14 @@ class InputDecorationStyle extends StatefulWidget {
       this.validate,
       this.initialValue = "1",
       this.autofocus = true,
+      this.disableKeyboard = false,
       required this.onChange,
       this.type = "",
       required this.icon,
       this.textInputType = TextInputType.number});
 
   final bool? autofocus;
+  final bool? disableKeyboard;
   final IconData icon;
   final String initialValue;
   final String label;
@@ -36,6 +38,7 @@ class InputDecorationStyle extends StatefulWidget {
 class _InputDecorationStyle extends State<InputDecorationStyle> {
   Array<dynamic>? formatter;
   TextEditingController? statusController = TextEditingController();
+  final focus = FocusNode();
 
   @override
   void dispose() {
@@ -52,6 +55,12 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: statusController,
+      focusNode: focus,
+      onTap: (){
+        if(widget.disableKeyboard!){
+          focus.unfocus();
+        }
+      },
       keyboardType: widget.textInputType,
       autofocus: widget.autofocus!,
       validator: (value) {

@@ -10,8 +10,8 @@ class ReceiptDetail extends StatelessWidget {
   final List<Desc> list;
   @override
   Widget build(BuildContext context) {
-    return list.isNotEmpty
-        ? ListView.builder(
+    return list.isNotEmpty 
+        ? ListView.builder( 
             itemCount: list.length,
             itemBuilder: (context, index) {
               if (list.isEmpty) {

@@ -42,6 +42,7 @@ class HomePanelWidget extends StatelessWidget {
                   children: [
                     Image.asset(
                       "assets/icons/sim.png",
+                            //  color: Style.Colors.primary,
                       scale: 2,
                     ),
                     const SizedBox(height: 2),
@@ -68,7 +69,7 @@ class HomePanelWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset("assets/icons/internet.png", scale: 1.5),
+                    Image.asset("assets/icons/internet.png",       color: Style.Colors.primary, scale: 1.5),
                     const Text("خرید اینترنت",
                         style: Style.TextStyling.primaryTextStyle)
                   ],
@@ -99,6 +100,7 @@ class HomePanelWidget extends StatelessWidget {
                     children: [
                       Image.asset(
                         "assets/icons/bill.png",
+                        color: Style.Colors.primary,
                         scale: 10,
                       ),
                       const Text("پرداخت قبوض",
@@ -146,6 +148,7 @@ class HomePanelWidget extends StatelessWidget {
                   children: [
                     Image.asset(
                       "assets/icons/cashback.png",
+                      color: Style.Colors.primary,
                       scale: 1.75,
                     ),
                     const Text("درخواست تسویه",
@@ -174,6 +177,7 @@ class HomePanelWidget extends StatelessWidget {
                   children: [
                     Image.asset(
                       "assets/icons/taxi.png",
+                      // color: Style.Colors.primary,
                       scale: 1.5,
                     ),
                     const Text("پرداخت تاکسی",

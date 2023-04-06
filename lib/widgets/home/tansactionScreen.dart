@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:paytel/blocs/app-state/app-state.bloc.dart';
 import 'package:paytel/blocs/app-state/app-state.event.dart';
 import 'package:paytel/blocs/app-state/app-state.state.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.bloc.dart';
 import 'package:paytel/blocs/transaction/my-transaction/my-transactions.event.dart';
-import 'package:paytel/models/app-state.model.dart';
-import 'package:paytel/widgets/panels/transactions.dart';
 import 'package:paytel/widgets/home/receipe.dart';
+import 'package:paytel/widgets/panels/transactions.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Transactions extends StatefulWidget {

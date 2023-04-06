@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BlocProvider<IncreaseWalletBloc>(create: (BuildContext context) => IncreaseWalletBloc(transactionRepository: transactionRepo),),
      ], 
       child: Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SlidingUpPanel(
         minHeight:height/2 ,
         body: const SendReceivePage(),
