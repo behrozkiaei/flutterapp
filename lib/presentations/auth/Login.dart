@@ -42,13 +42,22 @@ class _AppLoginState extends State<AppLogin> {
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      final prefs = await SharedPreferences.getInstance();
+      // final prefs = await SharedPreferences.getInstance();
       if (!mounted) {
         return;
       }
       BlocProvider.of<CheckPassBloc>(context)
           .add(CheckPassButtonPressed(password: _inputText));
     }
+  }
+
+  void exit() async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.remove("token");
+    if (!mounted) {
+      return;
+    }
+    Navigator.pushNamed(context, "/splash");
   }
 
   void _openFingerPrint() {
@@ -101,6 +110,8 @@ class _AppLoginState extends State<AppLogin> {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+
     return MultiBlocListener(
       listeners: [
         BlocListener<CheckPassBloc, CheckPassState>(listener: (context, state) {
@@ -128,8 +139,9 @@ class _AppLoginState extends State<AppLogin> {
         })
       ],
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: SizedBox(
-          height: double.infinity,
+          height: height,
           child: Padding(
               padding: const EdgeInsets.all(10),
               child: Form(
@@ -212,6 +224,31 @@ class _AppLoginState extends State<AppLogin> {
                         child: const Text("رمز عبور خود را فراموش کرده ام",
                             style: TextStyle(color: Style.Colors.primary)),
                       ),
+                      SizedBox(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              style: ButtonStyle(backgroundColor:
+                                  MaterialStateProperty.resolveWith((states) {
+                                return Style.Colors.background;
+                              }), textStyle:
+                                  MaterialStateProperty.resolveWith((states) {
+                                return const TextStyle(
+                                    color: Style.Colors.primary,
+                                    fontFamily: "IRANSansWeb");
+                              })),
+                              onPressed: () async {
+                                exit();
+                              },
+                              child: const Text("خروج از سیستم",
+                                  style:
+                                      TextStyle(color: Style.Colors.primary)),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ))),
         ),

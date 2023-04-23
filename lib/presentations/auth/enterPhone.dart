@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.bloc.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.event.dart';
 import 'package:paytel/blocs/auth/sed-otp/send-otp.state.dart';
+import 'package:paytel/const.dart';
 import 'package:paytel/repositories/auth.repository.dart';
 import 'package:paytel/style/theme.dart' as Style;
 import 'package:paytel/widgets/utils/elevateButton.style.dart';
 import 'package:paytel/widgets/utils/inputDecoration.dart';
 import 'package:persian_tools/persian_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class EnterPhone extends StatefulWidget {
   const EnterPhone({super.key});
@@ -50,6 +54,9 @@ class _EnterPhoneState extends State<EnterPhone> {
 
   @override
   Widget build(BuildContext context) {
+        final double height = MediaQuery.of(context).size.height;
+        final double width = MediaQuery.of(context).size.width;
+
     return BlocListener<SendOtpBloc, SendOtpState>(
       listener: (context, state) {
         if (state is SendOtpFailure) {
@@ -70,7 +77,7 @@ class _EnterPhoneState extends State<EnterPhone> {
         }
       },
       child: Scaffold(
-          body: Container(
+          body: SizedBox(
         height: double.infinity,
         child: Padding(
             padding: const EdgeInsets.all(10),
@@ -120,12 +127,61 @@ class _EnterPhoneState extends State<EnterPhone> {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                             _addPhoneInStorage(_phoneNumber);
+                       
                             BlocProvider.of<SendOtpBloc>(context).add(
                                 SendOtpButtonPressed(mobile: _phoneNumber));
                           }
                         },
                       );
                     }),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: width,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: ' شرایط استفاده از خدمات',
+                                  style: const TextStyle(color: Colors.blue, fontFamily: "IRANSansWeb"),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      try {
+                                        await launchUrl(
+                                            Uri.parse(
+                                                '${Config.baseUrl}/privacy'),
+                                            mode:
+                                                LaunchMode.externalApplication);
+                                      } catch (e) {
+                                        // throw Exception('Could not launch');
+                                      }
+                                    },
+                                ),
+                                const TextSpan(
+                                  text: ' و',
+                                  style: TextStyle(color: Colors.black,fontFamily: "IRANSansWeb"),
+                                ),
+                                TextSpan(
+                                  text: ' حریم شخصی',
+                                  style: const TextStyle(color: Colors.blue,fontFamily: "IRANSansWeb"),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {},
+                                ),
+                                const TextSpan(
+                                  text: ' را می پذیرم ',
+                                  style: TextStyle(color: Colors.black,fontFamily: "IRANSansWeb"),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
                   ],
                 ))),
       )),

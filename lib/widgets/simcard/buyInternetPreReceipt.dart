@@ -13,8 +13,10 @@ import 'package:paytel/widgets/utils/paymentType.dart';
 import 'package:paytel/widgets/utils/receiptDetail.dart';
 import 'package:persian_tools/persian_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 class InternetPreReceipt extends StatefulWidget {
-  final Value product ;
+  final Value product;
   const InternetPreReceipt({super.key, required this.product});
 
   @override
@@ -23,149 +25,171 @@ class InternetPreReceipt extends StatefulWidget {
 
 class _InternetPreReceiptState extends State<InternetPreReceipt> {
   String? mobile;
-  List<Desc> descList=[]; 
+  List<Desc> descList = [];
   bool loading = false;
   final transactionRepo = TransactionRepo();
-  bool? isWallet ;
+  bool? isWallet;
 
   @override
-    void initState() {
-      super.initState();
-        _getStoredValue();
-      
-     }
-     getPaymentMode()async {
-      final prefs = await SharedPreferences.getInstance();
-      final bool _isWallet = prefs.getBool("isWallet") ?? true;
-      setState(() {
-        isWallet = _isWallet ;
-      });
-     }
+  void initState() {
+    super.initState();
+    _getStoredValue();
+  }
+
+  getPaymentMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    final bool _isWallet = prefs.getBool("isWallet") ?? true;
+    setState(() {
+      isWallet = _isWallet;
+    });
+  }
+
   _getStoredValue() async {
-      final prefs = await SharedPreferences.getInstance();
-      final String _mobile = prefs.getString("mobile") ?? "";
-      setState(() {
+    final prefs = await SharedPreferences.getInstance();
+    final String _mobile = prefs.getString("mobile") ?? "";
+    setState(() {
       mobile = _mobile;
-        descList =   [
-            Desc(id: " ", key: "شماره موبایل", value: mobile?? "", orderId: " "),
-            Desc(id: " ", key: "نام بسته", value: widget.product.name!, orderId: " ")
-          ];
-      });
+      descList = [
+        Desc(id: " ", key: "شماره موبایل", value: mobile ?? "", orderId: " "),
+        Desc(
+            id: " ", key: "نام بسته", value: widget.product.name!, orderId: " ")
+      ];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<BuyInternetBloc, BuyInternetState>(
-          listener: (context, state) {
-            if (state is BuyInternetLoading) {
-             setState(() {
-               loading=true;
-             });
+      listener: (context, state) async {
+        if (state is BuyInternetLoading) {
+          setState(() {
+            loading = true;
+          });
+        }
+        if (state is BuyInternetFailure) {
+          setState(() {
+            loading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  state.error.isNotEmpty ? state.error : "خرید  ناموفق",
+                  style: const TextStyle(color: Style.Colors.gray2)),
+              backgroundColor: Style.Colors.fail,
+            ),
+          );
+        }
+        if (state is BuyInternetSuccess) {
+          if (state.RedirectURL != null) {
+            try {
+              await launchUrl(Uri.parse(state.RedirectURL!),
+                  mode: LaunchMode.externalApplication);
+            } catch (e) {
+              // throw Exception('Could not launch');
             }
-          if (state is BuyInternetFailure) {
-             setState(() {
-               loading=false;
-             });
-              ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(
-                  content: Text(state.error.isNotEmpty ? state.error :"خرید  ناموفق",style :const TextStyle(color: Style.Colors.gray2)),
-                  backgroundColor: Style.Colors.fail,
-                ),
-              );
-            }
-            if(state is BuyInternetSuccess){
-              ScaffoldMessenger.of(context).showSnackBar(
-                 const SnackBar(
-                  content: Text("خرید با موفقیت انجام شد",style : TextStyle(color: Style.Colors.gray2)),
-                  backgroundColor: Style.Colors.success,
-                ),
-              );
-              setState(() {
-               loading=false;
-             });
-              Navigator.pushReplacementNamed(
-                                    context,
-                                    "/home",
-                                   
-                                    );
-            }
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("خرید با موفقیت انجام شد",
+                    style: TextStyle(color: Style.Colors.gray2)),
+                backgroundColor: Style.Colors.success,
+              ),
+            );
+            setState(() {
+              loading = false;
+            });
+            Navigator.pushReplacementNamed(
+              context,
+              "/home",
+            );
+          }
+        }
       },
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-            leading:  IconButton(
-            icon: const Icon(Icons.arrow_back , color: Style.Colors.primary),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Style.Colors.primary),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-      body:SafeArea(
-        child:Container(
-          padding:const  EdgeInsets.only(bottom: 16,right: 16,left: 16),
-          child: Column(
-            children: <Widget>[
-
-            const SizedBox(height: 20.0),
-                      AvatarTitleSub(avatarUrl: widget.product.valueOperator == "MTN" ? const  AssetImage('assets/icons/MTN.png') : 
-                                     widget.product.valueOperator == "MCI" ?  const  AssetImage('assets/icons/MCI.png') :
-                                     widget.product.valueOperator == "RTL" ?const  AssetImage('assets/icons/MCI.png'): 
-                                     const AssetImage('assets/icons/user.png')  ,title:widget.product.valueOperator == "MTN" ? "بسته اینترنت ایرانسل " :widget.product.valueOperator == "MCI" ? "بسته اینترنت همراه اول" :widget.product.valueOperator == "RTL" ?" بسته اینترنت رایتل" : "-" , subTitle: ' مبلغ : ${addCommas(widget.product.amountRial.toString())} ریال '),
-                       const SizedBox(height: 20.0),
-                       SizedBox(
-                        height: descList.length*40,
-                        child: ReceiptDetail(  
-                          list:  descList
-                        ),
-                       ),
-                      
-              Expanded(
-                child: Column(
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.only(bottom: 16, right: 16, left: 16),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 20.0),
+                AvatarTitleSub(
+                    avatarUrl: widget.product.valueOperator == "MTN"
+                        ? const AssetImage('assets/icons/MTN.png')
+                        : widget.product.valueOperator == "MCI"
+                            ? const AssetImage('assets/icons/MCI.png')
+                            : widget.product.valueOperator == "RTL"
+                                ? const AssetImage('assets/icons/MCI.png')
+                                : const AssetImage('assets/icons/user.png'),
+                    title: widget.product.valueOperator == "MTN"
+                        ? "بسته اینترنت ایرانسل "
+                        : widget.product.valueOperator == "MCI"
+                            ? "بسته اینترنت همراه اول"
+                            : widget.product.valueOperator == "RTL"
+                                ? " بسته اینترنت رایتل"
+                                : "-",
+                    subTitle:
+                        ' مبلغ : ${addCommas(widget.product.amountRial.toString())} ریال '),
+                const SizedBox(height: 20.0),
+                SizedBox(
+                  height: descList.length * 40,
+                  child: ReceiptDetail(list: descList),
+                ),
+                Expanded(
+                    child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                     const SizedBox(
-                        height: 160,
-                        child: PaymentTypeChooser(),
-                       ),
-                       const SizedBox(height: 10.0),
-
-                 StyledElevatedButton(
-                            width:double.maxFinite ,
-                            icon : Icons.check_box  ,
-                            text : "تایید خرید" ,
-                            isLoading: loading,
-                            disabled: loading,
-                            textColor: Style.Colors.white,
-                            onPressed:  () async { 
-                                 await getPaymentMode();
-                                 if(!mounted || isWallet== null){
-                                  return;
-                                 }
-                                  BlocProvider.of<BuyInternetBloc>(context).add(BuyInternetButtonPressed(
-                                        productId: widget.product.productId!, 
-                                        InternetPayloadOperator : widget.product.valueOperator!,
-                                        mobile : mobile!,
-                                        simType: widget.product.simType!,
-                                        fromWallet:isWallet!,
-                                       ));
-
-                          },  
-                        ),
-             
+                    const SizedBox(
+                      height: 160,
+                      child: PaymentTypeChooser(),
+                    ),
+                    const SizedBox(height: 10.0),
+                    StyledElevatedButton(
+                      width: double.maxFinite,
+                      icon: Icons.check_box,
+                      text: "تایید خرید",
+                      isLoading: loading,
+                      disabled: loading,
+                      textColor: Style.Colors.white,
+                      onPressed: () async {
+                        await getPaymentMode();
+                        if (!mounted || isWallet == null) {
+                          return;
+                        }
+                        BlocProvider.of<BuyInternetBloc>(context)
+                            .add(BuyInternetButtonPressed(
+                          productId: widget.product.productId!,
+                          InternetPayloadOperator:
+                              widget.product.valueOperator!,
+                          mobile: mobile!,
+                          simType: widget.product.simType!,
+                          fromWallet: isWallet!,
+                        ));
+                      },
+                    ),
                   ],
-                )
-              )
-            ],
+                ))
+              ],
+            ),
           ),
         ),
-      ) ,
-      ) ,
+      ),
     );
   }
 }
 
-class ButtonStyleCustom{
+class ButtonStyleCustom {
   bool? isActive;
 
- static TextStyle textStyle(isActive){
-  return  TextStyle(color: isActive ? Style.Colors.white: Style.Colors.gray1 , fontSize: 12);
- }
+  static TextStyle textStyle(isActive) {
+    return TextStyle(
+        color: isActive ? Style.Colors.white : Style.Colors.gray1,
+        fontSize: 12);
+  }
 }

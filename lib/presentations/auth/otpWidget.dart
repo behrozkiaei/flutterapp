@@ -1,7 +1,6 @@
 
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -21,6 +20,7 @@ class OtpWidget extends StatefulWidget {
   const OtpWidget({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _OtpWidgetState createState() => _OtpWidgetState();
 }
 
@@ -43,6 +43,7 @@ class _OtpWidgetState extends State<OtpWidget> {
   @override
   void dispose() {
     _timer.cancel();
+    // SmsAutoFill().unregisterListener();
     super.dispose();
   }
 
@@ -50,6 +51,7 @@ class _OtpWidgetState extends State<OtpWidget> {
   void initState() {
     super.initState();
     _getStoredValue();
+    startSmsListening();
     startTimer();
   }
 
@@ -82,6 +84,10 @@ class _OtpWidgetState extends State<OtpWidget> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
     }
+  }
+
+  startSmsListening() async {
+    // await SmsAutoFill().listenForCode();           
   }
 
   @override
@@ -176,6 +182,24 @@ class _OtpWidgetState extends State<OtpWidget> {
                   ],
                 ),
               ),
+              const SizedBox(height:20),
+              //  PinFieldAutoFill(
+              //    codeLength: 4,
+              //   decoration: UnderlineDecoration(
+              //     textStyle: const TextStyle(fontSize: 20, color: Colors.black),
+              //     colorBuilder: FixedColorBuilder(Colors.black.withOpacity(0.3)),
+              //   ),
+              //   currentCode: _otp,
+              //   onCodeSubmitted: (_otp) {
+              //      print(_otp)
+              //   },
+              //   onCodeChanged: (_otp) {
+              //     print(_otp)
+              //     if (code!.length == 4) {
+              //       FocusScope.of(context).requestFocus(FocusNode());
+              //     }
+              //   },
+              // ), 
               const SizedBox(height:20), 
               // ignore: avoid_unnecessary_containers
               Container(

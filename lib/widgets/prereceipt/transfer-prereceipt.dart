@@ -83,7 +83,7 @@ class _TransferPrereceipt extends State<TransferPrereceipt> {
                 await launchUrl(Uri.parse(state.RedirectURL!),
                     mode: LaunchMode.externalApplication);
               } catch (e) {
-                throw Exception('Could not launch');
+                // throw Exception('Could not launch');
               }
             } else {
               BlocProvider.of<MyTransactionsBloc>(context)

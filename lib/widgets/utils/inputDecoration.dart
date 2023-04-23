@@ -124,7 +124,7 @@ class _InputDecorationStyle extends State<InputDecorationStyle> {
               ? [
                   ThousandsSeparatorInputFormatter("-"),
                   LengthLimitingTextInputFormatter(
-                      8) // for coding with separator
+                      9) // for coding with separator
                 ]
               : widget.type == "nationalCode"
                   ? [LengthLimitingTextInputFormatter(10)]

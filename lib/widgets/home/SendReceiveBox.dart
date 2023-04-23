@@ -92,7 +92,7 @@ class SendReceivePage extends StatelessWidget {
                              await launchUrl(Uri.parse(value),
                                  mode: LaunchMode.externalApplication);
                            } catch (e) {
-                             throw Exception('Could not launch');
+                            //  throw Exception('Could not launch');
                            }
                          } else {}
                        },
